@@ -1,11 +1,8 @@
-#from django.db import models
-from django.contrib.gis.db import models
-from django.db.models import CheckConstraint, Q
+from django.db import models
 
 
 class AArtCategoryArtCategory(models.Model):
-    id_Category_Points = models.AutoField(primary_key=True)
-    category = models.ForeignKey('ArtCategory', models.DO_NOTHING, db_column='category')
+    category = models.OneToOneField('ArtCategory', models.DO_NOTHING, db_column='category', primary_key=True)
     points = models.ForeignKey('Art', models.DO_NOTHING, db_column='points')
 
     class Meta:
@@ -15,8 +12,7 @@ class AArtCategoryArtCategory(models.Model):
 
 
 class AArtTourTour(models.Model):
-    id_Point_of_interest_Tour = models.AutoField(primary_key=True)
-    point_of_interest = models.ForeignKey('Art', models.DO_NOTHING, db_column='point_of_interest')
+    point_of_interest = models.OneToOneField('Art', models.DO_NOTHING, db_column='point_of_interest', primary_key=True)
     tour = models.ForeignKey('Tour', models.DO_NOTHING, db_column='tour')
     num = models.DecimalField(max_digits=15, decimal_places=0)
 
@@ -27,8 +23,7 @@ class AArtTourTour(models.Model):
 
 
 class AEventCategoryEventCategory(models.Model):
-    id_Event_Category = models.AutoField(primary_key=True)
-    event = models.ForeignKey('Event', models.DO_NOTHING, db_column='event')
+    event = models.OneToOneField('Event', models.DO_NOTHING, db_column='event', primary_key=True)
     category = models.ForeignKey('EventCategory', models.DO_NOTHING, db_column='category')
 
     class Meta:
@@ -43,7 +38,7 @@ class Art(models.Model):
     image_url = models.CharField(max_length=200, blank=True, null=True)
     name_it = models.CharField(max_length=100)
     state = models.ForeignKey('DArtEStato', models.DO_NOTHING, db_column='state')
-    area_di_download = models.GeometryField(blank=True, null=True)
+    area_di_download = models.TextField(blank=True, null=True)  # This field type is a guess.
     notes = models.CharField(max_length=1024, blank=True, null=True)
     open_time = models.CharField(max_length=1024, blank=True, null=True)
     tickets = models.CharField(max_length=1024, blank=True, null=True)
@@ -67,8 +62,7 @@ class ArtCategory(models.Model):
 
 
 class ArtCategoryNameTradT(models.Model):
-    id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(ArtCategory, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(ArtCategory, models.DO_NOTHING, db_column='classref', primary_key=True)
     name_trad_lang = models.ForeignKey('DELang', models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384)
 
@@ -79,8 +73,7 @@ class ArtCategoryNameTradT(models.Model):
 
 
 class ArtDescrTradT(models.Model):
-    id_Classref_Descr_trad_lang = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(Art, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(Art, models.DO_NOTHING, db_column='classref', primary_key=True)
     descr_trad_lang = models.ForeignKey('DELang', models.DO_NOTHING, db_column='descr_trad_lang')
     descr_trad_value = models.TextField()
 
@@ -91,8 +84,7 @@ class ArtDescrTradT(models.Model):
 
 
 class ArtNameTradT(models.Model):
-    id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(Art, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(Art, models.DO_NOTHING, db_column='classref', primary_key=True)
     name_trad_lang = models.ForeignKey('DELang', models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384)
 
@@ -126,8 +118,7 @@ class BenefitVc(models.Model):
 
 
 class BenefitVcBenefitTradT(models.Model):
-    id_Classref_Benefit_trad_lang_Benefit_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(BenefitVc, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(BenefitVc, models.DO_NOTHING, db_column='classref', primary_key=True)
     benefit_trad_lang = models.ForeignKey('DELang', models.DO_NOTHING, db_column='benefit_trad_lang')
     benefit_trad_value = models.CharField(max_length=16384)
 
@@ -138,8 +129,7 @@ class BenefitVcBenefitTradT(models.Model):
 
 
 class BenefitVcDescrTradT(models.Model):
-    id_Classref_Descr_trad_lang_Descr_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(BenefitVc, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(BenefitVc, models.DO_NOTHING, db_column='classref', primary_key=True)
     descr_trad_lang = models.ForeignKey('DELang', models.DO_NOTHING, db_column='descr_trad_lang')
     descr_trad_value = models.CharField(max_length=16384)
 
@@ -150,8 +140,7 @@ class BenefitVcDescrTradT(models.Model):
 
 
 class BenefitVcTitleTradT(models.Model):
-    id_Classref_Title_trad_lang_Title_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(BenefitVc, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(BenefitVc, models.DO_NOTHING, db_column='classref', primary_key=True)
     title_trad_lang = models.ForeignKey('DELang', models.DO_NOTHING, db_column='title_trad_lang')
     title_trad_value = models.CharField(max_length=16384)
 
@@ -266,8 +255,7 @@ class EventCategory(models.Model):
 
 
 class EventCategoryNameTradT(models.Model):
-    id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(EventCategory, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(EventCategory, models.DO_NOTHING, db_column='classref', primary_key=True)
     name_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384)
 
@@ -278,8 +266,7 @@ class EventCategoryNameTradT(models.Model):
 
 
 class EventDescrTradT(models.Model):
-    id_Classref_Descr_trad_lang_Descr_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(Event, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(Event, models.DO_NOTHING, db_column='classref', primary_key=True)
     descr_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='descr_trad_lang')
     descr_trad_value = models.TextField()
 
@@ -290,8 +277,7 @@ class EventDescrTradT(models.Model):
 
 
 class EventNameTradT(models.Model):
-    id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(Event, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(Event, models.DO_NOTHING, db_column='classref', primary_key=True)
     name_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384)
 
@@ -316,7 +302,7 @@ class Location(models.Model):
     address = models.TextField(blank=True, null=True)
     num = models.DecimalField(max_digits=15, decimal_places=0)
     event = models.CharField(max_length=70)
-    geom = models.GeometryField(blank=True, null=True)
+    geom = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -338,8 +324,7 @@ class Media(models.Model):
 
 
 class MediaNameTradT(models.Model):
-    id_Classref_Name_trad_lang = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(Media, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(Media, models.DO_NOTHING, db_column='classref', primary_key=True)
     name_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384, blank=True, null=True)
 
@@ -363,8 +348,7 @@ class News(models.Model):
 
 
 class NewsDescrTradT(models.Model):
-    id_Classref_Descr_trad_lang_Descr_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(News, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(News, models.DO_NOTHING, db_column='classref', primary_key=True)
     descr_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='descr_trad_lang')
     descr_trad_value = models.CharField(max_length=16384)
 
@@ -375,8 +359,7 @@ class NewsDescrTradT(models.Model):
 
 
 class NewsTitleTradT(models.Model):
-    id_Classref_Title_trad_lang_Title_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(News, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(News, models.DO_NOTHING, db_column='classref', primary_key=True)
     title_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='title_trad_lang')
     title_trad_value = models.CharField(max_length=16384)
 
@@ -396,8 +379,7 @@ class RetailerCategory(models.Model):
 
 
 class RetailerCategoryNameTradT(models.Model):
-    id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(RetailerCategory, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(RetailerCategory, models.DO_NOTHING, db_column='classref', primary_key=True)
     name_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384)
 
@@ -412,7 +394,7 @@ class RetailerVc(models.Model):
     address = models.CharField(max_length=2048)
     name = models.CharField(max_length=1024)
     retailer_category = models.ForeignKey(RetailerCategory, models.DO_NOTHING, db_column='retailer_category')
-    geo = models.GeometryField(blank=True, null=True)
+    geo = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -447,8 +429,7 @@ class RssCategory(models.Model):
 
 
 class RssTextTradT(models.Model):
-    id_Classref_Text_trad_lang_Text_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(Rss, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(Rss, models.DO_NOTHING, db_column='classref', primary_key=True)
     text_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='text_trad_lang')
     text_trad_value = models.CharField(max_length=16384)
     state = models.ForeignKey(DRssEState, models.DO_NOTHING, db_column='state', blank=True, null=True)
@@ -460,8 +441,7 @@ class RssTextTradT(models.Model):
 
 
 class RssTitleTradT(models.Model):
-    id_Classref_Title_trad_lang_Title_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(Rss, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(Rss, models.DO_NOTHING, db_column='classref', primary_key=True)
     title_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='title_trad_lang')
     title_trad_value = models.TextField()
     state = models.ForeignKey(DRssEState, models.DO_NOTHING, db_column='state', blank=True, null=True)
@@ -473,8 +453,7 @@ class RssTitleTradT(models.Model):
 
 
 class RssWhenDescrTradT(models.Model):
-    id_Classref_When_descr_trad_lang_When_descr_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(Rss, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(Rss, models.DO_NOTHING, db_column='classref', primary_key=True)
     when_descr_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='when_descr_trad_lang')
     when_descr_trad_value = models.CharField(max_length=16384)
     state = models.ForeignKey(DRssEState, models.DO_NOTHING, db_column='state', blank=True, null=True)
@@ -517,9 +496,6 @@ class SpatialRefSys(models.Model):
     class Meta:
         managed = False
         db_table = 'spatial_ref_sys'
-        constraints = [CheckConstraint(
-                        check=Q('srid' > 0 & 'srid' <= 998999),
-                        name='srid_interval')]
 
 
 class Tour(models.Model):
@@ -528,8 +504,8 @@ class Tour(models.Model):
     image_url = models.CharField(max_length=100, blank=True, null=True)
     kml_path = models.CharField(max_length=8192, blank=True, null=True)
     name_it = models.CharField(max_length=200)
-    geom_path = models.GeometryField(blank=True, null=True)
-    proximity_area = models.GeometryField(blank=True, null=True)
+    geom_path = models.TextField(blank=True, null=True)  # This field type is a guess.
+    proximity_area = models.TextField(blank=True, null=True)  # This field type is a guess.
     duration = models.FloatField(blank=True, null=True)
     length = models.FloatField(blank=True, null=True)
     type = models.ForeignKey(DTourETipoit, models.DO_NOTHING, db_column='type', blank=True, null=True)
@@ -550,8 +526,7 @@ class TourDescrTradT(models.Model):
 
 
 class TourNameTradT(models.Model):
-    id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
-    classref = models.ForeignKey(Tour, models.DO_NOTHING, db_column='classref')
+    classref = models.OneToOneField(Tour, models.DO_NOTHING, db_column='classref', primary_key=True)
     name_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384)
 

@@ -517,9 +517,9 @@ class SpatialRefSys(models.Model):
     class Meta:
         managed = False
         db_table = 'spatial_ref_sys'
-        constraints = [CheckConstraint(
-                        check=Q('srid' > 0 & 'srid' <= 998999),
-                        name='srid_interval')]
+ #       constraints = [CheckConstraint(
+ #                       check=Q('srid' > 0 & 'srid' <= 998999),
+  #                      name='srid_interval')]
 
 
 class Tour(models.Model):

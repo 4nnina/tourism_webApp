@@ -1,10 +1,10 @@
 #from django.db import models
 from django.contrib.gis.db import models
-from django.db.models import CheckConstraint, Q
+from django.db.models import CheckConstraint, Q, UniqueConstraint
 
 
 class AArtCategoryArtCategory(models.Model):
-    id_Category_Points = models.AutoField(primary_key=True)
+    #id_Category_Points = models.AutoField(primary_key=True)
     category = models.ForeignKey('ArtCategory', models.DO_NOTHING, db_column='category')
     points = models.ForeignKey('Art', models.DO_NOTHING, db_column='points')
 
@@ -15,7 +15,7 @@ class AArtCategoryArtCategory(models.Model):
 
 
 class AArtTourTour(models.Model):
-    id_Point_of_interest_Tour = models.AutoField(primary_key=True)
+    #id_Point_of_interest_Tour = models.AutoField(primary_key=True)
     point_of_interest = models.ForeignKey('Art', models.DO_NOTHING, db_column='point_of_interest')
     tour = models.ForeignKey('Tour', models.DO_NOTHING, db_column='tour')
     num = models.DecimalField(max_digits=15, decimal_places=0)
@@ -27,7 +27,7 @@ class AArtTourTour(models.Model):
 
 
 class AEventCategoryEventCategory(models.Model):
-    id_Event_Category = models.AutoField(primary_key=True)
+    #id_Event_Category = models.AutoField(primary_key=True)
     event = models.ForeignKey('Event', models.DO_NOTHING, db_column='event')
     category = models.ForeignKey('EventCategory', models.DO_NOTHING, db_column='category')
 
@@ -67,7 +67,7 @@ class ArtCategory(models.Model):
 
 
 class ArtCategoryNameTradT(models.Model):
-    id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(ArtCategory, models.DO_NOTHING, db_column='classref')
     name_trad_lang = models.ForeignKey('DELang', models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384)
@@ -79,7 +79,7 @@ class ArtCategoryNameTradT(models.Model):
 
 
 class ArtDescrTradT(models.Model):
-    id_Classref_Descr_trad_lang = models.AutoField(primary_key=True)
+    #id_Classref_Descr_trad_lang = models.AutoField(primary_key=True)
     classref = models.ForeignKey(Art, models.DO_NOTHING, db_column='classref')
     descr_trad_lang = models.ForeignKey('DELang', models.DO_NOTHING, db_column='descr_trad_lang')
     descr_trad_value = models.TextField()
@@ -91,7 +91,7 @@ class ArtDescrTradT(models.Model):
 
 
 class ArtNameTradT(models.Model):
-    id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(Art, models.DO_NOTHING, db_column='classref')
     name_trad_lang = models.ForeignKey('DELang', models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384)
@@ -126,7 +126,7 @@ class BenefitVc(models.Model):
 
 
 class BenefitVcBenefitTradT(models.Model):
-    id_Classref_Benefit_trad_lang_Benefit_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Benefit_trad_lang_Benefit_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(BenefitVc, models.DO_NOTHING, db_column='classref')
     benefit_trad_lang = models.ForeignKey('DELang', models.DO_NOTHING, db_column='benefit_trad_lang')
     benefit_trad_value = models.CharField(max_length=16384)
@@ -138,7 +138,7 @@ class BenefitVcBenefitTradT(models.Model):
 
 
 class BenefitVcDescrTradT(models.Model):
-    id_Classref_Descr_trad_lang_Descr_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Descr_trad_lang_Descr_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(BenefitVc, models.DO_NOTHING, db_column='classref')
     descr_trad_lang = models.ForeignKey('DELang', models.DO_NOTHING, db_column='descr_trad_lang')
     descr_trad_value = models.CharField(max_length=16384)
@@ -150,7 +150,7 @@ class BenefitVcDescrTradT(models.Model):
 
 
 class BenefitVcTitleTradT(models.Model):
-    id_Classref_Title_trad_lang_Title_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Title_trad_lang_Title_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(BenefitVc, models.DO_NOTHING, db_column='classref')
     title_trad_lang = models.ForeignKey('DELang', models.DO_NOTHING, db_column='title_trad_lang')
     title_trad_value = models.CharField(max_length=16384)
@@ -266,7 +266,7 @@ class EventCategory(models.Model):
 
 
 class EventCategoryNameTradT(models.Model):
-    id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(EventCategory, models.DO_NOTHING, db_column='classref')
     name_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384)
@@ -278,7 +278,7 @@ class EventCategoryNameTradT(models.Model):
 
 
 class EventDescrTradT(models.Model):
-    id_Classref_Descr_trad_lang_Descr_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Descr_trad_lang_Descr_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(Event, models.DO_NOTHING, db_column='classref')
     descr_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='descr_trad_lang')
     descr_trad_value = models.TextField()
@@ -290,7 +290,7 @@ class EventDescrTradT(models.Model):
 
 
 class EventNameTradT(models.Model):
-    id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(Event, models.DO_NOTHING, db_column='classref')
     name_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384)
@@ -338,7 +338,7 @@ class Media(models.Model):
 
 
 class MediaNameTradT(models.Model):
-    id_Classref_Name_trad_lang = models.AutoField(primary_key=True)
+    #id_Classref_Name_trad_lang = models.AutoField(primary_key=True)
     classref = models.ForeignKey(Media, models.DO_NOTHING, db_column='classref')
     name_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384, blank=True, null=True)
@@ -363,7 +363,7 @@ class News(models.Model):
 
 
 class NewsDescrTradT(models.Model):
-    id_Classref_Descr_trad_lang_Descr_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Descr_trad_lang_Descr_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(News, models.DO_NOTHING, db_column='classref')
     descr_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='descr_trad_lang')
     descr_trad_value = models.CharField(max_length=16384)
@@ -375,7 +375,7 @@ class NewsDescrTradT(models.Model):
 
 
 class NewsTitleTradT(models.Model):
-    id_Classref_Title_trad_lang_Title_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Title_trad_lang_Title_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(News, models.DO_NOTHING, db_column='classref')
     title_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='title_trad_lang')
     title_trad_value = models.CharField(max_length=16384)
@@ -396,7 +396,7 @@ class RetailerCategory(models.Model):
 
 
 class RetailerCategoryNameTradT(models.Model):
-    id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(RetailerCategory, models.DO_NOTHING, db_column='classref')
     name_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384)
@@ -447,7 +447,7 @@ class RssCategory(models.Model):
 
 
 class RssTextTradT(models.Model):
-    id_Classref_Text_trad_lang_Text_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Text_trad_lang_Text_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(Rss, models.DO_NOTHING, db_column='classref')
     text_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='text_trad_lang')
     text_trad_value = models.CharField(max_length=16384)
@@ -460,7 +460,7 @@ class RssTextTradT(models.Model):
 
 
 class RssTitleTradT(models.Model):
-    id_Classref_Title_trad_lang_Title_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Title_trad_lang_Title_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(Rss, models.DO_NOTHING, db_column='classref')
     title_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='title_trad_lang')
     title_trad_value = models.TextField()
@@ -473,7 +473,7 @@ class RssTitleTradT(models.Model):
 
 
 class RssWhenDescrTradT(models.Model):
-    id_Classref_When_descr_trad_lang_When_descr_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_When_descr_trad_lang_When_descr_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(Rss, models.DO_NOTHING, db_column='classref')
     when_descr_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='when_descr_trad_lang')
     when_descr_trad_value = models.CharField(max_length=16384)
@@ -550,7 +550,7 @@ class TourDescrTradT(models.Model):
 
 
 class TourNameTradT(models.Model):
-    id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
+    #id_Classref_Name_trad_lang_Name_trad_value = models.AutoField(primary_key=True)
     classref = models.ForeignKey(Tour, models.DO_NOTHING, db_column='classref')
     name_trad_lang = models.ForeignKey(DELang, models.DO_NOTHING, db_column='name_trad_lang')
     name_trad_value = models.CharField(max_length=16384)

@@ -173,6 +173,20 @@ class Calendar(models.Model):
         db_table = 'calendar'
         unique_together = (('day', 'event'),)
 
+class Crowding(models.Model):
+    classid = models.CharField(primary_key=True, max_length=70)
+    data = models.DateField()
+    date_creat = models.CharField(max_length=19)
+    val_real = models.FloatField()
+    val_stim = models.FloatField()
+    val_stor = models.FloatField()
+    punto_di_interesse = models.ForeignKey('Art', models.DO_NOTHING, db_column='punto_di_interesse')
+
+
+    class Meta:
+        managed = False
+        db_table = 'crowding'
+        unique_together = (('date_creat', 'punto_di_interesse'),)
 
 class DArtEStato(models.Model):
     code = models.CharField(primary_key=True, max_length=80)
@@ -323,6 +337,31 @@ class Location(models.Model):
         db_table = 'location'
         unique_together = (('num', 'event'),)
 
+class LogCrowd(models.Model):
+    classid = models.CharField(primary_key=True, max_length=70)
+    data = models.DateField()
+    data_creat = models.CharField(max_length=19)
+    val_real = models.FloatField()
+    val_stim = models.FloatField()
+    val_stor = models.FloatField()
+    poi = models.ForeignKey(Art, models.DO_NOTHING, db_column='poi')
+
+    class Meta:
+        managed = False
+        db_table = 'log_crowd'
+        unique_together = (('data_creat', 'poi'),)
+
+class LogVc(models.Model):
+    classid = models.CharField(primary_key=True, max_length=70)
+    attivazione = models.DateField()
+    id_vc = models.CharField(max_length=40)
+    istante = models.CharField(max_length=19)
+    profilo = models.CharField(max_length=40)
+    poi = models.ForeignKey(Art, models.DO_NOTHING, db_column='poi')
+
+    class Meta:
+        managed = False
+        db_table = 'log_vc'
 
 class Media(models.Model):
     classid = models.CharField(primary_key=True, max_length=70)

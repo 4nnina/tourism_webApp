@@ -53,11 +53,14 @@ def logIn(request):
             messages.info(request, 'Credential invalid')
             return redirect('logIn')
     else:
-        return render(request, 'login_ex.html')
+        return render(request, 'login.html')
 
 def logOut(request):
     auth.logout(request)
     return redirect('/')
+
+def edit(request):
+    return render(request, 'edit.html')
 
 def example(request):
     context = {

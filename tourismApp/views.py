@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.http import HttpResponse
 
-from .models import Crowding
+from .models import *
 # Create your views here.
 
 def homepage(request):
@@ -60,7 +60,11 @@ def logOut(request):
     return redirect('/')
 
 def edit(request):
-    return render(request, 'edit.html')
+    context = {
+        'art': Art.objects,
+        'category': AArtCategoryArtCategory.objects,
+    }
+    return render(request, 'edit.html', context)
 
 def example(request):
     context = {

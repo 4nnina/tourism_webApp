@@ -61,7 +61,7 @@ def logOut(request):
 
 def edit(request):
     context = {
-        'art': Art.objects,
+        'art': Art.objects.order_by('name_it'),
         'category': AArtCategoryArtCategory.objects,
     }
     return render(request, 'edit.html', context)

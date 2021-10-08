@@ -42,13 +42,13 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="/">Home</a></li>
+          <li><a class="nav-link scrollto" href="/">Home</a></li>
 
-              <li><a class="nav-link scrollto" href="/edit">Edit</a></li>
-              <li><a class="nav-link scrollto" href="/admin">Control panel</a></li>
+          <li><a class="nav-link scrollto active" href="/edit">Edit</a></li>
+          <li><a class="nav-link scrollto" href="/admin">Control panel</a></li>
 
 
-              <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
+          <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
 
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -88,31 +88,32 @@
           <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
         </div>
 
-        <div class="row">
-          <div class="col-xl-3 col-md-6  align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
-            <div class="icon-box">
+        <form method="get">
+        <div class="row" >
+          <div name="art" class="col-xl-3 col-md-6  align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="100">
+          <a href="/">
+            <div class="icon-box" >
               <div class="icon"><i class="bx bxs-landmark"></i></div>
-              <h4><a href="edit">Art</a></h4>
-              <!--<p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>-->
+              <h4><a>Art</a></h4>
             </div>
+          </a>
           </div>
 
-          <div class="col-xl-3 col-md-6 align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
+          <div onclick="location.href='/';" style="cursor: pointer;" name="tour" class="col-xl-3 col-md-6 align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
             <div class="icon-box">
               <div class="icon"><i class="bx bx-map-alt"></i></div>
               <h4><a href="edit">Tour</a></h4>
-              <!--<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>-->
             </div>
           </div>
 
-          <div class="col-xl-3 col-md-6 align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" name="events" data-aos-delay="300">
+          <div onclick="location.href='/';" style="cursor: pointer;" name="events" class="col-xl-3 col-md-6 align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" name="events" data-aos-delay="300">
             <div class="icon-box">
               <div class="icon"><i class="bx bx-notepad"></i></div>
               <h4><a href="edit">Events</a></h4>
-              <!--<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</p>-->
             </div>
           </div>
         </div>
+        </form>
 
       </div>
     </section>
@@ -129,8 +130,9 @@
         <div class="row">
 
           {% for a in art.all %}
-          <div class="col-lg-6">
-            <div class="member d-flex align-items-start" data-aos="zoom-in"  >
+          <div class="col-lg-6" onclick="location.href='{{ a.name_it }}';" style="cursor: pointer;">
+            <div class="member d-flex align-items-start" >
+
               <img src="{{a.image_url}}" class="img-fluid" width="100" height="100" alt="">
               <div class="member-info" style="overflow: hidden">
                 <h4>{{ a.name_it }}</h4>
@@ -145,9 +147,10 @@
 
                 </span>
 
-                <p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {{ a.descr_it }} </p>
+                <!--<p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {{ a.descr_it }} </p>-->
+                <p>{{a.descr_it|truncatewords:30}} </p>
                 <div class="button" style="float: right;">
-                  <a href="">Modifica</a>
+                  <a href="/edit/{{ a.name_it }}"><b>Modifica</b></a>
                 </div>
               </div>
             </div>
@@ -161,6 +164,7 @@
 
   </main><!-- End #main -->
 
+  <div id="preloader"></div>
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -178,4 +182,6 @@
 
 
 
-</body></html>
+</body>
+
+</html>

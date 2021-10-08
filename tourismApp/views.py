@@ -60,11 +60,33 @@ def logOut(request):
     return redirect('/')
 
 def edit(request):
+    #argument = request.POST[]
     context = {
         'art': Art.objects.order_by('name_it'),
         'category': AArtCategoryArtCategory.objects,
     }
     return render(request, 'edit.html', context)
+
+def item(request,pk):
+    art = Art.objects.get(name_it=pk)
+    cat = AArtCategoryArtCategory.objects.filter(points=art.classid)
+    category = []
+    for c in cat:
+        category.append(c.category)
+
+    context = {
+        'art': art,
+        'category': category
+    }
+
+    return render(request,'art-details.html', context)
+
+def editArt(request,pk):
+    context = {
+        'art' : Art.objects.get(name_it=pk)
+    }
+
+    return render(request,'editArt.html', context)
 
 def example(request):
     context = {

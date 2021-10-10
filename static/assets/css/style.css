@@ -607,7 +607,7 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 .services .icon-box {
   box-shadow: 0px 0 25px 0 rgba(0, 0, 0, 0.1);
-  padding: 50px 30px;
+  padding: 50px 50px;
   transition: all ease-in-out 0.4s;
   background: #fff;
 }
@@ -723,3 +723,156 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 8px;
 }
 
+/*--------------------------------------------------------------
+# Portfolio Details
+--------------------------------------------------------------*/
+
+.edit-details .form-edit {
+  display: grid;
+    padding: 4vw 5vw;
+    padding-top: 4vw;
+    padding-right: 5vw;
+    padding-bottom: 4vw;
+    padding-left: 5vw;
+  grid-template-columns: 1fr 2fr 1.25fr;
+  grid-gap: 2.5vw 2vw;
+    row-gap: 2.5vw;
+    column-gap: 2vw;
+}
+
+.edit-details {
+  padding-top: 40px;
+}
+.edit-details .edit-details-slider img {
+  width: 100%;
+}
+.edit-details .edit-details-slider .swiper-pagination {
+  margin-top: 20px;
+  position: relative;
+}
+.edit-details .edit-details-slider .swiper-pagination .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+  opacity: 1;
+  border: 1px solid #47b2e4;
+}
+.edit-details .edit-details-slider .swiper-pagination .swiper-pagination-bullet-active {
+  background-color: #47b2e4;
+}
+.edit-details .portfolio-info {
+  padding: 30px;
+  box-shadow: 0px 0 30px rgba(55, 81, 126, 0.08);
+}
+.edit-details .portfolio-info h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+.edit-details .portfolio-info ul {
+  list-style: none;
+  padding: 0;
+  font-size: 15px;
+}
+.edit-details .portfolio-info ul li + li {
+  margin-top: 10px;
+}
+.edit-details .portfolio-description {
+  padding-top: 30px;
+}
+.edit-details .portfolio-description h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.edit-details .portfolio-description p {
+  padding: 0;
+}
+
+.login form input[type=submit] {
+  position: center;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  border:0px;
+  background: none;
+  font-size: 16px;
+  padding: 10px 70px;
+  background: #47b2e4;
+  color: #fff;
+  transition: 0.3s;
+  border-radius: 50px;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.edit-details form input[type=submit]:hover {
+  background: #209dd8;
+}
+
+.edit-details form input[type=text] {
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  border:0px;
+  padding: 8px 8px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+.edit-details form input[type=password] {
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  border:0px;
+  padding: 8px 8px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+.edit-details form input[type=email] {
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  border:0px;
+  padding: 8px 8px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+/*--------------------------------------------------------------
+# filter
+--------------------------------------------------------------*/
+.filter .icon-box {
+  box-shadow: 0px 0 25px 0 rgba(0, 0, 0, 0.1);
+  padding: 50px 50px;
+  transition: all ease-in-out 0.4s;
+  background: #fff;
+}
+.filter .icon-box .icon {
+  margin-bottom: 10px;
+}
+.filter .icon-box .icon i {
+  color: #47b2e4;
+  font-size: 36px;
+  transition: 0.3s;
+}
+.filter .icon-box h4 {
+  font-weight: 500;
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+.filter .icon-box h4 a {
+  color: #37517e;
+  transition: ease-in-out 0.3s;
+}
+.filter .icon-box p {
+  line-height: 24px;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+.filter .icon-box:hover {
+  transform: translateY(-10px);
+}
+.filter .icon-box:hover h4 a {
+  color: #47b2e4;
+}

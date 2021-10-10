@@ -102,175 +102,193 @@
     </section><!-- End Breadcrumbs -->
 
 
-    <section id="portfolio-details" class="portfolio-details">
-      <div class="container">
+    <section class="edit-details">
+        <div class="container">
+            <form method="post" id="art_form" class="form-edit">
+            {% csrf_token %}
+            <!--input type="hidden" name="csrfmiddlewaretoken" value="XbuaKn8smwbSckX1ilWmsa5oD3aze9Y7kbyuC9ievEvHUAnekUZohVZTQTt46vAl"-->
+            <div>
 
-        <div class="row gy-4">
+                <fieldset>
+                      <div class="row justify-content-center">
+                          <div class="col-2 align-content-around">
+                              <label class="required" for="id_classid">Classid:</label>
+                          </div>
+                          <div class="col-md">
+                              <input type="text" name="classid" value="{{ art.classid }}" class="vTextField" maxlength="70" required="" id="id_classid">
+                          </div>
+                      </div><hr width="50%">
 
-          <div class="col-lg-8">
+                      <div class="row justify-content-center">
+                          <div class="col-2">
+                              <label for="id_descr_it">Descr it: </label>
+                          </div>
+                          <div class="col-md">
+                              <textarea name="descr_it" cols="40" rows="10" class="vLargeTextField" id="id_descr_it">{{ art.descr_it}}</textarea>
+                         </div>
+                      </div><hr width="50%">
 
-            <div class="portfolio-info">
-                <div class="main shifted"  id="main">
-                    <div class="content" >
-                        <form method="post" id="art_form" novalidate="" style="background-color: white">
-                            <input type="hidden" name="csrfmiddlewaretoken" value="XbuaKn8smwbSckX1ilWmsa5oD3aze9Y7kbyuC9ievEvHUAnekUZohVZTQTt46vAl">
-                            <div>
-
-                                  <fieldset class="module aligned ">
-                                      <div class="form-row field-classid">
-                                            <div>
-                                                <label class="required" for="id_classid">Classid:</label>
-                                                <input type="text" name="classid" value="{{ art.classid }}" class="vTextField" maxlength="70" required="" id="id_classid">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-row field-descr_it">
-                                             <div>
-                                                    <label for="id_descr_it">Descr it:</label>
-                                                    <textarea name="descr_it" cols="40" rows="10" class="vLargeTextField" id="id_descr_it">{{ art.descr_it}}</textarea>
-                                                </div>
-                                        </div>
-
-                                        <div class="form-row field-image_url">
-                                            <div>
-                                                <label for="id_image_url">Image url:</label>
-                                                <input type="text" name="image_url" value="{{ art.image_url }}" class="vTextField" maxlength="200" id="id_image_url">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-row field-name_it">
-                                            <div>
-                                                <label class="required" for="id_name_it">Name it:</label>
-                                                <input type="text" name="name_it" value="{{ art.name_it}}" class="vTextField" maxlength="100" required="" id="id_name_it">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-row field-state">
-                                            <div>
-                                                <label class="required" for="id_state">State:</label>
-                                                <div class="related-widget-wrapper">
-                                                    <select name="state" required="" id="id_state">
-                                                        <option value="">---------</option>
-                                                        <option value="02">eliminato</option>
-                                                        <option value="01" selected="">attivo</option>
-                                                    </select>
-                                                    <a class="related-widget-wrapper-link change-related" id="change_id_state" data-href-template="/admin/tourismApp/dartestato/__fk__/change/?_to_field=code&amp;_popup=1" title="Change selected d art e stato" href="/admin/tourismApp/dartestato/01/change/?_to_field=code&amp;_popup=1"><img src="/static/admin/img/icon-changelink.svg" alt="Change"></a><a class="related-widget-wrapper-link add-related" id="add_id_state" href="/admin/tourismApp/dartestato/add/?_to_field=code&amp;_popup=1" title="Add another d art e stato"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a><a class="related-widget-wrapper-link delete-related" id="delete_id_state" data-href-template="/admin/tourismApp/dartestato/__fk__/delete/?_to_field=code&amp;_popup=1" title="Delete selected d art e stato" href="/admin/tourismApp/dartestato/01/delete/?_to_field=code&amp;_popup=1"><img src="/static/admin/img/icon-deletelink.svg" alt="Delete"></a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-row field-area_di_download">
-                                            <div>
-                                                <label for="id_area_di_download">Area di download:</label>
-                                                <style type="text/css">
-                                                    #id_area_di_download_map { width: 600px; height: 400px; }
-                                                    #id_area_di_download_map .aligned label { float: inherit; }
-                                                    #id_area_di_download_div_map { position: relative; vertical-align: top; float: left; }
-                                                    #id_area_di_download { display: none; }
-                                                </style>
-
-                                                <div id="id_area_di_download_div_map">
-                                                    <div id="id_area_di_download_map"><div class="ol-viewport" data-view="3" style="position: relative; overflow: hidden; width: 100%; height: 100%; touch-action: none;"><canvas class="ol-unselectable" width="900" height="600" style="width: 100%; height: 100%; display: block;"></canvas><div class="ol-overlaycontainer"></div><div class="ol-overlaycontainer-stopevent"><div class="ol-zoom ol-unselectable ol-control"><button class="ol-zoom-in" type="button" title="Zoom in">+</button><button class="ol-zoom-out" type="button" title="Zoom out">−</button></div><div class="ol-rotate ol-unselectable ol-control ol-hidden"><button class="ol-rotate-reset" type="button" title="Reset rotation"><span class="ol-compass" style="transform: rotate(0rad);">⇧</span></button></div><div class="ol-attribution ol-unselectable ol-control ol-collapsed"><ul><li style=""><a href="https://openlayers.org/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAHGAAABxgEXwfpGAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAhNQTFRF////AP//AICAgP//AFVVQECA////K1VVSbbbYL/fJ05idsTYJFtbbcjbJllmZszWWMTOIFhoHlNiZszTa9DdUcHNHlNlV8XRIVdiasrUHlZjIVZjaMnVH1RlIFRkH1RkH1ZlasvYasvXVsPQH1VkacnVa8vWIVZjIFRjVMPQa8rXIVVkXsXRsNveIFVkIFZlIVVj3eDeh6GmbMvXH1ZkIFRka8rWbMvXIFVkIFVjIFVkbMvWH1VjbMvWIFVlbcvWIFVla8vVIFVkbMvWbMvVH1VkbMvWIFVlbcvWIFVkbcvVbMvWjNPbIFVkU8LPwMzNIFVkbczWIFVkbsvWbMvXIFVkRnB8bcvW2+TkW8XRIFVkIlZlJVloJlpoKlxrLl9tMmJwOWd0Omh1RXF8TneCT3iDUHiDU8LPVMLPVcLPVcPQVsPPVsPQV8PQWMTQWsTQW8TQXMXSXsXRX4SNX8bSYMfTYcfTYsfTY8jUZcfSZsnUaIqTacrVasrVa8jTa8rWbI2VbMvWbcvWdJObdcvUdszUd8vVeJaee87Yfc3WgJyjhqGnitDYjaarldPZnrK2oNbborW5o9bbo9fbpLa6q9ndrL3ArtndscDDutzfu8fJwN7gwt7gxc/QyuHhy+HizeHi0NfX0+Pj19zb1+Tj2uXk29/e3uLg3+Lh3+bl4uXj4ufl4+fl5Ofl5ufl5ujm5+jmySDnBAAAAFp0Uk5TAAECAgMEBAYHCA0NDg4UGRogIiMmKSssLzU7PkJJT1JTVFliY2hrdHZ3foSFhYeJjY2QkpugqbG1tre5w8zQ09XY3uXn6+zx8vT09vf4+Pj5+fr6/P39/f3+gz7SsAAAAVVJREFUOMtjYKA7EBDnwCPLrObS1BRiLoJLnte6CQy8FLHLCzs2QUG4FjZ5GbcmBDDjxJBXDWxCBrb8aM4zbkIDzpLYnAcE9VXlJSWlZRU13koIeW57mGx5XjoMZEUqwxWYQaQbSzLSkYGfKFSe0QMsX5WbjgY0YS4MBplemI4BdGBW+DQ11eZiymfqQuXZIjqwyadPNoSZ4L+0FVM6e+oGI6g8a9iKNT3o8kVzNkzRg5lgl7p4wyRUL9Yt2jAxVh6mQCogae6GmflI8p0r13VFWTHBQ0rWPW7ahgWVcPm+9cuLoyy4kCJDzCm6d8PSFoh0zvQNC5OjDJhQopPPJqph1doJBUD5tnkbZiUEqaCnB3bTqLTFG1bPn71kw4b+GFdpLElKIzRxxgYgWNYc5SCENVHKeUaltHdXx0dZ8uBI1hJ2UUDgq82CM2MwKeibqAvSO7MCABq0wXEPiqWEAAAAAElFTkSuQmCC"></a></li><li>NASA Worldview</li></ul><button type="button" title="Attributions"><span>i</span></button></div><div class="switch-type type-Point ol-control ol-unselectable type-active" style="visibility: hidden;"></div><div class="switch-type type-LineString ol-control ol-unselectable" style="visibility: hidden;"></div><div class="switch-type type-Polygon ol-control ol-unselectable" style="visibility: hidden;"></div></div></div></div>
-                                                    <span class="clear_features"><a href="javascript:geodjango_area_di_download.clearFeatures()">Delete all Features</a></span>
-                                                    <textarea id="id_area_di_download" class="vSerializedField required" cols="150" rows="10" name="area_di_download">{ "type": "MultiPolygon", "coordinates": [ [ [ [ 11.0011558, 45.443534 ], [ 11.001117370560808, 45.443143819355967 ], [ 11.001003559065023, 45.442768633135266 ], [ 11.000818739224606, 45.442422859533963 ], [ 11.000570013562374, 45.44211978643763 ], [ 11.000266940466039, 45.441871060775398 ], [ 10.999921166864731, 45.441686240934978 ], [ 10.999545980644033, 45.441572429439191 ], [ 10.9991558, 45.441534 ], [ 10.998765619355968, 45.441572429439191 ], [ 10.99839043313527, 45.441686240934978 ], [ 10.998044659533962, 45.441871060775398 ], [ 10.997741586437627, 45.44211978643763 ], [ 10.997492860775395, 45.442422859533963 ], [ 10.997308040934978, 45.442768633135266 ], [ 10.997194229439193, 45.443143819355967 ], [ 10.9971558, 45.443534 ], [ 10.997194229439193, 45.443924180644032 ], [ 10.997308040934978, 45.444299366864733 ], [ 10.997492860775395, 45.444645140466037 ], [ 10.997741586437627, 45.44494821356237 ], [ 10.998044659533962, 45.445196939224601 ], [ 10.99839043313527, 45.445381759065022 ], [ 10.998765619355968, 45.445495570560809 ], [ 10.9991558, 45.445534 ], [ 10.999545980644033, 45.445495570560809 ], [ 10.999921166864731, 45.445381759065022 ], [ 11.000266940466039, 45.445196939224601 ], [ 11.000570013562374, 45.44494821356237 ], [ 11.000818739224606, 45.444645140466037 ], [ 11.001003559065023, 45.444299366864733 ], [ 11.001117370560808, 45.443924180644032 ], [ 11.0011558, 45.443534 ] ] ] ] }</textarea>
-                                                    <script>
-                                                        var map_options = {};
-
-                                                            var base_layer = new ol.layer.Tile({
-                                                                source: new ol.source.XYZ({
-                                                                    attributions: "NASA Worldview",
-                                                                    maxZoom: 8,
-                                                                    url: "https://map1{a-c}.vis.earthdata.nasa.gov/wmts-webmerc/" +
-                                                                         "BlueMarble_ShadedRelief_Bathymetry/default/%7BTime%7D/" +
-                                                                         "GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpg"
-                                                                })
-                                                            });
-
-                                                        var options = {
-                                                            base_layer: base_layer,
-                                                            geom_name: 'Geometry',
-                                                            id: 'id_area_di_download',
-                                                            map_id: 'id_area_di_download_map',
-                                                            map_options: map_options,
-                                                            map_srid: 3857,
-                                                            name: 'area_di_download'
-                                                        };
-
-                                                        var geodjango_area_di_download = new MapWidget(options);
-                                                    </script>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-row field-notes">
-                                            <div>
-                                                <label for="id_notes">Notes:</label>
-                                                <input type="text" name="notes" value="{{ art.notes }}" class="vTextField" maxlength="1024" id="id_notes">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-row field-open_time">
-                                            <div>
-                                                <label for="id_open_time">Open time:</label>
-                                                <input type="text" name="open_time" value="{{ art.open_time}}" class="vTextField" maxlength="1024" id="id_open_time">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-row field-tickets">
-                                            <div>
-                                                <label for="id_tickets">Tickets:</label>
-                                                <input type="text" name="tickets" value="{{ art.tickets }}" class="vTextField" maxlength="1024" id="id_tickets">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-row field-rss">
-                                            <div>
-                                                <label for="id_rss">Rss:</label>
-                                                <input type="text" name="rss" value="{{ art.rss }}" class="vTextField" maxlength="30" id="id_rss">
-                                            </div></div>
-
-                                        <div class="form-row field-saving_vc">
-                                            <div>
-                                                <label class="required" for="id_saving_vc">Saving vc:</label>
-                                                <input type="number" name="saving_vc" value="{{ art.saving_vc }}" step="any" required="" id="id_saving_vc">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-row field-vc">
-                                            <div>
-                                                <label class="required" for="id_vc">Vc:</label>
-                                                <input type="text" name="vc" value="{{ art.vc }}" class="vTextField" maxlength="80" required="" id="id_vc">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-row field-vc_id">
-                                            <div>
-                                                <label for="id_vc_id">Vc id:</label>
-                                                <input type="text" name="vc_id" value="{{ art.vc_id }}" class="vTextField" maxlength="70" id="id_vc_id">
-                                            </div>
-                                        </div>
-                                  </fieldset>
-
-                                  <div class="submit-row">
-                                      <input type="submit" value="Save" class="default" name="_save">
-                                      <p class="deletelink-box"><a href="/admin/tourismApp/art/79/delete/" class="deletelink">Delete</a></p>
-                                      <input type="submit" value="Save and add another" name="_addanother">
-                                      <input type="submit" value="Save and continue editing" name="_continue">
-                                  </div>
-
-                                  <script id="django-admin-form-add-constants" src="/static/admin/js/change_form.js" async=""></script>
-
-                                  <script id="django-admin-prepopulated-fields-constants" src="/static/admin/js/prepopulate_init.js" data-prepopulated-fields="[]"></script>
+                      <div class="row justify-content-center">
+                          <div class="col-2">
+                                <label for="id_image_url">Image url:</label>
+                          </div>
+                          <div class="col-md">
+                                <input type="text" name="image_url" value="{{ art.image_url }}" class="vTextField" maxlength="200" id="id_image_url">
                             </div>
-                        </form>
-                    </div>
+                      </div><hr width="50%">
 
-                    <br class="clear">
+                      <div class="row justify-content-center">
+                          <div class="col-2">
+                                <label class="required" for="id_name_it">Name it:</label>
+                          </div>
+                          <div class="col-md">
+                                <input type="text" name="name_it" value="{{ art.name_it}}" class="vTextField" maxlength="100" required="" id="id_name_it">
+                            </div>
+                      </div><hr width="50%">
+
+                      <div class="row justify-content-center">
+                          <div class="col-2">
+                              <label class="required" for="id_state">State:</label>
+                          </div>
+                          <div class="col-md">
+                              <div class="related-widget-wrapper">
+                                  <select name="state" required="" id="id_state">
+                                    <option value="">---------</option>
+                                    <option value="02">eliminato</option>
+                                    <option value="01" selected="">attivo</option>
+                                  </select>
+                                  <a class="related-widget-wrapper-link change-related" id="change_id_state" data-href-template="/admin/tourismApp/dartestato/__fk__/change/?_to_field=code&amp;_popup=1" title="Change selected d art e stato" href="/admin/tourismApp/dartestato/01/change/?_to_field=code&amp;_popup=1"><img src="/static/admin/img/icon-changelink.svg" alt="Change"></a><a class="related-widget-wrapper-link add-related" id="add_id_state" href="/admin/tourismApp/dartestato/add/?_to_field=code&amp;_popup=1" title="Add another d art e stato"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a><a class="related-widget-wrapper-link delete-related" id="delete_id_state" data-href-template="/admin/tourismApp/dartestato/__fk__/delete/?_to_field=code&amp;_popup=1" title="Delete selected d art e stato" href="/admin/tourismApp/dartestato/01/delete/?_to_field=code&amp;_popup=1"><img src="/static/admin/img/icon-deletelink.svg" alt="Delete"></a>
+                              </div>
+                          </div>
+                      </div><hr width="50%">
+
+                      <!--<div class="form-row field-area_di_download">
+                        <div>
+                            <label for="id_area_di_download">Area di download:</label>
+                            <style type="text/css">
+                                #id_area_di_download_map { width: 600px; height: 400px; }
+                                #id_area_di_download_map .aligned label { float: inherit; }
+                                #id_area_di_download_div_map { position: relative; vertical-align: top; float: left; }
+                                #id_area_di_download { display: none; }
+                            </style>
+
+                            <div id="id_area_di_download_div_map">
+                                <div id="id_area_di_download_map"><div class="ol-viewport" data-view="3" style="position: relative; overflow: hidden; width: 100%; height: 100%; touch-action: none;"><canvas class="ol-unselectable" width="900" height="600" style="width: 100%; height: 100%; display: block;"></canvas><div class="ol-overlaycontainer"></div><div class="ol-overlaycontainer-stopevent"><div class="ol-zoom ol-unselectable ol-control"><button class="ol-zoom-in" type="button" title="Zoom in">+</button><button class="ol-zoom-out" type="button" title="Zoom out">−</button></div><div class="ol-rotate ol-unselectable ol-control ol-hidden"><button class="ol-rotate-reset" type="button" title="Reset rotation"><span class="ol-compass" style="transform: rotate(0rad);">⇧</span></button></div><div class="ol-attribution ol-unselectable ol-control ol-collapsed"><ul><li style=""><a href="https://openlayers.org/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAHGAAABxgEXwfpGAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAhNQTFRF////AP//AICAgP//AFVVQECA////K1VVSbbbYL/fJ05idsTYJFtbbcjbJllmZszWWMTOIFhoHlNiZszTa9DdUcHNHlNlV8XRIVdiasrUHlZjIVZjaMnVH1RlIFRkH1RkH1ZlasvYasvXVsPQH1VkacnVa8vWIVZjIFRjVMPQa8rXIVVkXsXRsNveIFVkIFZlIVVj3eDeh6GmbMvXH1ZkIFRka8rWbMvXIFVkIFVjIFVkbMvWH1VjbMvWIFVlbcvWIFVla8vVIFVkbMvWbMvVH1VkbMvWIFVlbcvWIFVkbcvVbMvWjNPbIFVkU8LPwMzNIFVkbczWIFVkbsvWbMvXIFVkRnB8bcvW2+TkW8XRIFVkIlZlJVloJlpoKlxrLl9tMmJwOWd0Omh1RXF8TneCT3iDUHiDU8LPVMLPVcLPVcPQVsPPVsPQV8PQWMTQWsTQW8TQXMXSXsXRX4SNX8bSYMfTYcfTYsfTY8jUZcfSZsnUaIqTacrVasrVa8jTa8rWbI2VbMvWbcvWdJObdcvUdszUd8vVeJaee87Yfc3WgJyjhqGnitDYjaarldPZnrK2oNbborW5o9bbo9fbpLa6q9ndrL3ArtndscDDutzfu8fJwN7gwt7gxc/QyuHhy+HizeHi0NfX0+Pj19zb1+Tj2uXk29/e3uLg3+Lh3+bl4uXj4ufl4+fl5Ofl5ufl5ujm5+jmySDnBAAAAFp0Uk5TAAECAgMEBAYHCA0NDg4UGRogIiMmKSssLzU7PkJJT1JTVFliY2hrdHZ3foSFhYeJjY2QkpugqbG1tre5w8zQ09XY3uXn6+zx8vT09vf4+Pj5+fr6/P39/f3+gz7SsAAAAVVJREFUOMtjYKA7EBDnwCPLrObS1BRiLoJLnte6CQy8FLHLCzs2QUG4FjZ5GbcmBDDjxJBXDWxCBrb8aM4zbkIDzpLYnAcE9VXlJSWlZRU13koIeW57mGx5XjoMZEUqwxWYQaQbSzLSkYGfKFSe0QMsX5WbjgY0YS4MBplemI4BdGBW+DQ11eZiymfqQuXZIjqwyadPNoSZ4L+0FVM6e+oGI6g8a9iKNT3o8kVzNkzRg5lgl7p4wyRUL9Yt2jAxVh6mQCogae6GmflI8p0r13VFWTHBQ0rWPW7ahgWVcPm+9cuLoyy4kCJDzCm6d8PSFoh0zvQNC5OjDJhQopPPJqph1doJBUD5tnkbZiUEqaCnB3bTqLTFG1bPn71kw4b+GFdpLElKIzRxxgYgWNYc5SCENVHKeUaltHdXx0dZ8uBI1hJ2UUDgq82CM2MwKeibqAvSO7MCABq0wXEPiqWEAAAAAElFTkSuQmCC"></a></li><li>NASA Worldview</li></ul><button type="button" title="Attributions"><span>i</span></button></div><div class="switch-type type-Point ol-control ol-unselectable type-active" style="visibility: hidden;"></div><div class="switch-type type-LineString ol-control ol-unselectable" style="visibility: hidden;"></div><div class="switch-type type-Polygon ol-control ol-unselectable" style="visibility: hidden;"></div></div></div></div>
+                                <span class="clear_features"><a href="javascript:geodjango_area_di_download.clearFeatures()">Delete all Features</a></span>
+                                <textarea id="id_area_di_download" class="vSerializedField required" cols="150" rows="10" name="area_di_download">{ "type": "MultiPolygon", "coordinates": [ [ [ [ 11.0011558, 45.443534 ], [ 11.001117370560808, 45.443143819355967 ], [ 11.001003559065023, 45.442768633135266 ], [ 11.000818739224606, 45.442422859533963 ], [ 11.000570013562374, 45.44211978643763 ], [ 11.000266940466039, 45.441871060775398 ], [ 10.999921166864731, 45.441686240934978 ], [ 10.999545980644033, 45.441572429439191 ], [ 10.9991558, 45.441534 ], [ 10.998765619355968, 45.441572429439191 ], [ 10.99839043313527, 45.441686240934978 ], [ 10.998044659533962, 45.441871060775398 ], [ 10.997741586437627, 45.44211978643763 ], [ 10.997492860775395, 45.442422859533963 ], [ 10.997308040934978, 45.442768633135266 ], [ 10.997194229439193, 45.443143819355967 ], [ 10.9971558, 45.443534 ], [ 10.997194229439193, 45.443924180644032 ], [ 10.997308040934978, 45.444299366864733 ], [ 10.997492860775395, 45.444645140466037 ], [ 10.997741586437627, 45.44494821356237 ], [ 10.998044659533962, 45.445196939224601 ], [ 10.99839043313527, 45.445381759065022 ], [ 10.998765619355968, 45.445495570560809 ], [ 10.9991558, 45.445534 ], [ 10.999545980644033, 45.445495570560809 ], [ 10.999921166864731, 45.445381759065022 ], [ 11.000266940466039, 45.445196939224601 ], [ 11.000570013562374, 45.44494821356237 ], [ 11.000818739224606, 45.444645140466037 ], [ 11.001003559065023, 45.444299366864733 ], [ 11.001117370560808, 45.443924180644032 ], [ 11.0011558, 45.443534 ] ] ] ] }</textarea>
+                                <script>
+                                    var map_options = {};
+
+                                        var base_layer = new ol.layer.Tile({
+                                            source: new ol.source.XYZ({
+                                                attributions: "NASA Worldview",
+                                                maxZoom: 8,
+                                                url: "https://map1{a-c}.vis.earthdata.nasa.gov/wmts-webmerc/" +
+                                                     "BlueMarble_ShadedRelief_Bathymetry/default/%7BTime%7D/" +
+                                                     "GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpg"
+                                            })
+                                        });
+
+                                    var options = {
+                                        base_layer: base_layer,
+                                        geom_name: 'Geometry',
+                                        id: 'id_area_di_download',
+                                        map_id: 'id_area_di_download_map',
+                                        map_options: map_options,
+                                        map_srid: 3857,
+                                        name: 'area_di_download'
+                                    };
+
+                                    var geodjango_area_di_download = new MapWidget(options);
+                                </script>
+                            </div>
+                        </div>
+                      </div>-->
+
+                      <div class="row justify-content-center">
+                          <div class="col-2">
+                            <label for="id_notes">Notes:</label>
+                          </div>
+                          <div class="col-md">
+                            <input type="text" name="notes" value="{{ art.notes }}" class="vTextField" maxlength="1024" id="id_notes">
+                        </div>
+                      </div><hr width="50%">
+
+                      <div class="row justify-content-center">
+                          <div class="col-2">
+                            <label for="id_open_time">Open time:</label>
+                          </div>
+                          <div class="col-md">
+                            <input type="text" name="open_time" value="{{ art.open_time}}" class="vTextField" maxlength="1024" id="id_open_time">
+                        </div>
+                      </div><hr width="50%">
+
+                      <div class="row justify-content-center">
+                          <div class="col-2">
+                            <label for="id_tickets">Tickets:</label>
+                          </div>
+                          <div class="col-md">
+                            <input type="text" name="tickets" value="{{ art.tickets }}" class="vTextField" maxlength="1024" id="id_tickets">
+                        </div>
+                      </div><hr width="50%">
+
+                      <div class="row justify-content-center">
+                          <div class="col-2">
+                            <label for="id_rss">Rss:</label>
+                          </div>
+                          <div class="col-md">
+                            <input type="text" name="rss" value="{{ art.rss }}" class="vTextField" maxlength="30" id="id_rss">
+                        </div>
+                      </div><hr width="50%">
+
+                      <div class="row justify-content-center">
+                          <div class="col-2">
+                            <label class="required" for="id_saving_vc">Saving vc:</label>
+                          </div>
+                          <div class="col-md">
+                            <input type="number" name="saving_vc" value="{{ art.saving_vc }}" step="any" required="" id="id_saving_vc">
+                        </div>
+                      </div><hr width="50%">
+
+                      <div class="row justify-content-center">
+                          <div class="col-2">
+                            <label class="required" for="id_vc">Vc:</label>
+                          </div>
+                          <div class="col-md">
+                            <input type="text" name="vc" value="{{ art.vc }}" class="vTextField" maxlength="80" required="" id="id_vc">
+                        </div>
+                      </div><hr width="50%">
+
+                      <div class="row justify-content-center">
+                          <div class="col-2">
+                            <label for="id_vc_id">Vc id: </label>
+                          </div>
+                          <div class="col-md">
+                            <input type="text" name="vc_id" value="{{ art.vc_id }}" class="vTextField" maxlength="70" id="id_vc_id">
+                        </div>
+                      </div><hr width="50%">
+                </fieldset>
+
+                <div class="row">
+                    <div class="col-4">
+                      <p class="deletelink-box" style="letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #ffffff; background: #C2302E;"><a href="/admin/tourismApp/art/79/delete/" class="deletelink">Delete</a></p>
+                    </div>
+                    <div class="col-md">
+                      <input type="submit" value="Save" class="default" name="_save" style="  top: 0px; right: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;">
+                    </div>
+                    <!--<input type="submit" value="Save and add another" name="_addanother">
+                    <input type="submit" value="Save and continue editing" name="_continue">-->
                 </div>
-            </div>
-          </div>
+
+                <script id="django-admin-form-add-constants" src="/static/admin/js/change_form.js" async=""></script>
+
+                <script id="django-admin-prepopulated-fields-constants" src="/static/admin/js/prepopulate_init.js" data-prepopulated-fields="[]"></script>
+              </div>
+            </form>
+
+            <br class="clear">
+
         </div>
-      </div>
     </section>
 </main><!-- End #main -->
 
@@ -291,7 +309,7 @@
   <script src="/static/assets/js/main.js"></script>
 
 
-
+</div>
 </body>
 
-</html
+</html>

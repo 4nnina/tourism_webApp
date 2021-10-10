@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
 from .models import *
 # Create your views here.
@@ -82,8 +84,49 @@ def item(request,pk):
     return render(request,'art-details.html', context)
 
 def editArt(request,pk):
+    art = Art.objects.get(name_it=pk)
+
+    if request.method == 'POST':
+        classid = request.POST['classid']
+        descr_it = request.POST['descr_it']
+        image_url = request.POST['image_url']
+        name_it = request.POST['name_it']
+        state = request.POST['state'] #?
+        notes = request.POST['notes']
+        open_time = request.POST['open_time']
+        tickets = request.POST['tickets']
+        rss = request.POST['rss']
+        saving_vc = request.POST['saving_vc']
+        vc = request.POST['vc']
+        vc_id = request.POST['vc_id']
+
+        if art.descr_it != descr_it:
+            Art.objects.filter(classid=classid).update(descr_it=descr_it)
+        if art.image_url != image_url:
+            Art.objects.filter(classid=classid).update(image_url=image_url)
+        if art.name_it != name_it:
+            Art.objects.filter(classid=classid).update(name_it=name_it)
+        if art.state != state:
+            Art.objects.filter(classid=classid).update(state=state)
+        if art.notes != notes:
+            Art.objects.filter(classid=classid).update(notes=notes)
+        if art.open_time != open_time:
+            Art.objects.filter(classid=classid).update(open_time=open_time)
+        if art.tickets != tickets:
+            Art.objects.filter(classid=classid).update(tickets=tickets)
+        if art.rss != rss:
+            Art.objects.filter(classid=classid).update(rss=rss)
+        if art.saving_vc != saving_vc:
+            Art.objects.filter(classid=classid).update(saving_vc=saving_vc)
+        if art.vc != vc:
+            Art.objects.filter(classid=classid).update(vc=vc)
+        if art.vc_id != vc_id:
+            Art.objects.filter(classid=classid).update(vc_id=vc_id)
+
+        return redirect('/{}'.format(pk))
+
     context = {
-        'art' : Art.objects.get(name_it=pk)
+        'art' : art,
     }
 
     return render(request,'editArt.html', context)
@@ -102,4 +145,36 @@ def index(request):
 '''
 
 def index(request):
-    return render(request, 'index.html')
+    if request.method == 'POST':
+        category = {}
+        category_t = {}
+        art = {}
+
+
+        cat = request.POST.getlist('category[]')
+        print(cat)
+        for i in range(len(cat)):
+            print()
+            if cat[i-1] is True:
+                print('im in')
+                category.append(ArtCategory.objects.filter(classid=i))
+                category_t.append(AArtCategoryArtCategory.objects.filter(category=i))
+
+        for c in category_t:
+            art.append(Art.objects.filter(name_it=c.points))
+
+        context = {
+            'art': art,
+            'category_t': category_t,
+            'category': category,
+        }
+        print('if')
+        return redirect('index')
+        #return render(request, 'index.html',context)
+    else:
+        context = {
+            'art': Art.objects.order_by('name_it'),
+            'category_t': AArtCategoryArtCategory.objects,
+            'category': ArtCategory.objects.order_by('classid'),
+        }
+    return render(request, 'index.html',context)

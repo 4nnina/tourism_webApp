@@ -34,8 +34,8 @@
 
 <body>
 
-  <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top ">
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top ">
     <div class="container d-flex align-items-center">
 
       <h1 class="logo me-auto"><a href="/">TourismApp</a></h1>
@@ -61,81 +61,133 @@
       </nav><!-- .navbar -->
 
     </div>
-  </header><!-- End Header -->
+    </header><!-- End Header -->
 
-  <main id="main">
-  <section class="home">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+    <main id="main">
+      <section class="home">
+          <div class="container">
+              <div class="row justify-content-center">
+                  <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
 
-          {% if user.is_authenticated %}
-          <h1>Welcome, {{ user.username }}</h1>
-          {% else %}
-          <h1>Welcome</h1>
-          {% endif %}
+                      {% if user.is_authenticated %}
+                        <h1>Welcome, {{ user.username }}</h1>
+                      {% else %}
+                        <h1>Welcome</h1>
+                      {% endif %}
+                  </div>
+              </div>
+          </div>
+      </section>
 
+      {% if user.is_authenticated %}
+      <section id="services" class="services section-bg">
+          <div class="container" data-aos="fade-up">
+              <br>
+              <div class="row justify-content-center">
+
+                  <div class="col-xl-3 col-md-6  align-items-md-stretch" data-aos="zoom-in" data-aos-delay="100">
+                      <div class="icon-box justify-content-center">
+                          <div class="icon"><i class="bx bxs-landmark"></i></div>
+                          <h4><a href="edit">Art</a></h4>
+                          <!--<p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>-->
+                      </div>
+                  </div>
+
+                  <div class="col-xl-3 col-md-6 align-items-md-stretch" data-aos="zoom-in" name="events" data-aos-delay="200">
+                      <div class="icon-box">
+                          <div class="icon"><i class="bx bx-notepad"></i></div>
+                          <h4><a href="edit">Events</a></h4>
+                          <!--<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</p>-->
+                      </div>
+                  </div>
+
+                  <div class="col-xl-3 col-md-6 align-items-md-stretch" data-aos="zoom-in" data-aos-delay="300">
+                      <div class="icon-box">
+                          <div class="icon"><i class="bx bx-map-alt"></i></div>
+                          <h4><a href="edit">Tour</a></h4>
+                          <!--<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>-->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <br>
+
+      <section class="filter">
+        <div class="container">
+          <div class="row" data-aos="zoom-in">
+              <h4>Category: </h4>
+            <center>
+              <form method="post">
+                  {% csrf_token %}
+                  {% for c in category.all %}
+                    <!--div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center"-->
+                        <input type="checkbox" name="category[]" id="cat-{{ c.classid }}" checked>
+                        <label for="cat"> {{ c.name_it }} </label>
+                    <!--/div-->
+                  {% endfor %}
+                  <br>
+                  <input type="submit" value="Filter">
+              </form>
+            </center>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  {% if user.is_authenticated %}
-  <section id="services" class="services section-bg">
-      <div class="container" data-aos="fade-up">
+      <br>
+             <!-- ======= Item Section ======= -->
+      <section id="item" class="item section-bg">
+          <div class="container" data-aos="fade-up">
 
-        <div class="section-title">
-          <h2>Services</h2>
-          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
-        </div>
+              <div class="row">
 
-        <div class="row">
-          <div class="col-xl-3 col-md-6  align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bxs-landmark"></i></div>
-              <h4><a href="edit">Art</a></h4>
-              <!--<p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>-->
+              {% for a in art.all %}
+              <div class="col-lg-6" onclick="location.href='{{ a.name_it }}';" style="cursor: pointer;">
+                <div class="member d-flex align-items-start" >
+
+                  <img src="{{a.image_url}}" class="img-fluid" width="100" height="100" alt="">
+                  <div class="member-info" style="overflow: hidden">
+                    <h4>{{ a.name_it }}</h4>
+                    <span>Categoria:
+
+                    {% for c in category_t.all %}
+
+                      {% if c.points.classid == a.classid %}
+                        {{ c.category.name_it }};
+                      {% endif %}
+                    {% endfor %}
+
+                    </span>
+
+                    <!--<p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {{ a.descr_it }} </p>-->
+                    <p>{{a.descr_it|truncatewords:30}} </p>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+
             </div>
           </div>
+      </section><!-- End Item Section -->
+      {% endif %}
 
-          <div class="col-xl-3 col-md-6 align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bx-map-alt"></i></div>
-              <h4><a href="edit">Tour</a></h4>
-              <!--<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>-->
-            </div>
-          </div>
+    </main>
 
-          <div class="col-xl-3 col-md-6 align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" name="events" data-aos-delay="300">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bx-notepad"></i></div>
-              <h4><a href="edit">Events</a></h4>
-              <!--<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</p>-->
-            </div>
-          </div>
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-        </div>
+    <!-- Vendor JS Files -->
+    <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+    <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/waypoints/noframework.waypoints.js' %}"></script>
 
-      </div>
-    </section>
-    {% endif %}
-
-  </main>
-
-  <div id="preloader"></div>
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Vendor JS Files -->
-  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
-  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
-  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/waypoints/noframework.waypoints.js' %}"></script>
-
-  <!-- Template Main JS File -->
-  <script src="{% static 'assets/js/main.js' %}"></script>
+    <!-- Template Main JS File -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
 
 </body>
 

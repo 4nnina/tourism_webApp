@@ -34,8 +34,8 @@
 
 <body>
 
-    <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top ">
+<!-- ======= Header ======= -->
+  <header id="header" class="fixed-top header-inner-pages">
     <div class="container d-flex align-items-center">
 
       <h1 class="logo me-auto"><a href="/">TourismApp</a></h1>
@@ -44,61 +44,45 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="/">Home</a></li>
-          {% if user.is_superuser %}
-              <li><a class="nav-link scrollto" href="edit">Edit</a></li>
-              <li><a class="nav-link scrollto" href="/admin">Control panel</a></li>
-          {% elif user.is_staff %}
-              <li><a class="nav-link scrollto" href="edit">Edit</a></li>
-          {% endif %}
-          {% if user.is_authenticated %}
-              <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
-          {% else %}
-              <li><a class="getstarted scrollto" href="logIn">Log In</a></li>
-          {% endif %}
+          <li><a class="nav-link scrollto" href="/">Home</a></li>
+
+          <li><a class="nav-link scrollto" href="/edit">Edit</a></li>
+          <li><a class="nav-link scrollto" href="/admin">Control panel</a></li>
+
+
+          <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
+
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
 
     </div>
-    </header><!-- End Header -->
+  </header><!-- End Header -->
 
+
+<br><br><br>
     <main id="main">
-      <section class="home">
-          <div class="container">
-              <div class="row justify-content-center">
-                  <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
-
-                      {% if user.is_authenticated %}
-                        <h1>Welcome, {{ user.username }}</h1>
-                      {% else %}
-                        <h1>Welcome</h1>
-                      {% endif %}
-                  </div>
-              </div>
-          </div>
-      </section>
 
       {% if user.is_authenticated %}
       <section id="services" class="services section-bg">
           <div class="container" data-aos="fade-up">
               <br>
               <div class="row justify-content-center">
-                  <div onclick="location.href='Art';" class="col-xl-3 col-md-6  align-items-md-stretch" data-aos="zoom-in">
+                  <div onclick="location.href='Art';" class="col-xl-3 col-md-6  align-items-md-stretch" data-aos="zoom-in" data-aos-delay="100">
                       <div class="icon-box justify-content-center">
                           <div class="icon"><i class="bx bxs-landmark"></i></div>
                           <h4>Art</h4>
                       </div>
                   </div>
 
-                  <div onclick="location.href='Event';" class="col-xl-3 col-md-6 align-items-md-stretch" data-aos="zoom-in">
+                  <div onclick="location.href='Event';" class="col-xl-3 col-md-6 align-items-md-stretch" data-aos="zoom-in" data-aos-delay="200">
                       <div class="icon-box">
                           <div class="icon"><i class="bx bx-notepad"></i></div>
                           <h4>Events</h4>
                      </div>
                   </div>
 
-                  <div onclick="location.href='Tour';" class="col-xl-3 col-md-6 align-items-md-stretch" data-aos="zoom-in">
+                  <div onclick="location.href='Tour';" class="col-xl-3 col-md-6 align-items-md-stretch" data-aos="zoom-in" data-aos-delay="300">
                       <div class="icon-box">
                           <div class="icon"><i class="bx bx-map-alt"></i></div>
                           <h4>Tour</h4>
@@ -109,6 +93,8 @@
       </section>
 
       <br>
+
+          <h1>Tour</h1>
       {% endif %}
 
     </main>

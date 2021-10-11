@@ -7,7 +7,7 @@ class AArtCategoryArtCategory(models.Model):
     points = models.ForeignKey('Art', models.DO_NOTHING, db_column='points')
 
     def __str__(self):
-        return self.category, self.points
+        return '{}, {}'.format(self.category, self.points)
 
     class Meta:
         managed = False
@@ -21,7 +21,7 @@ class AArtTourTour(models.Model):
     num = models.DecimalField(max_digits=15, decimal_places=0)
 
     def __str__(self):
-        return self.point_of_interest, self.tour
+        return '{}, {}'.format(self.point_of_interest, self.tour)
 
     class Meta:
         managed = False
@@ -34,7 +34,7 @@ class AEventCategoryEventCategory(models.Model):
     category = models.ForeignKey('EventCategory', models.DO_NOTHING, db_column='category')
 
     def __str__(self):
-        return self.event, self.category
+        return '{}, {}'.format(self.event, self.category)
 
     class Meta:
         managed = False
@@ -58,7 +58,7 @@ class Art(models.Model):
     vc_id = models.CharField(max_length=70, blank=True, null=True)
 
     def __str__(self):
-        return self.name_it
+        return '{}'.format(self.name_it)
 
     class Meta:
         managed = False
@@ -70,7 +70,7 @@ class ArtCategory(models.Model):
     name_it = models.CharField(unique=True, max_length=200)
 
     def __str__(self):
-        return self.name_it
+        return '{}'.format(self.name_it)
 
     class Meta:
         managed = False
@@ -83,7 +83,7 @@ class ArtCategoryNameTradT(models.Model):
     name_trad_value = models.CharField(max_length=16384)
 
     def __str__(self):
-        return self.classref, self.name_trad_lang, self.name_trad_value
+        return '{}, {}, {}'.format(self.classref, self.name_trad_lang, self.name_trad_value)
 
     class Meta:
         managed = False
@@ -97,7 +97,7 @@ class ArtDescrTradT(models.Model):
     descr_trad_value = models.TextField()
 
     def __str__(self):
-        return self.classref, self.descr_trad_lang
+        return '{}, {}'.format(self.classref, self.descr_trad_lang)
 
     class Meta:
         managed = False
@@ -111,7 +111,7 @@ class ArtNameTradT(models.Model):
     name_trad_value = models.CharField(max_length=16384)
 
     def __str__(self):
-        return self.classref, self.name_trad_lang, self.name_trad_value
+        return '{}, {}, {}'.format(self.classref, self.name_trad_lang, self.name_trad_value)
 
     class Meta:
         managed = False
@@ -127,7 +127,7 @@ class ArtTradT(models.Model):
     tickets_trad = models.CharField(max_length=16384, blank=True, null=True)
 
     def __str__(self):
-        return self.classref, self.lang
+        return '{}, {}'.format(self.classref, self.lang)
 
     class Meta:
         managed = False
@@ -142,7 +142,7 @@ class BenefitVc(models.Model):
 
 
     def __str__(self):
-        return self.classid
+        return '{}'.format(self.classid)
 
     class Meta:
         managed = False
@@ -155,7 +155,7 @@ class BenefitVcBenefitTradT(models.Model):
     benefit_trad_value = models.CharField(max_length=16384)
 
     def __str__(self):
-        return self.classref, self.benefit_trad_lang, self.benefit_trad_value
+        return '{}, {}, {}'.format(self.classref, self.benefit_trad_lang, self.benefit_trad_value)
 
     class Meta:
         managed = False
@@ -169,7 +169,7 @@ class BenefitVcDescrTradT(models.Model):
     descr_trad_value = models.CharField(max_length=16384)
 
     def __str__(self):
-        return self.classref, self.descr_trad_lang, self.descr_trad_value
+        return '{}, {}, {}'.format(self.classref, self.descr_trad_lang, self.descr_trad_value)
 
     class Meta:
         managed = False
@@ -183,7 +183,7 @@ class BenefitVcTitleTradT(models.Model):
     title_trad_value = models.CharField(max_length=16384)
 
     def __str__(self):
-        return self.classref, self.title_trad_lang, self.title_trad_value
+        return '{}, {}, {}'.format(self.classref, self.title_trad_lang, self.title_trad_value)
 
     class Meta:
         managed = False
@@ -199,7 +199,7 @@ class Calendar(models.Model):
     event = models.ForeignKey('Event', models.DO_NOTHING, db_column='event')
 
     def __str__(self):
-        return self.day, self.event
+        return '{}, {}'.format(self.day, self.event)
 
     class Meta:
         managed = False
@@ -216,7 +216,7 @@ class Crowding(models.Model):
     punto_di_interesse = models.ForeignKey('Art', models.DO_NOTHING, db_column='punto_di_interesse')
 
     def __str__(self):
-        return self.date_creat, self.punto_di_interesse
+        return '{}, {}'.format(self.date_creat, self.punto_di_interesse)
 
     class Meta:
         managed = False
@@ -230,7 +230,7 @@ class DArtEStato(models.Model):
     alphacode = models.CharField(max_length=80, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return '{}'.format(self.name)
 
     class Meta:
         managed = False
@@ -244,7 +244,7 @@ class DELang(models.Model):
     alphacode = models.CharField(max_length=80, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return '{}'.format(self.name)
 
     class Meta:
         managed = False
@@ -258,7 +258,7 @@ class DEVc(models.Model):
     alphacode = models.CharField(max_length=80, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return '{}'.format(self.name)
 
     class Meta:
         managed = False
@@ -272,7 +272,7 @@ class DMediaETipomm(models.Model):
     alphacode = models.CharField(max_length=80, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return '{}'.format(self.name)
 
     class Meta:
         managed = False
@@ -286,7 +286,7 @@ class DRssEState(models.Model):
     alphacode = models.CharField(max_length=80, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return '{}'.format(self.name)
 
     class Meta:
         managed = False
@@ -300,7 +300,7 @@ class DTourETipoit(models.Model):
     alphacode = models.CharField(max_length=80, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return '{}'.format(self.name)
 
     class Meta:
         managed = False
@@ -319,7 +319,7 @@ class Event(models.Model):
     tickets = models.CharField(max_length=1024, blank=True, null=True)
 
     def __str__(self):
-        return self.name_it
+        return '{}'.format(self.name_it)
 
     class Meta:
         managed = False
@@ -331,7 +331,7 @@ class EventCategory(models.Model):
     name_it = models.CharField(unique=True, max_length=200)
 
     def __str__(self):
-        return self.name_it
+        return '{}'.format(self.name_it)
 
     class Meta:
         managed = False
@@ -344,7 +344,7 @@ class EventCategoryNameTradT(models.Model):
     name_trad_value = models.CharField(max_length=16384)
 
     def __str__(self):
-        return self.classref, self.name_trad_lang, self.name_trad_value
+        return '{}, {}, {}'.format(self.classref, self.name_trad_lang, self.name_trad_value)
 
     class Meta:
         managed = False
@@ -358,7 +358,7 @@ class EventDescrTradT(models.Model):
     descr_trad_value = models.TextField()
 
     def __str__(self):
-        return self.classref, self.descr_trad_lang, self.descr_trad_value
+        return '{}, {}, {}'.format(self.classref, self.descr_trad_lang, self.descr_trad_value)
 
     class Meta:
         managed = False
@@ -372,7 +372,7 @@ class EventNameTradT(models.Model):
     name_trad_value = models.CharField(max_length=16384)
 
     def __str__(self):
-        return self.classref, self.name_trad_lang, self.name_trad_value
+        return '{}, {}, {}'.format(self.classref, self.name_trad_lang, self.name_trad_value)
 
     class Meta:
         managed = False
@@ -386,7 +386,7 @@ class Gallery(models.Model):
     linked_event = models.ForeignKey(Event, models.DO_NOTHING, db_column='linked_event', blank=True, null=True)
 
     def __str__(self):
-        return self.classid
+        return '{}'.format(self.classid)
 
     class Meta:
         managed = False
@@ -401,7 +401,7 @@ class Location(models.Model):
     geom = models.GeometryField(blank=True, null=True)
 
     def __str__(self):
-        return self.address
+        return '{}'.format(self.address)
 
     class Meta:
         managed = False
@@ -418,7 +418,7 @@ class LogCrowd(models.Model):
     poi = models.ForeignKey(Art, models.DO_NOTHING, db_column='poi')
 
     def __str__(self):
-        return self.classid
+        return '{}'.format(self.classid)
 
     class Meta:
         managed = False
@@ -434,7 +434,7 @@ class LogVc(models.Model):
     poi = models.ForeignKey(Art, models.DO_NOTHING, db_column='poi')
 
     def __str__(self):
-        return self.classid
+        return '{}'.format(self.classid)
 
     class Meta:
         managed = False
@@ -448,7 +448,7 @@ class Media(models.Model):
     art = models.ForeignKey(Art, models.DO_NOTHING, db_column='art')
 
     def __str__(self):
-        return self.name_it
+        return '{}'.format(self.name_it)
 
     class Meta:
         managed = False
@@ -462,7 +462,7 @@ class MediaNameTradT(models.Model):
     name_trad_value = models.CharField(max_length=16384, blank=True, null=True)
 
     def __str__(self):
-        return self.classref, self.name_trad_lang
+        return '{}, {}'.format(self.classref, self.name_trad_lang)
 
     class Meta:
         managed = False
@@ -479,7 +479,7 @@ class News(models.Model):
     subtitle = models.CharField(max_length=2048, blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return '{}'.format(self.title)
 
     class Meta:
         managed = False
@@ -492,7 +492,7 @@ class NewsDescrTradT(models.Model):
     descr_trad_value = models.CharField(max_length=16384)
 
     def __str__(self):
-        return self.classref, self.descr_trad_lang, self.descr_trad_value
+        return '{}, {}, {}'.format(self.classref, self.descr_trad_lang, self.descr_trad_value)
 
     class Meta:
         managed = False
@@ -506,7 +506,7 @@ class NewsTitleTradT(models.Model):
     title_trad_value = models.CharField(max_length=16384)
 
     def __str__(self):
-        return self.classref, self.title_trad_lang, self.title_trad_value
+        return '{}, {}, {}'.format(self.classref, self.title_trad_lang, self.title_trad_value)
 
     class Meta:
         managed = False
@@ -519,7 +519,7 @@ class RetailerCategory(models.Model):
     name_it = models.CharField(max_length=1024)
 
     def __str__(self):
-        return self.name_it
+        return '{}'.format(self.name_it)
 
     class Meta:
         managed = False
@@ -532,7 +532,7 @@ class RetailerCategoryNameTradT(models.Model):
     name_trad_value = models.CharField(max_length=16384)
 
     def __str__(self):
-        return self.classref, self.name_trad_lang, self.name_trad_value
+        return '{}, {}, {}'.format(self.classref, self.name_trad_lang, self.name_trad_value)
 
     class Meta:
         managed = False
@@ -548,7 +548,7 @@ class RetailerVc(models.Model):
     geo = models.GeometryField(blank=True, null=True)
 
     def __str__(self):
-        return self.address
+        return '{}'.format(self.address)
 
     class Meta:
         managed = False
@@ -567,7 +567,7 @@ class Rss(models.Model):
     where_is = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.title_it
+        return '{}'.format(self.title_it)
 
     class Meta:
         managed = False
@@ -581,7 +581,7 @@ class RssCategory(models.Model):
     state = models.ForeignKey(DRssEState, models.DO_NOTHING, db_column='state', blank=True, null=True)
 
     def __str__(self):
-        return self.rss, self.category
+        return '{}, {}'.format(self.rss, self.category)
 
     class Meta:
         managed = False
@@ -595,7 +595,7 @@ class RssTextTradT(models.Model):
     state = models.ForeignKey(DRssEState, models.DO_NOTHING, db_column='state', blank=True, null=True)
 
     def __str__(self):
-        return self.classref, self.text_trad_lang, self.text_trad_value
+        return '{}, {}, {}'.format(self.classref, self.text_trad_lang, self.text_trad_value)
 
     class Meta:
         managed = False
@@ -610,7 +610,7 @@ class RssTitleTradT(models.Model):
     state = models.ForeignKey(DRssEState, models.DO_NOTHING, db_column='state', blank=True, null=True)
 
     def __str__(self):
-        return self.classref, self.title_trad_lang, self.title_trad_value
+        return '{}, {}, {}'.format(self.classref, self.title_trad_lang, self.title_trad_value)
 
     class Meta:
         managed = False
@@ -625,7 +625,7 @@ class RssWhenDescrTradT(models.Model):
     state = models.ForeignKey(DRssEState, models.DO_NOTHING, db_column='state', blank=True, null=True)
 
     def __str__(self):
-        return self.classref, self.when_descr_trad_lang, self.when_descr_trad_value
+        return '{}, {}, {}'.format(self.classref, self.when_descr_trad_lang, self.when_descr_trad_value)
 
     class Meta:
         managed = False
@@ -640,7 +640,7 @@ class RssWhenIs(models.Model):
     state = models.ForeignKey(DRssEState, models.DO_NOTHING, db_column='state', blank=True, null=True)
 
     def __str__(self):
-        return self.rss, self.day
+        return '{}, {}'.format(self.rss, self.day)
 
     class Meta:
         managed = False
@@ -654,7 +654,7 @@ class RssWhereIs(models.Model):
     state = models.ForeignKey(DRssEState, models.DO_NOTHING, db_column='state', blank=True, null=True)
 
     def __str__(self):
-        return self.rss, self.location
+        return '{}, {}'.format(self.rss, self.location)
 
     class Meta:
         managed = False
@@ -669,7 +669,7 @@ class SpatialRefSys(models.Model):
     proj4text = models.CharField(max_length=2048, blank=True, null=True)
 
     def __str__(self):
-        return self.srid
+        return '{}'.format(self.srid)
 
     class Meta:
         managed = False
@@ -692,7 +692,7 @@ class Tour(models.Model):
     type = models.ForeignKey(DTourETipoit, models.DO_NOTHING, db_column='type', blank=True, null=True)
 
     def __str__(self):
-        return self.name_it
+        return '{}'.format(self.name_it)
 
     class Meta:
         managed = False
@@ -705,7 +705,7 @@ class TourDescrTradT(models.Model):
     descr_trad_value = models.CharField(max_length=16384)
 
     def __str__(self):
-        return self.classref, self.descr_trad_lang
+        return '{}, {}'.format(self.classref, self.descr_trad_lang)
 
     class Meta:
         managed = False
@@ -718,7 +718,7 @@ class TourNameTradT(models.Model):
     name_trad_value = models.CharField(max_length=16384)
 
     def __str__(self):
-        return self.classref, self.name_trad_lang, self.name_trad_value
+        return '{}, {}, {}'.format(self.classref, self.name_trad_lang, self.name_trad_value)
 
     class Meta:
         managed = False

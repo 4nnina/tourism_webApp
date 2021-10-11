@@ -146,22 +146,48 @@ def index(request):
 
 def index(request):
     if request.method == 'POST':
-        category = {}
-        category_t = {}
-        art = {}
+        category = ArtCategory.objects.none()
+        category_t = AArtCategoryArtCategory.objects.none()
+        art = Art.objects.none()
 
 
-        cat = request.POST.getlist('category[]')
-        print(cat)
+
+        if 'Chiese' in request.POST:
+            category |= ArtCategory.objects.filter(classid='1')
+            category_t |= AArtCategoryArtCategory.objects.filter(category='1')
+
+        if 'Monumenti' in request.POST:
+            category |= ArtCategory.objects.filter(classid='2')
+            category_t |= AArtCategoryArtCategory.objects.filter(category='2')
+
+        if 'Teatri' in request.POST:
+            category |= ArtCategory.objects.filter(classid='3')
+            category_t |= AArtCategoryArtCategory.objects.filter(category='3')
+
+        if 'Musei' in request.POST:
+            category |= ArtCategory.objects.filter(classid='4')
+            category_t |= AArtCategoryArtCategory.objects.filter(category='4')
+
+        if 'Palazzi' in request.POST:
+            category |= ArtCategory.objects.filter(classid='5')
+            category_t |= AArtCategoryArtCategory.objects.filter(category='5')
+
+        if 'Archeologici' in request.POST:
+            category |= ArtCategory.objects.filter(classid='6')
+            category_t |= AArtCategoryArtCategory.objects.filter(category='6')
+
+        #print(cat)
+        '''
         for i in range(len(cat)):
             print()
             if cat[i-1] is True:
                 print('im in')
                 category.append(ArtCategory.objects.filter(classid=i))
                 category_t.append(AArtCategoryArtCategory.objects.filter(category=i))
+'       '''
 
         for c in category_t:
-            art.append(Art.objects.filter(name_it=c.points))
+            art |= Art.objects.filter(name_it=c.points)
 
         context = {
             'art': art,
@@ -169,7 +195,7 @@ def index(request):
             'category': category,
         }
         print('if')
-        return redirect('index')
+        return render(request, 'view_filtered.html',context)
         #return render(request, 'index.html',context)
     else:
         context = {
@@ -178,3 +204,63 @@ def index(request):
             'category': ArtCategory.objects.order_by('classid'),
         }
     return render(request, 'index.html',context)
+
+def filterItem(request):
+    if request.method == 'POST':
+        category = ArtCategory.objects.none()
+        category_t = AArtCategoryArtCategory.objects.none()
+        art = Art.objects.none()
+
+        if 'Chiese' in request.POST:
+            category |= ArtCategory.objects.filter(classid='1')
+            category_t |= AArtCategoryArtCategory.objects.filter(category='1')
+
+        if 'Monumenti' in request.POST:
+            category |= ArtCategory.objects.filter(classid='2')
+            category_t |= AArtCategoryArtCategory.objects.filter(category='2')
+
+        if 'Teatri' in request.POST:
+            category |= ArtCategory.objects.filter(classid='3')
+            category_t |= AArtCategoryArtCategory.objects.filter(category='3')
+
+        if 'Musei' in request.POST:
+            category |= ArtCategory.objects.filter(classid='4')
+            category_t |= AArtCategoryArtCategory.objects.filter(category='4')
+
+        if 'Palazzi' in request.POST:
+            category |= ArtCategory.objects.filter(classid='5')
+            category_t |= AArtCategoryArtCategory.objects.filter(category='5')
+
+        if 'Archeologici' in request.POST:
+            category |= ArtCategory.objects.filter(classid='6')
+            category_t |= AArtCategoryArtCategory.objects.filter(category='6')
+
+        #print(cat)
+        '''
+        for i in range(len(cat)):
+            print()
+            if cat[i-1] is True:
+                print('im in')
+                category.append(ArtCategory.objects.filter(classid=i))
+                category_t.append(AArtCategoryArtCategory.objects.filter(category=i))
+'       '''
+
+        for c in category_t:
+            art |= Art.objects.filter(name_it=c.points)
+
+        context = {
+            'art': art,
+            'category_t': category_t,
+            'category': category,
+        }
+        print('if')
+        return render(request, 'view_filtered.html',context)
+        #return render(request, 'index.html',context)
+    else:
+        context = {
+            'art': Art.objects.order_by('name_it'),
+            'category_t': AArtCategoryArtCategory.objects,
+            'category': ArtCategory.objects.order_by('classid'),
+        }
+    return render(request, 'index.html',context)
+

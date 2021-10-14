@@ -86,7 +86,6 @@ def editArt(request,pk):
         descr_it = request.POST['descr_it']
         image_url = request.POST['image_url']
         name_it = request.POST['name_it']
-        state = request.POST['state'] #?
         notes = request.POST['notes']
         open_time = request.POST['open_time']
         tickets = request.POST['tickets']
@@ -101,8 +100,6 @@ def editArt(request,pk):
             Art.objects.filter(classid=classid).update(image_url=image_url)
         if art.name_it != name_it:
             Art.objects.filter(classid=classid).update(name_it=name_it)
-        if art.state != state:
-            Art.objects.filter(classid=classid).update(state=state)
         if art.notes != notes:
             Art.objects.filter(classid=classid).update(notes=notes)
         if art.open_time != open_time:
@@ -125,10 +122,101 @@ def editArt(request,pk):
 
     context = {
         'art' : art,
-        'state':DArtEStato.objects
+        #'state':DArtEStato.objects
     }
 
     return render(request,'editArt.html', context)
+
+
+def newArt(request):
+
+    if request.method == 'POST':
+        classid = request.POST['classid']
+
+
+        if Art.objects.filter(classid=classid).exists():
+            messages.info(request, 'Classid {} already exist'.format(classid))
+            return render(request, 'newArt.html')
+        else:
+            art = Art(classid=classid)
+
+            descr_it = request.POST['descr_it']
+            if descr_it:
+                art.descr_it = descr_it
+
+            image_url = request.POST['image_url']
+            if image_url:
+                art.image_url = image_url
+
+            name_it = request.POST['name_it']
+            if name_it:
+                art.name_it = name_it
+            else:
+                messages.info(request, 'Name_it required')
+                return render(request, 'newArt.html')
+
+            state = request.POST['state']
+            art.state = DArtEStato.objects.get(code=state)
+
+            notes = request.POST['notes']
+            if notes:
+                art.notes = notes
+
+            open_time = request.POST['open_time']
+            if open_time:
+                art.open_time = open_time
+
+            tickets = request.POST['tickets']
+            if tickets:
+                art.tickets = tickets
+
+            rss = request.POST['rss']
+            if rss:
+                art.rss = rss
+
+            saving_vc = request.POST['saving_vc']
+            if saving_vc:
+                art.saving_vc = saving_vc
+
+            vc = request.POST['vc']
+            if vc:
+                art.vc = vc
+
+            vc_id = request.POST['vc_id']
+            if vc_id:
+                art.vc_id = vc_id
+
+            #art = Art(classid=classid, descr_it=descr_it, image_url=image_url, name_it=name_it,state=DArtEStato_var, notes=notes, open_time=open_time, tickets=tickets,rss=rss, vc_id=vc_id)
+
+            art.save()
+
+            if 'Chiese' in request.POST:
+                cat = ArtCategory.objects.get(classid='1')
+                category_t = AArtCategoryArtCategory(category=cat, points=art)
+                category_t.save()
+            if 'Monumenti' in request.POST:
+                cat = ArtCategory.objects.get(classid='2')
+                category_t = AArtCategoryArtCategory(category=cat, points=art)
+                category_t.save()
+            if 'Teatri' in request.POST:
+                cat = ArtCategory.objects.get(classid='3')
+                category_t = AArtCategoryArtCategory(category=cat, points=art)
+                category_t.save()
+            if 'Musei' in request.POST:
+                cat = ArtCategory.objects.get(classid='4')
+                category_t = AArtCategoryArtCategory(category=cat, points=art)
+                category_t.save()
+            if 'Palazzi' in request.POST:
+                cat = ArtCategory.objects.get(classid='5')
+                category_t = AArtCategoryArtCategory(category=cat, points=art)
+                category_t.save()
+            if 'Archeologici' in request.POST:
+                cat = ArtCategory.objects.get(classid='6')
+                category_t = AArtCategoryArtCategory(category=cat, points=art)
+                category_t.save()
+
+            return redirect('/{}'.format(name_it))
+    return render(request, 'newArt.html')
 
 
 def filterItemArt(request):
@@ -177,9 +265,6 @@ def filterItemArt(request):
         }
 
     return render(request, 'filterArt.html', context)
-
-def filterItemEvent(request):
-    return render(request, 'filterEvent.html')
 
 def filterItemTour(request):
     return render(request, 'filterTour.html')

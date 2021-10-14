@@ -53,8 +53,8 @@ class Art(models.Model):
     open_time = models.CharField(max_length=1024, blank=True, null=True)
     tickets = models.CharField(max_length=1024, blank=True, null=True)
     rss = models.CharField(max_length=30, blank=True, null=True)
-    saving_vc = models.FloatField()
-    vc = models.CharField(max_length=80)
+    saving_vc = models.FloatField(default=0.0)
+    vc = models.CharField(max_length=80, default='03')
     vc_id = models.CharField(max_length=70, blank=True, null=True)
 
     def __str__(self):

@@ -110,6 +110,23 @@
 
         <div class="row">
 
+          <div class="col-lg-6" onclick="location.href='/edit/newArt';" style="cursor: pointer;">
+            <div class="member d-flex align-items-start" >
+                <div class="icon">
+                <i class="bi-card-image" style="font-size: 80px; color: #37517e;"></i></div>
+
+              <!--img src="{{a.image_url}}" class="img-fluid" width="100" height="100" alt=""-->
+              <div class="member-info" style="overflow: hidden">
+                <h4>Add New Point of Interest</h4>
+                <span>Categoria: ---------</span>
+
+                <!--<p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {{ a.descr_it }} </p>-->
+                <p>Description ...</p>
+
+              </div>
+            </div>
+          </div>
+
           {% for a in art.all %}
           <div class="col-lg-6" onclick="location.href='{{ a.name_it }}';" style="cursor: pointer;">
             <div class="member d-flex align-items-start" >

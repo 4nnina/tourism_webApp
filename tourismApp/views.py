@@ -75,6 +75,7 @@ def edit(request):
         'art': Art.objects.order_by('name_it'),
         'category': AArtCategoryArtCategory.objects,
     }
+
     return render(request, 'edit.html', context)
 
 def editArt(request,pk):
@@ -117,10 +118,14 @@ def editArt(request,pk):
         if art.vc_id != vc_id:
             Art.objects.filter(classid=classid).update(vc_id=vc_id)
 
+        if '_delete' in request.POST:
+            Art.objects.filter(classid=classid).update(state='02')
+
         return redirect('/{}'.format(name_it))
 
     context = {
         'art' : art,
+        'state':DArtEStato.objects
     }
 
     return render(request,'editArt.html', context)

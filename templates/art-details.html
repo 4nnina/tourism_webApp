@@ -88,15 +88,15 @@
              <br>
               <ul>
                 <li><strong>Category</strong>: {% for c in category %}  {{ c }}; {% endfor %}</li>
-                <li><strong>Open time</strong>: {{ art.open_time}}</li>
-                <li><strong>State</strong>: {{ art.state}}</li>
-                <li><strong>Tikets</strong>: {{ art.tickets}}</li>
+                <li><strong>Open time</strong>: <div style="padding: 10px">{{ art.open_time|safe}}</div></li>
+                <!--li><strong>State</strong>: {{ art.state}}</li-->
+                  <li><strong>Tikets</strong>: <div style="padding: 10px">{{ art.tickets|safe}}</div></li>
               </ul>
             </div>
             <div class="portfolio-description">
               <h3>Description:</h3>
               <p>
-                {{ art.descr_it }}
+                  {{ art.descr_it|linebreaksbr}}
               </p>
             </div>
 

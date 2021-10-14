@@ -57,11 +57,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'PROGETTO.urls'
 
-TEMPLATES = [{
-        'BACKEND':'django.template.backends.jinja2.Jinja2',
-
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        #'DIRS': [os.path.join(BASE_DIR, 'templates/jinja2')],
         'APP_DIRS': True,
-        },
+        #'OPTIONS': {'environment': 'myproject.jinja2.Environment',},
+    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates'],

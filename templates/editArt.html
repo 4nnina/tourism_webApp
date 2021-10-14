@@ -135,6 +135,9 @@
                           <div class="col">
                                 <input type="text" name="image_url" value="{{ art.image_url }}" class="vTextField" maxlength="200" id="id_image_url" style="background-color: #f0f0f0">
                             </div>
+                           <div class="col">
+                                <img src="{{ art.image_url }}" width="400" height="auto" >
+                           </div>
                       </div><hr width="50%">
 
                       <div class="row justify-content-center">
@@ -144,30 +147,6 @@
                           <div class="col">
                                 <input type="text" name="name_it" value="{{ art.name_it}}" class="vTextField" maxlength="100" required="" id="id_name_it" style="background-color: #f0f0f0">
                             </div>
-                      </div><hr width="50%">
-
-                      <div class="row justify-content-center">
-                          <div class="col-2">
-                              <label class="required" for="id_state">State:</label>
-                          </div>
-                          <div class="col">
-                              <div class="related-widget-wrapper">
-                                  <select name="state" required="" id="id_state" style="background-color: #f0f0f0">
-                                    <option value="">---------</option>
-                                    <option value="02">eliminato</option>
-                                    <option value="01" selected="">attivo</option>
-                                  </select>
-                                  <a class="related-widget-wrapper-link change-related" id="change_id_state" data-href-template="/admin/tourismApp/dartestato/__fk__/change/?_to_field=code&amp;_popup=1" title="Change selected d art e stato" href="/admin/tourismApp/dartestato/01/change/?_to_field=code&amp;_popup=1">
-                                      <img src="/static/admin/img/icon-changelink.svg" alt="Change">
-                                  </a>
-                                  <a class="related-widget-wrapper-link add-related" id="add_id_state" href="/admin/tourismApp/dartestato/add/?_to_field=code&amp;_popup=1" title="Add another d art e stato">
-                                      <img src="/static/admin/img/icon-addlink.svg" alt="Add">
-                                  </a>
-                                  <a class="related-widget-wrapper-link delete-related" id="delete_id_state" data-href-template="/admin/tourismApp/dartestato/__fk__/delete/?_to_field=code&amp;_popup=1" title="Delete selected d art e stato" href="/admin/tourismApp/dartestato/01/delete/?_to_field=code&amp;_popup=1">
-                                      <img src="/static/admin/img/icon-deletelink.svg" alt="Delete">
-                                  </a>
-                              </div>
-                          </div>
                       </div><hr width="50%">
 
                       <!--<div class="form-row field-area_di_download">
@@ -279,7 +258,13 @@
 
                 <div class="row">
                     <div class="col-4">
-                      <p class="deletelink-box" style="letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: white; background: #C2302E;"><a href="/admin/tourismApp/art/79/delete/" class="deletelink">Delete</a></p>
+                      <!--p class="deletelink-box" style="letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: white; background: #C2302E;">
+                          <a href="/admin/tourismApp/art/79/delete/" class="deletelink">Delete
+
+                          </a>
+
+                      </p-->
+                        <input type="submit" value="Delete" class="default" name="_delete" style="  top: 0px; right: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #C2302E;">
                     </div>
                     <div class="col">
                       <input type="submit" value="Save" class="default" name="_save" style="  top: 0px; right: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;">

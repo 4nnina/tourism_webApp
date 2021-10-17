@@ -81,7 +81,7 @@ def item(request,pk):
         try:
             name_trad = ArtNameTradT.objects.get(classref=art.classid, name_trad_lang=lang_table).name_trad_value
         except:
-            name_trad = art.descr_it
+            name_trad = art.name_it
 
     context = {
         'art': art,
@@ -142,7 +142,7 @@ def editArt(request,pk):
         if '_delete' in request.POST:
             Art.objects.filter(classid=classid).update(state='02')
 
-        return redirect('/{}'.format(name_it))
+        return redirect('/{}'.format(classid))
 
     context = {
         'art' : art,

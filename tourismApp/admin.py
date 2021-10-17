@@ -63,3 +63,6 @@ admin.site.register(SpatialRefSys)
 
 admin.site.register(TourNameTradT)
 admin.site.register(TourDescrTradT)
+
+
+admin.site.register(Lang)

@@ -1,4 +1,5 @@
 {% load static %}
+{% load make_break %}
 
 <!DOCTYPE html>
 <html lang="en"><head>
@@ -47,7 +48,15 @@
           <li><a class="nav-link scrollto active" href="/edit">Edit</a></li>
           <li><a class="nav-link scrollto" href="/admin">Control panel</a></li>
 
-
+          <li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="10" ></span> <i class="bi bi-chevron-down"></i></a>
+                <ul>
+                    <li><a onclick="language('it')" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
+                    <li><a onclick="language('en')" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
+                    <li><a onclick="language('es')" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
+                    <li><a onclick="language('fr')" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
+                    <li><a onclick="language('de')" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
+                </ul>
+          </li>
           <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
 
         </ul>
@@ -128,7 +137,7 @@
           </div>
 
           {% for a in art.all %}
-          <div class="col-lg-6" onclick="location.href='{{ a.name_it }}';" style="cursor: pointer;">
+          <div class="col-lg-6" onclick="location.href='{{ a.classid }}';" style="cursor: pointer;">
             <div class="member d-flex align-items-start" >
 
               <img src="{{a.image_url}}" class="img-fluid" width="100" height="100" alt="">
@@ -146,7 +155,7 @@
                 </span>
 
                 <!--<p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {{ a.descr_it }} </p>-->
-                <p>{{a.descr_it|truncatewords:30}} </p>
+                <p>{{ a.descr_it | make_break | safe |truncatewords:30}} </p>
                 <div class="button" style="float: right;">
                   <a href="/edit/{{ a.name_it }}"><b>Modifica</b></a>
                 </div>

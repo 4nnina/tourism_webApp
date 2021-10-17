@@ -54,18 +54,41 @@ def logOut(request):
     return redirect('/')
 
 def index(request):
-    return render(request, 'index.html')
+    context = {
+        'lang' : Lang.objects.get(active=True),
+    }
+    return render(request, 'index.html', context)
 
 def item(request,pk):
-    art = Art.objects.get(name_it=pk)
+    art = Art.objects.get(classid=pk)
     cat = AArtCategoryArtCategory.objects.filter(points=art.classid)
     category = []
     for c in cat:
         category.append(c.category)
 
+    lang = Lang.objects.get(active=True)
+
+    if lang.code == 'it':
+        descr_trad = art.descr_it
+        name_trad = art.name_it
+    else:
+        lang_table = DELang.objects.get(code=lang)
+        try:
+            descr_trad = ArtDescrTradT.objects.get(classref=art.classid, descr_trad_lang=lang_table).descr_trad_value
+        except:
+            descr_trad = art.descr_it
+
+        try:
+            name_trad = ArtNameTradT.objects.get(classref=art.classid, name_trad_lang=lang_table).name_trad_value
+        except:
+            name_trad = art.descr_it
+
     context = {
         'art': art,
-        'category': category
+        'category': category,
+        'lang' : lang,
+        'descr_trad' : descr_trad,
+        'name_trad' : name_trad,
     }
 
     return render(request,'art-details.html', context)
@@ -74,12 +97,13 @@ def edit(request):
     context = {
         'art': Art.objects.order_by('name_it'),
         'category': AArtCategoryArtCategory.objects,
+        'lang' : Lang.objects.get(active=True),
     }
 
     return render(request, 'edit.html', context)
 
 def editArt(request,pk):
-    art = Art.objects.get(name_it=pk)
+    art = Art.objects.get(classid=pk)
 
     if request.method == 'POST':
         classid = request.POST['classid']
@@ -122,6 +146,7 @@ def editArt(request,pk):
 
     context = {
         'art' : art,
+        'lang' : Lang.objects.get(active=True),
         #'state':DArtEStato.objects
     }
 
@@ -216,7 +241,10 @@ def newArt(request):
                 category_t.save()
 
             return redirect('/{}'.format(name_it))
-    return render(request, 'newArt.html')
+    context = {
+        'lang': Lang.objects.get(active=True),
+    }
+    return render(request, 'newArt.html',context)
 
 
 def filterItemArt(request):
@@ -261,12 +289,15 @@ def filterItemArt(request):
         context = {
             'art': Art.objects.order_by('name_it'),
             'category_t': AArtCategoryArtCategory.objects,
-            'category': ArtCategory.objects.order_by('classid'),
+            'category': ArtCategory.objects.order_by('classid'),            'lang' : Lang.objects.get(active=True),
         }
 
     return render(request, 'filterArt.html', context)
 
 def filterItemTour(request):
-    return render(request, 'filterTour.html')
+    context ={
+        'lang': Lang.objects.get(active=True),
+    }
+    return render(request, 'filterTour.html', context)
 
 

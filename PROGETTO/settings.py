@@ -13,6 +13,21 @@ from pathlib import Path
 from django.contrib.gis.gdal import OGRGeometry
 import os
 
+import platform
+import environ
+
+WINDOWS = platform.system() == "Windows"
+
+if WINDOWS:
+    # the below needs to change for linux
+    GDAL_LIBRARY_PATH = r'C:\OSGeo4W\bin\gdal303.dll'
+    GEOS_LIBRARY_PATH = r'C:\OSGeo4W\bin\geos_c.dll'
+    OSGEO4W = r"C:\OSGeo4W"
+    os.environ['OSGEO4W_ROOT'] = OSGEO4W
+    os.environ['GDAL_DATA'] = "C:\Program Files\GDAL\gdal-data"  # OSGEO4W + r"\share\gdal"
+    os.environ['PROJ_LIB'] = OSGEO4W + r"\share\proj"
+    os.environ['PATH'] = OSGEO4W + r"\bin;" + os.environ['PATH']
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,6 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +160,16 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "table,spellchecker,paste,searchreplace",
+    'theme': "advanced",
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 10,
+}
+TINYMCE_SPELLCHECKER = False
+
+TINYMCE_COMPRESSOR = False
+
+#GDAL_LIBRARY_PATH = r'C:\OSGeo4W64\bin\gdalplugins'
+#os.environ['GDAL_DATA'] = "C:\\OSGeo4W64\\share\\epsg_csv" <- (path to gcs.csv file)

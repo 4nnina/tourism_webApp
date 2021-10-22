@@ -52,11 +52,11 @@
 
               <li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="10" ></span> <i class="bi bi-chevron-down"></i></a>
                 <ul>
-                    <li><a onclick="language('it')" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
-                    <li><a onclick="language('en')" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
-                    <li><a onclick="language('es')" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
-                    <li><a onclick="language('fr')" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
-                    <li><a onclick="language('de')" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
+                    <li><a href="/{{ art.classid }}" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
+                    <li><a href="/{{ art.classid }}+en" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
+                    <li><a href="/{{ art.classid }}+es" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
+                    <li><a href="/{{ art.classid }}+fr" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
+                    <li><a href="/{{ art.classid }}+de" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
                 </ul>
               </li>
               <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>

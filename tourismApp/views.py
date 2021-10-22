@@ -59,16 +59,20 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
-def item(request,pk):
-    art = Art.objects.get(classid=pk)
+def item(request,classid_lang):
+    if '+' not in classid_lang:
+        classid, lang = classid_lang, 'it'
+    else:
+        classid, lang = classid_lang.split('+')
+    art = Art.objects.get(classid=classid)
     cat = AArtCategoryArtCategory.objects.filter(points=art.classid)
     category = []
     for c in cat:
         category.append(c.category)
 
-    lang = Lang.objects.get(active=True)
+    #lang = Lang.objects.get(active=True)
 
-    if lang.code == 'it':
+    if lang == 'it':
         descr_trad = art.descr_it
         name_trad = art.name_it
     else:
@@ -102,14 +106,48 @@ def edit(request):
 
     return render(request, 'edit.html', context)
 
-def editArt(request,pk):
-    art = Art.objects.get(classid=pk)
+def editArt(request,classid_lang):
+    if '+' not in classid_lang:
+        classid, lang = classid_lang, 'it'
+    else:
+        classid, lang = classid_lang.split('+')
+        de_lang = DELang.objects.get(code=lang)
+
+    art = Art.objects.get(classid=classid)
+    print(lang)
+    if lang == 'it':
+        descr = art.descr_it
+        name = art.name_it
+    else:
+        try:
+            descr_obj = ArtDescrTradT.objects.get(classref=art.classid, descr_trad_lang=de_lang)
+            descr = descr_obj.descr_trad_value
+        #    print("2sono in descr")
+        #    print(descr_obj)
+        except:
+            descr_obj = ArtDescrTradT()
+            descr_obj.classref = art
+            descr_obj.descr_trad_lang = de_lang
+            descr_obj.descr_trad_value = ""
+            descr = descr_obj.descr_trad_value
+            descr_obj.save()
+            print("2sono in descr save")
+
+        try:
+            name_obj = ArtNameTradT.objects.get(classref=art.classid, name_trad_lang=de_lang)
+            name = name_obj.name_trad_value
+        except:
+            name_obj = ArtNameTradT()
+            name_obj.classref = art
+            name_obj.name_trad_lang = de_lang
+            name_obj.name_trad_value = ""
+            name = name_obj.name_trad_value
+            name_obj.save()
 
     if request.method == 'POST':
-        classid = request.POST['classid']
-        descr_it = request.POST['descr_it']
+        descr = request.POST['descr_it']
+        name = request.POST['name_it']
         image_url = request.POST['image_url']
-        name_it = request.POST['name_it']
         notes = request.POST['notes']
         open_time = request.POST['open_time']
         tickets = request.POST['tickets']
@@ -118,12 +156,19 @@ def editArt(request,pk):
         vc = request.POST['vc']
         vc_id = request.POST['vc_id']
 
-        if art.descr_it != descr_it:
-            Art.objects.filter(classid=classid).update(descr_it=descr_it)
+        if lang == 'it':
+            if art.name_it != name:
+                Art.objects.filter(classid=classid).update(name_it=name)
+            if art.descr_it != descr:
+                Art.objects.filter(classid=classid).update(descr_it=descr)
+        else:
+            if name_obj.name_trad_value != name:
+                ArtNameTradT.objects.filter(classref=classid, name_trad_lang=de_lang).update(name_trad_value=name)
+            if descr_obj.descr_trad_value != descr:
+                ArtDescrTradT.objects.filter(classref=classid, descr_trad_lang=de_lang).update(descr_trad_value=descr)
+
         if art.image_url != image_url:
             Art.objects.filter(classid=classid).update(image_url=image_url)
-        if art.name_it != name_it:
-            Art.objects.filter(classid=classid).update(name_it=name_it)
         if art.notes != notes:
             Art.objects.filter(classid=classid).update(notes=notes)
         if art.open_time != open_time:
@@ -142,11 +187,13 @@ def editArt(request,pk):
         if '_delete' in request.POST:
             Art.objects.filter(classid=classid).update(state='02')
 
-        return redirect('/{}'.format(classid))
+        return redirect('/{}+{}'.format(classid,lang))
 
     context = {
         'art' : art,
-        'lang' : Lang.objects.get(active=True),
+        'lang' : lang,
+        'descr' : descr,
+        'name' : name,
         #'state':DArtEStato.objects
     }
 
@@ -240,7 +287,7 @@ def newArt(request):
                 category_t = AArtCategoryArtCategory(category=cat, points=art)
                 category_t.save()
 
-            return redirect('/{}'.format(name_it))
+            return redirect('/{}'.format(classid))
     context = {
         'lang': Lang.objects.get(active=True),
     }

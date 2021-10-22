@@ -1,6 +1,10 @@
 from django.contrib.gis.db import models
+from django.db.models import Manager as GeoManager
+from tinymce.models import HTMLField
+from ckeditor.fields import RichTextField
+from djrichtextfield.widgets import RichTextWidget
 from django.db.models import CheckConstraint, Q, UniqueConstraint
-
+from django.forms import ModelForm
 
 class AArtCategoryArtCategory(models.Model):
     category = models.ForeignKey('ArtCategory', models.DO_NOTHING, db_column='category')
@@ -45,10 +49,11 @@ class AEventCategoryEventCategory(models.Model):
 class Art(models.Model):
     classid = models.CharField(primary_key=True, max_length=70)
     descr_it = models.TextField(blank=True, null=True)
+    #descr_it = RichTextField(blank=True, null=True)
     image_url = models.CharField(max_length=200, blank=True, null=True)
     name_it = models.CharField(max_length=100)
     state = models.ForeignKey('DArtEStato', models.DO_NOTHING, db_column='state')
-    area_di_download = models.GeometryField(blank=True, null=True)
+    area_di_download = models.MultiPolygonField(srid=4326, null=True)
     notes = models.CharField(max_length=1024, blank=True, null=True)
     open_time = models.CharField(max_length=1024, blank=True, null=True)
     tickets = models.CharField(max_length=1024, blank=True, null=True)
@@ -56,6 +61,7 @@ class Art(models.Model):
     saving_vc = models.FloatField(default=0.0)
     vc = models.CharField(max_length=80, default='03')
     vc_id = models.CharField(max_length=70, blank=True, null=True)
+    #object = models.GeoManager()
 
     def __str__(self):
         return '{}'.format(self.name_it)
@@ -398,7 +404,7 @@ class Location(models.Model):
     address = models.TextField(blank=True, null=True)
     num = models.DecimalField(max_digits=15, decimal_places=0)
     event = models.CharField(max_length=70)
-    geom = models.GeometryField(blank=True, null=True)
+    geom = models.PointField(srid=4326, null=True)
 
     def __str__(self):
         return '{}'.format(self.address)
@@ -545,7 +551,7 @@ class RetailerVc(models.Model):
     address = models.CharField(max_length=2048)
     name = models.CharField(max_length=1024)
     retailer_category = models.ForeignKey(RetailerCategory, models.DO_NOTHING, db_column='retailer_category')
-    geo = models.GeometryField(blank=True, null=True)
+    geo = models.PointField(srid=4326, null=True)
 
     def __str__(self):
         return '{}'.format(self.address)
@@ -685,8 +691,8 @@ class Tour(models.Model):
     image_url = models.CharField(max_length=100, blank=True, null=True)
     kml_path = models.CharField(max_length=8192, blank=True, null=True)
     name_it = models.CharField(max_length=200)
-    geom_path = models.GeometryField(blank=True, null=True)
-    proximity_area = models.GeometryField(blank=True, null=True)
+    geom_path = models.MultiLineStringField(srid=4326, null=True)
+    proximity_area = models.MultiPolygonField(srid=4326, null=True)
     duration = models.FloatField(blank=True, null=True)
     length = models.FloatField(blank=True, null=True)
     type = models.ForeignKey(DTourETipoit, models.DO_NOTHING, db_column='type', blank=True, null=True)

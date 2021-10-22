@@ -76,11 +76,11 @@
 
               <li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="10" ></span> <i class="bi bi-chevron-down"></i></a>
                 <ul>
-                    <li><a onclick="language('it')" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
-                    <li><a onclick="language('en')" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
-                    <li><a onclick="language('es')" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
-                    <li><a onclick="language('fr')" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
-                    <li><a onclick="language('de')" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
+                    <li><a href="/edit/{{ art.classid }}" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
+                    <li><a href="/edit/{{ art.classid }}+en" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
+                    <li><a href="/edit/{{ art.classid }}+es" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
+                    <li><a href="/edit/{{ art.classid }}+fr" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
+                    <li><a href="/edit/{{ art.classid }}+de" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
                 </ul>
               </li>
               <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
@@ -118,13 +118,22 @@
             <div>
 
                 <fieldset>
-                      <div class="row justify-content-center">
+                      <!--div class="row justify-content-center">
                           <div class="col-2">
                               <label class="required" for="id_classid">Classid:</label>
                           </div>
                           <div class="col">
                               <input type="text" name="classid" value="{{ art.classid }}" class="vTextField" maxlength="70" required="" id="id_classid" style="background-color: #f0f0f0">
                           </div>
+                      </div><hr width="50%"-->
+
+                      <div class="row justify-content-center">
+                          <div class="col-2">
+                                <label class="required" for="id_name_it">Name it:</label>
+                          </div>
+                          <div class="col">
+                                <input type="text" name="name_it" value="{{ name }}" class="vTextField" maxlength="100" required="" id="id_name_it" style="width: 370px; background-color: #f0f0f0">
+                            </div>
                       </div><hr width="50%">
 
                       <div class="row justify-content-center">
@@ -132,7 +141,7 @@
                               <label for="id_descr_it">Descr it: </label>
                           </div>
                           <div class="col">
-                              <textarea name="descr_it" cols="40" rows="10" class="vLargeTextField" id="id_descr_it" style="background-color: #f0f0f0">{{ art.descr_it}}</textarea>
+                              <textarea name="descr_it" cols="40" rows="10" class="vLargeTextField" id="id_descr_it" style="background-color: #f0f0f0">{{ descr }}</textarea>
                           </div>
                       </div><hr width="50%">
 
@@ -148,16 +157,8 @@
                            </div>
                       </div><hr width="50%">
 
-                      <div class="row justify-content-center">
-                          <div class="col-2">
-                                <label class="required" for="id_name_it">Name it:</label>
-                          </div>
-                          <div class="col">
-                                <input type="text" name="name_it" value="{{ art.name_it}}" class="vTextField" maxlength="100" required="" id="id_name_it" style="width: 370px; background-color: #f0f0f0">
-                            </div>
-                      </div><hr width="50%">
-
-                      <!--<div class="form-row field-area_di_download">
+                    <!--div-- class="row justify-content-center">
+                      <div class="form-row field-area_di_download">
                         <div>
                             <label for="id_area_di_download">Area di download:</label>
                             <style type="text/css">
@@ -198,7 +199,8 @@
                                 </script>
                             </div>
                         </div>
-                      </div>-->
+                      </div>
+                    </div-->
 
                       <div class="row justify-content-center">
                           <div class="col-2">

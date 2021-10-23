@@ -6,8 +6,14 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
 from .models import *
-
+from .forms import ArtForm
 # Create your views here.
+
+def pForm(request):
+    context ={
+        'form' : ArtForm(),
+    }
+    return render(request,'pForm.html', context)
 
 def register(request):
     if request.method == 'POST':
@@ -114,7 +120,7 @@ def editArt(request,classid_lang):
         de_lang = DELang.objects.get(code=lang)
 
     art = Art.objects.get(classid=classid)
-    print(lang)
+
     if lang == 'it':
         descr = art.descr_it
         name = art.name_it
@@ -145,16 +151,18 @@ def editArt(request,classid_lang):
             name_obj.save()
 
     if request.method == 'POST':
-        descr = request.POST['descr_it']
-        name = request.POST['name_it']
-        image_url = request.POST['image_url']
-        notes = request.POST['notes']
-        open_time = request.POST['open_time']
-        tickets = request.POST['tickets']
-        rss = request.POST['rss']
-        saving_vc = request.POST['saving_vc']
-        vc = request.POST['vc']
-        vc_id = request.POST['vc_id']
+        form = ArtForm(request.POST, initial={'name_it': name, 'descr_it': descr,'image_url' : art.image_url,'state' : art.state,'notes' : art.notes,'open_time' : art.open_time,'tickets' : art.tickets,'rss' : art.rss,'saving_vc' : art.saving_vc,'vc' : art.vc,'vc_id' : art.vc_id})
+
+        descr = form.cleaned_data['descr_it']
+        name = form.cleaned_data['name_it']
+        image_url = form.cleaned_data['image_url']
+        notes = form.cleaned_data['notes']
+        open_time = form.cleaned_data['open_time']
+        tickets = form.cleaned_data['tickets']
+        rss = form.cleaned_data['rss']
+        saving_vc = form.cleaned_data['saving_vc']
+        vc = form.cleaned_data['vc']
+        vc_id = form.cleaned_data['vc_id']
 
         if lang == 'it':
             if art.name_it != name:
@@ -194,6 +202,9 @@ def editArt(request,classid_lang):
         'lang' : lang,
         'descr' : descr,
         'name' : name,
+        'form' : ArtForm(initial={'name_it': name, 'descr_it': descr, 'image_url': art.image_url, 'state': art.state,
+                                'notes': art.notes, 'open_time': art.open_time, 'tickets': art.tickets, 'rss': art.rss,
+                                'saving_vc': art.saving_vc, 'vc': art.vc, 'vc_id': art.vc_id})
         #'state':DArtEStato.objects
     }
 
@@ -205,94 +216,55 @@ def newArt(request):
     if request.method == 'POST':
         classid = request.POST['classid']
 
+        form = ArtForm(request.POST)
+        art = Art(classid=classid)
 
-        if Art.objects.filter(classid=classid).exists():
-            messages.info(request, 'Classid {} already exist'.format(classid))
-            return render(request, 'newArt.html')
-        else:
-            art = Art(classid=classid)
-
-            descr_it = request.POST['descr_it']
-            if descr_it:
-                art.descr_it = descr_it
-
-            image_url = request.POST['image_url']
-            if image_url:
-                art.image_url = image_url
-
-            name_it = request.POST['name_it']
-            if name_it:
-                art.name_it = name_it
-            else:
-                messages.info(request, 'Name_it required')
-                return render(request, 'newArt.html')
-
-            state = request.POST['state']
-            art.state = DArtEStato.objects.get(code=state)
-
-            notes = request.POST['notes']
-            if notes:
-                art.notes = notes
-
-            open_time = request.POST['open_time']
-            if open_time:
-                art.open_time = open_time
-
-            tickets = request.POST['tickets']
-            if tickets:
-                art.tickets = tickets
-
-            rss = request.POST['rss']
-            if rss:
-                art.rss = rss
-
-            saving_vc = request.POST['saving_vc']
-            if saving_vc:
-                art.saving_vc = saving_vc
-
-            vc = request.POST['vc']
-            if vc:
-                art.vc = vc
-
-            vc_id = request.POST['vc_id']
-            if vc_id:
-                art.vc_id = vc_id
-
-            #art = Art(classid=classid, descr_it=descr_it, image_url=image_url, name_it=name_it,state=DArtEStato_var, notes=notes, open_time=open_time, tickets=tickets,rss=rss, vc_id=vc_id)
+        if form.is_valid():
+            art.descr_it = form.cleaned_data['descr_it']
+            art.image_url = form.cleaned_data['image_url']
+            art.name_it = form.cleaned_data['name_it']
+            art.state = DArtEStato.objects.get(name=form.cleaned_data['state'])
+            art.notes = form.cleaned_data['notes']
+            art.open_time = form.cleaned_data['open_time']
+            art.tickets = form.cleaned_data['tickets']
+            art.rss = form.cleaned_data['rss']
+            art.saving_vc = form.cleaned_data['saving_vc']
+            art.vc = form.cleaned_data['vc']
+            art.vc_id = form.cleaned_data['vc_id']
 
             art.save()
 
-            if 'Chiese' in request.POST:
-                cat = ArtCategory.objects.get(classid='1')
-                category_t = AArtCategoryArtCategory(category=cat, points=art)
-                category_t.save()
-            if 'Monumenti' in request.POST:
-                cat = ArtCategory.objects.get(classid='2')
-                category_t = AArtCategoryArtCategory(category=cat, points=art)
-                category_t.save()
-            if 'Teatri' in request.POST:
-                cat = ArtCategory.objects.get(classid='3')
-                category_t = AArtCategoryArtCategory(category=cat, points=art)
-                category_t.save()
-            if 'Musei' in request.POST:
-                cat = ArtCategory.objects.get(classid='4')
-                category_t = AArtCategoryArtCategory(category=cat, points=art)
-                category_t.save()
-            if 'Palazzi' in request.POST:
-                cat = ArtCategory.objects.get(classid='5')
-                category_t = AArtCategoryArtCategory(category=cat, points=art)
-                category_t.save()
-            if 'Archeologici' in request.POST:
-                cat = ArtCategory.objects.get(classid='6')
-                category_t = AArtCategoryArtCategory(category=cat, points=art)
-                category_t.save()
+        if 'Chiese' in request.POST:
+            cat = ArtCategory.objects.get(classid='1')
+            category_t = AArtCategoryArtCategory(category=cat, points=art)
+            category_t.save()
+        if 'Monumenti' in request.POST:
+            cat = ArtCategory.objects.get(classid='2')
+            category_t = AArtCategoryArtCategory(category=cat, points=art)
+            category_t.save()
+        if 'Teatri' in request.POST:
+            cat = ArtCategory.objects.get(classid='3')
+            category_t = AArtCategoryArtCategory(category=cat, points=art)
+            category_t.save()
+        if 'Musei' in request.POST:
+            cat = ArtCategory.objects.get(classid='4')
+            category_t = AArtCategoryArtCategory(category=cat, points=art)
+            category_t.save()
+        if 'Palazzi' in request.POST:
+            cat = ArtCategory.objects.get(classid='5')
+            category_t = AArtCategoryArtCategory(category=cat, points=art)
+            category_t.save()
+        if 'Archeologici' in request.POST:
+            cat = ArtCategory.objects.get(classid='6')
+            category_t = AArtCategoryArtCategory(category=cat, points=art)
+            category_t.save()
 
-            return redirect('/{}'.format(classid))
+        return redirect('/{}'.format(classid))
     context = {
         'lang': Lang.objects.get(active=True),
+        'form': ArtForm()
     }
     return render(request, 'newArt.html',context)
-
 
 def filterItemArt(request):
     if request.method == 'POST':

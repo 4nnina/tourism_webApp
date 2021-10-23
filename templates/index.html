@@ -47,7 +47,7 @@
           <li><a class="nav-link scrollto active" href="/">Home</a></li>
           {% if user.is_superuser %}
               <li><a class="nav-link scrollto" href="edit">Edit</a></li>
-              <li><a class="nav-link scrollto" href="/admin">Control panel</a></li>
+              <li><a class="nav-link scrollto" href="admin/">Control panel</a></li>
           {% elif user.is_staff %}
               <li><a class="nav-link scrollto" href="edit">Edit</a></li>
           {% endif %}

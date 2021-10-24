@@ -46,20 +46,27 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto" href="/">Home</a></li>
-
-              <li><a class="nav-link scrollto" href="/edit">Edit</a></li>
+          {% if user.is_superuser %}
+              <li><a class="nav-link scrollto" href="/editArt">Edit</a></li>
               <li><a class="nav-link scrollto" href="/admin/">Control panel</a></li>
-
-              <li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="10" ></span> <i class="bi bi-chevron-down"></i></a>
+          {% elif user.is_staff %}
+              <li><a class="nav-link scrollto" href="/editArt">Edit</a></li>
+          {% endif %}
+          {% if user.is_authenticated %}
+              <li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="20" ></span> <i class="bi bi-chevron-down"></i></a>
                 <ul>
-                    <li><a href="/{{ art.classid }}" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
-                    <li><a href="/{{ art.classid }}+en" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
-                    <li><a href="/{{ art.classid }}+es" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
-                    <li><a href="/{{ art.classid }}+fr" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
-                    <li><a href="/{{ art.classid }}+de" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
+                    <li><a href="/Art/{{ art.classid }}" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
+                    <li><a href="/Art/{{ art.classid }}+en" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
+                    <li><a href="/Art/{{ art.classid }}+es" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
+                    <li><a href="/Art/{{ art.classid }}+fr" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
+                    <li><a href="/Art/{{ art.classid }}+de" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
                 </ul>
               </li>
+
               <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
+          {% else %}
+              <li><a class="getstarted scrollto" href="logIn">Log In</a></li>
+          {% endif %}
 
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -77,7 +84,7 @@
 
         <ol>
           <li><a href="/">Home</a></li>
-          <li><a href="/edit">Edit</a></li>
+          <li><a href="/Art">Art</a></li>
           <li>Details</li>
         </ol>
         <h2>{{ name_trad }}</h2>

@@ -55,11 +55,11 @@
           {% if user.is_authenticated %}
               <li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="20" ></span> <i class="bi bi-chevron-down"></i></a>
                 <ul>
-                    <li><a href="/{{ art.classid }}" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
-                    <li><a href="/{{ art.classid }}+en" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
-                    <li><a href="/{{ art.classid }}+es" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
-                    <li><a href="/{{ art.classid }}+fr" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
-                    <li><a href="/{{ art.classid }}+de" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
+                    <li><a href="/Tour/{{ tour.classid }}" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
+                    <li><a href="/Tour/{{ tour.classid }}+en" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
+                    <li><a href="/Tour/{{ tour.classid }}+es" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
+                    <li><a href="/Tour/{{ tour.classid }}+fr" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
+                    <li><a href="/Tour/{{ tour.classid }}+de" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
                 </ul>
               </li>
 
@@ -84,7 +84,7 @@
 
         <ol>
           <li><a href="/">Home</a></li>
-          <li><a href="/Art">Art</a></li>
+          <li><a href="/Tour">Tour</a></li>
           <li>Details</li>
         </ol>
         <h2>{{ name_trad }}</h2>
@@ -95,37 +95,67 @@
     <!-- ======= Portfolio Details Section ======= -->
     <section id="portfolio-details" class="portfolio-details">
       <div class="container">
-
         <div class="row gy-4">
-
           <div class="col-lg-8">
-
             <div class="portfolio-info">
-             <br>
+              <br>
               <ul>
-                <li><strong>Category</strong>: {% for c in category %}  {{ c }}; {% endfor %}</li>
-                <li><strong>Open time</strong>: <div style="padding: 10px">{{ art.open_time|safe}}</div></li>
-                <!--li><strong>State</strong>: {{ art.state}}</li-->
-                  <li><strong>Tikets</strong>: <div style="padding: 10px">{{ art.tickets|safe}}</div></li>
+                <li><strong>Type</strong>: {{ tour.type}}</li>
+                <li><strong>Duration</strong>: {{ tour.duration}}</li>
+                <li><strong>Length</strong>: {{ tour.length}}</li>
+                <!--li><strong>Km </strong>: {{ tour.kml_path}}</li-->
               </ul>
             </div>
+
             <div class="portfolio-description">
               <h3>Description:</h3>
-              <p>
-                  {{ descr_trad | make_break | safe}}
-              </p>
+              <p>{{ descr_trad | make_break | safe}}</p>
             </div>
-
           </div>
-
           <div class="col-lg-4 align-items-center">
-            <img src="{{ art.image_url }}" width="400" height="auto" >
+            <img src="{{ tour.image_url }}" width="400" height="auto" >
           </div>
+        </div>
+      </div>
+    </section><!-- End Portfolio Details Section -->
 
+    <br>
+
+    <section id="item" class="item section-bg">
+      <div class="container" data-aos="fade-up">
+        <h3>Point of Interest</h3>
+        <div class="row">
+          {% for n in order.all %}
+              {% for a in arts.all %}
+                  {% if n.point_of_interest == a.classid %}
+                    <div class="col-lg-6" onclick="location.href='/Art/{{ a.classid }}';" style="cursor: pointer;">
+                      <div class="member d-flex align-items-start" >
+
+                        <img src="{{a.image_url}}" class="img-fluid" width="100" height="100" alt="">
+                        <div class="member-info" style="overflow: hidden">
+                          <h4>{{ n.num }}. {{ a.name_it }}</h4>
+                          <span>Categoria:
+
+                            {% for c in category_t.all %}
+                              {% if c.points.classid == a.classid %}
+                                {{ c.category.name_it }};
+                              {% endif %}
+                            {% endfor %}
+
+                          </span>
+
+                          <!--<p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {{ a.descr_it }} </p>-->
+                          <p>{{ a.descr_it | make_break | safe |truncatewords:30}} </p>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+              {% endfor %}
+            {% endfor %}
         </div>
 
       </div>
-    </section><!-- End Portfolio Details Section -->
+    </section><!-- End Item Section -->
 
   </main><!-- End #main -->
 

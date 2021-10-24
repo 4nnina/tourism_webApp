@@ -1,4 +1,5 @@
 {% load static %}
+{% load make_break %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,23 +46,26 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto" href="/">Home</a></li>
-
-          <li><a class="nav-link scrollto" href="/edit">Edit</a></li>
-          <li><a class="nav-link scrollto" href="/admin/">Control panel</a></li>
-
-
-          <li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="10" ></span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-                <li><a onclick="language('it')" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
-                <li><a onclick="language('en')" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
-                <li><a onclick="language('es')" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
-                <li><a onclick="language('fr')" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
-                <li><a onclick="language('de')" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
-            </ul>
-          </li>
-
-          <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
-
+          {% if user.is_superuser %}
+              <li><a class="nav-link scrollto" href="/editArt">Edit</a></li>
+              <li><a class="nav-link scrollto" href="/admin/">Control panel</a></li>
+          {% elif user.is_staff %}
+              <li><a class="nav-link scrollto" href="/editArt">Edit</a></li>
+          {% endif %}
+          {% if user.is_authenticated %}
+              <!--li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="10" ></span> <i class="bi bi-chevron-down"></i></a>
+                <ul>
+                    <li><a onclick="language('it')" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
+                    <li><a onclick="language('en')" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
+                    <li><a onclick="language('es')" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
+                    <li><a onclick="language('fr')" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
+                    <li><a onclick="language('de')" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
+                </ul>
+              </li-->
+              <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
+          {% else %}
+              <li><a class="getstarted scrollto" href="logIn">Log In</a></li>
+          {% endif %}
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -78,6 +82,7 @@
           <div class="container" data-aos="fade-up">
               <br>
               <div class="row justify-content-center">
+
                   <div onclick="location.href='Art';" class="col-xl-3 col-md-6  align-items-md-stretch" data-aos="zoom-in" data-aos-delay="100">
                       <div class="icon-box justify-content-center">
                           <div class="icon"><i class="bx bxs-landmark"></i></div>
@@ -89,7 +94,7 @@
                       <div class="icon-box">
                           <div class="icon"><i class="bx bx-map-alt"></i></div>
                           <h4>Tour</h4>
-                     </div>
+                      </div>
                   </div>
               </div>
           </div>
@@ -97,7 +102,70 @@
 
       <br>
 
-          <h1>Tour</h1>
+      <section class="filter">
+        <div class="container">
+          <div class="row" data-aos="zoom-in">
+            <div style="box-shadow: 0px 0 25px 0 rgba(0, 0, 0, 0.1); padding: 25px 25px; transition: all ease-in-out 0.4s; background: #fff;">
+              <h4>Type: </h4>
+              <form method="post">
+                  {% csrf_token %}
+
+                  <div class="row">
+                      <div class="col-md-auto"></div>
+                      <div class="col-md-auto">
+                          <input type="checkbox" name="tempo" id="tempo" {% if select.0 %} checked {% endif %}>
+                          <label for="tempo"> A tempo </label>
+                      </div>
+                      <div class="col-md-auto">
+                          <input type="checkbox" name="tema" id="tema" {% if select.1 %} checked {% endif %}>
+                          <label for="tema"> A Tema </label>
+                      </div>
+                      <div class="col-md-auto">
+                          <input type="checkbox" name="storico" id="storico" {% if select.2 %} checked {% endif %}>
+                          <label for="storico"> Storico </label>
+                      </div>
+
+                  </div>
+              <br>
+                  <div class="row justify-content-center">
+                      <div class="col-sm-auto">
+                        <input type="submit" value="Filter" style="top: 0px; right: 0px; left: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 8px 28px 10px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;">
+                      </div>
+                  </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <br>
+             <!-- ======= Item Section ======= -->
+      <section id="item" class="item section-bg">
+          <div class="container" data-aos="fade-up">
+
+              <div class="row">
+
+              {% for t in tour.all %}
+              <div class="col-lg-6" onclick="location.href='/Tour/{{ t.classid }}';" style="cursor: pointer;">
+                <div class="member d-flex align-items-start" >
+
+                  <img src="{{t.image_url}}" class="img-fluid" width="100" height="100" alt="">
+                  <div class="member-info" style="overflow: hidden">
+                    <h4>{{ t.name_it }}</h4>
+                    <span>
+                        Tipologia: {{ t.type }}
+                    </span>
+
+                    <!--<p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {{ t.descr_it }} </p>-->
+                    <p>{{ t.descr_it | make_break | safe |truncatewords:30}} </p>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+
+            </div>
+          </div>
+      </section><!-- End Item Section -->
       {% endif %}
 
     </main>

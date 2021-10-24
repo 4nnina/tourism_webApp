@@ -61,7 +61,6 @@ class Art(models.Model):
     saving_vc = models.FloatField(default=0.0)
     vc = models.CharField(max_length=80, default='03')
     vc_id = models.CharField(max_length=70, blank=True, null=True)
-    #object = models.GeoManager()
 
     def __str__(self):
         return '{}'.format(self.name_it)
@@ -730,14 +729,3 @@ class TourNameTradT(models.Model):
         managed = False
         db_table = 'tour_name_trad_t'
         unique_together = (('classref', 'name_trad_lang', 'name_trad_value'),)
-
-class Lang(models.Model):
-    code = models.CharField(max_length=80, primary_key=True)
-    active = models.BooleanField()
-
-    def __str__(self):
-        return '{}'.format(self.code)
-
-    class Meta:
-        managed = False
-        db_table = 'lang'

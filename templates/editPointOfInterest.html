@@ -71,10 +71,10 @@
         <ul>
           <li><a class="nav-link scrollto" href="/">Home</a></li>
           {% if user.is_superuser %}
-              <li><a class="nav-link scrollto active" href="/edit">Edit</a></li>
+              <li><a class="nav-link scrollto active" href="/editArt">Edit</a></li>
               <li><a class="nav-link scrollto" href="/admin/">Control panel</a></li>
           {% elif user.is_staff %}
-              <li><a class="nav-link scrollto active" href="/edit">Edit</a></li>
+              <li><a class="nav-link scrollto active" href="/editArt">Edit</a></li>
           {% endif %}
           {% if user.is_authenticated %}
               <li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="20" ></span> <i class="bi bi-chevron-down"></i></a>
@@ -106,7 +106,7 @@
 
         <ol>
           <li><a href="/">Home</a></li>
-          <li><a href="/edit">Edit</a></li>
+          <li><a href="/editArt">Edit</a></li>
           <li>Details</li>
         </ol>
         <h2>{{ art.name_it }}</h2>

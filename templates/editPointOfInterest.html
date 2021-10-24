@@ -70,11 +70,14 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto" href="/">Home</a></li>
-
-              <li><a class="nav-link scrollto" href="/edit">Edit</a></li>
+          {% if user.is_superuser %}
+              <li><a class="nav-link scrollto active" href="/edit">Edit</a></li>
               <li><a class="nav-link scrollto" href="/admin/">Control panel</a></li>
-
-              <li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="10" ></span> <i class="bi bi-chevron-down"></i></a>
+          {% elif user.is_staff %}
+              <li><a class="nav-link scrollto active" href="/edit">Edit</a></li>
+          {% endif %}
+          {% if user.is_authenticated %}
+              <li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="20" ></span> <i class="bi bi-chevron-down"></i></a>
                 <ul>
                     <li><a href="/edit/{{ art.classid }}" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
                     <li><a href="/edit/{{ art.classid }}+en" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
@@ -84,7 +87,9 @@
                 </ul>
               </li>
               <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
-
+          {% else %}
+              <li><a class="getstarted scrollto" href="logIn">Log In</a></li>
+          {% endif %}
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -115,9 +120,19 @@
             <form method="post">
             {% csrf_token %}
             <!--input type="hidden" name="csrfmiddlewaretoken" value="XbuaKn8smwbSckX1ilWmsa5oD3aze9Y7kbyuC9ievEvHUAnekUZohVZTQTt46vAl"-->
-            <div>
-                {{ form.media }}
-                {{ form.as_p }}
+              <div>
+                  <div class="row">
+                      <div class="col-9">
+                      <table style="border-collapse:separate; border-spacing:10px;">
+                        {{ form.media }}
+                        {{ form.as_table }}
+                      </table>
+                          </div>
+                      <div class="col">
+                          <hr style="height:250pt; visibility:hidden;" />
+                          <img src="{{ art.image_url }}" width="300" height="auto" >
+                      </div>
+                  </div>
 
                 <div class="row">
                     <div class="col-5">

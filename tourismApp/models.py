@@ -686,7 +686,7 @@ class SpatialRefSys(models.Model):
 
 class Tour(models.Model):
     classid = models.CharField(primary_key=True, max_length=70)
-    descr_it = models.CharField(max_length=8192)
+    descr_it = RichTextField(max_length=8192)
     image_url = models.CharField(max_length=100, blank=True, null=True)
     kml_path = models.CharField(max_length=8192, blank=True, null=True)
     name_it = models.CharField(max_length=200)

@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
 from .models import *
-from .forms import ArtForm
+from .forms import ArtForm, TourForm
 # Create your views here.
 
 def pForm(request):
@@ -319,7 +319,7 @@ def newArt(request):
             category_t = AArtCategoryArtCategory(category=cat, points=art)
             category_t.save()
 
-        return redirect('/Art/{}'.format(id))
+        return redirect('/edit/{}'.format(id))
 
     context = {
         #'lang': Lang.objects.get(active=True),
@@ -329,7 +329,7 @@ def newArt(request):
 
 def newTour(request):
     context = {
-
+        'form' : TourForm()
     }
     return render(request, 'newTour.html', context)
 

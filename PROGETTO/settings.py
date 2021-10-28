@@ -162,15 +162,21 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-TINYMCE_DEFAULT_CONFIG = {
-    'plugins': "table,spellchecker,paste,searchreplace",
-    'theme': "advanced",
-    'cleanup_on_startup': True,
-    'custom_undo_redo_levels': 10,
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar':  [
+            ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+            ['TextColor', 'BGColor'],
+            ['NumberedList','BulletedList'],
+            ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+            ['Indent','Outdent'],
+            [ 'SpecialChar'],
+            #['Source'],
+        ],
+        #'height': 300,
+        'width': 750,
+    },
 }
-TINYMCE_SPELLCHECKER = False
-
-TINYMCE_COMPRESSOR = False
 
 #GDAL_LIBRARY_PATH = r'C:\OSGeo4W64\bin\gdalplugins'
 #os.environ['GDAL_DATA'] = "C:\\OSGeo4W64\\share\\epsg_csv" <- (path to gcs.csv file)

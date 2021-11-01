@@ -206,7 +206,7 @@ def editPoI(request, classid_lang):
             notes = form.cleaned_data['notes']
             open_time = form.cleaned_data['open_time']
             tickets = form.cleaned_data['tickets']
-            rss = form.cleaned_data['rss']
+            #rss = form.cleaned_data['rss']
             saving_vc = form.cleaned_data['saving_vc']
             vc = form.cleaned_data['vc']
             vc_id = form.cleaned_data['vc_id']
@@ -230,8 +230,8 @@ def editPoI(request, classid_lang):
             Art.objects.filter(classid=classid).update(open_time=open_time)
         if tickets != 'None' and art.tickets != tickets:
             Art.objects.filter(classid=classid).update(tickets=tickets)
-        if rss != 'None' and art.rss != rss:
-            Art.objects.filter(classid=classid).update(rss=rss)
+        #if rss != 'None' and art.rss != rss:
+            #Art.objects.filter(classid=classid).update(rss=rss)
         if saving_vc != 'None' and art.saving_vc != saving_vc:
             Art.objects.filter(classid=classid).update(saving_vc=saving_vc)
         if vc != 'None' and art.vc != vc:
@@ -241,6 +241,7 @@ def editPoI(request, classid_lang):
 
         if '_delete' in request.POST:
             Art.objects.filter(classid=classid).update(state='02')
+            return redirect('editArt')
 
         return redirect('/Art/{}+{}'.format(classid,lang))
 
@@ -249,6 +250,7 @@ def editPoI(request, classid_lang):
         'lang' : lang,
         'descr' : descr,
         'name' : name,
+        'de_vc': DEVc.objects.order_by('code').reverse(),
         'form' : ArtForm(initial={'name_it': name, 'descr_it': descr, 'image_url': art.image_url,
                                 'notes': art.notes, 'open_time': art.open_time, 'tickets': art.tickets,
                                 'rss': art.rss, 'saving_vc': art.saving_vc, 'vc': art.vc, 'vc_id': art.vc_id})
@@ -258,10 +260,114 @@ def editPoI(request, classid_lang):
     return render(request,'editPointOfInterest.html', context)
 
 def editOneTour(request, classid_lang):
+    if '+' not in classid_lang:
+        classid, lang = classid_lang, 'it'
+    else:
+        classid, lang = classid_lang.split('+')
+        de_lang = DELang.objects.get(code=lang)
+
+    tour = Tour.objects.get(classid=classid)
+
+    if lang == 'it':
+        descr = tour.descr_it
+        name = tour.name_it
+    else:
+        try:
+            descr_obj = TourDescrTradT.objects.get(classref=tour.classid, descr_trad_lang=de_lang)
+            descr = descr_obj.descr_trad_value
+        except:
+            descr_obj = TourDescrTradT()
+            descr_obj.classref = tour
+            descr_obj.descr_trad_lang = de_lang
+            descr_obj.descr_trad_value = ""
+            descr = descr_obj.descr_trad_value
+            descr_obj.save()
+
+        try:
+            name_obj = TourNameTradT.objects.get(classref=tour.classid, name_trad_lang=de_lang)
+            name = name_obj.name_trad_value
+        except:
+            name_obj = TourNameTradT()
+            name_obj.classref = tour
+            name_obj.name_trad_lang = de_lang
+            name_obj.name_trad_value = ""
+            name = name_obj.name_trad_value
+            name_obj.save()
+
+    if request.method == 'POST':
+        form = TourForm(request.POST)
+
+        if form.is_valid():
+            name = form.cleaned_data['name_it']
+            type = DTourETipoit.objects.get(name=form.cleaned_data['type'])
+            descr = form.cleaned_data['descr_it']
+            image_url = form.cleaned_data['image_url']
+            kml_path = form.cleaned_data['kml_path']
+            duration = form.cleaned_data['duration']
+            length = form.cleaned_data['length']
+
+        if lang == 'it':
+            if tour.name_it != name:
+                Tour.objects.filter(classid=classid).update(name_it=name)
+            if tour.descr_it != descr:
+                Tour.objects.filter(classid=classid).update(descr_it=descr)
+        else:
+            if name_obj.name_trad_value != name:
+                TourNameTradT.objects.filter(classref=classid, name_trad_lang=de_lang).update(name_trad_value=name)
+            if descr_obj.descr_trad_value != descr:
+                TourDescrTradT.objects.filter(classref=classid, descr_trad_lang=de_lang).update(descr_trad_value=descr)
+
+        if tour.type != type:
+            Tour.objects.filter(classid=classid).update(type=type)
+        if image_url != 'None' and tour.image_url != image_url:
+            Tour.objects.filter(classid=classid).update(image_url=image_url)
+        if kml_path != 'None' and tour.kml_path != kml_path:
+            Tour.objects.filter(classid=classid).update(kml_path=kml_path)
+        if duration != 'None' and tour.duration != duration:
+            Tour.objects.filter(classid=classid).update(duration=duration)
+        if length != 'None' and tour.length != length:
+            Tour.objects.filter(classid=classid).update(length=length)
+
+        return redirect('/edit/tour/{}/points'.format(classid,lang))
+
     context = {
-        'tour' : Tour.objects.get(classid=classid_lang)
+        'lang' : lang,
+        'tour' : tour,
+        'form' : TourForm(initial={'name_it': name, 'type': tour.type, 'descr_it': descr, 'image_url': tour.image_url,
+                                   'kml_path': tour.kml_path, 'duration': tour.duration, 'length': tour.length}),
     }
     return render(request,'editOneTour.html', context)
+
+def editTourPoi(request,classid):
+    if request.method == 'POST':
+        poi_in_Tour = AArtTourTour.objects.filter(tour=classid)
+        number_poi = len(poi_in_Tour)
+
+        if '_add' in request.POST:
+            poi = Art.objects.get(classid=request.POST['art'])
+
+            art_tour = AArtTourTour(point_of_interest=poi, tour=Tour.objects.get(classid=classid), num=number_poi + 1)
+            art_tour.save()
+
+            return redirect('/edit/tour/{}/points'.format(classid))
+
+        if '_save' in request.POST:
+            #for poi in range(1, number_poi+1):
+
+            #    menu = Art.objects.get(classid=request.POST['id{}'.format(poi)])
+            #    obj = AArtTourTour.objects.filter(num=poi)
+            #    if obj.point_of_interest != menu:
+            #        obj.update(point_of_interest=menu)
+            return redirect('/Tour/{}'.format(classid))
+    else:
+        poi_in_Tour = AArtTourTour.objects.filter(tour=classid)
+        context = {
+            'tour': Tour.objects.get(classid=classid),
+            'poi': poi_in_Tour,
+            'art': Art.objects.order_by('name_it'),
+            'end': True if len(poi_in_Tour) < 15 else False
+        }
+        return render(request, 'editTourPoI.html', context)
 
 def newArt(request):
 
@@ -287,9 +393,9 @@ def newArt(request):
             art.notes = form.cleaned_data['notes']
             art.open_time = form.cleaned_data['open_time']
             art.tickets = form.cleaned_data['tickets']
-            art.rss = form.cleaned_data['rss']
+            #art.rss = form.cleaned_data['rss']
             art.saving_vc = form.cleaned_data['saving_vc']
-            art.vc = form.cleaned_data['vc']
+            art.vc = request.POST['vc']
             art.vc_id = form.cleaned_data['vc_id']
 
             art.save()
@@ -323,22 +429,73 @@ def newArt(request):
 
     context = {
         #'lang': Lang.objects.get(active=True),
-        'form': ArtForm()
+        'form': ArtForm(),
+        'de_vc': DEVc.objects.order_by('code').reverse(),
     }
     return render(request, 'newArt.html',context)
 
 def newTour(request):
+    if request.method == 'POST':
+        #classid = request.POST['classid']
+
+        while True:
+            try:
+                id = "".join(random.choices(string.digits, k=5))
+                Tour.objects.get(classid=id)
+            except:
+                tour = Tour(classid=id)
+                break
+
+        form = TourForm(request.POST)
+
+
+        if form.is_valid():
+
+            tour.descr_it = form.cleaned_data['descr_it']
+            tour.image_url = form.cleaned_data['image_url']
+            tour.name_it = form.cleaned_data['name_it']
+            tour.type = DTourETipoit.objects.get(name=form.cleaned_data['type'])
+            tour.kml_path = form.cleaned_data['kml_path']
+            tour.duration = form.cleaned_data['duration']
+            tour.length = form.cleaned_data['length']
+            print("codice: ", id)
+            tour.save()
+
+        return redirect('/edit/newTour/{}'.format(id))
+
     context = {
         'form' : TourForm()
     }
     return render(request, 'newTour.html', context)
 
+def newTourPoI(request, classid):
+    if request.method == 'POST':
+        poi_in_Tour = AArtTourTour.objects.filter(tour=classid)
+        number_poi = len(poi_in_Tour)
+
+        poi = Art.objects.get(classid=request.POST['art'])
+
+        art_tour = AArtTourTour(point_of_interest=poi, tour=Tour.objects.get(classid=classid), num=number_poi+1)
+        art_tour.save()
+
+        return redirect('/edit/newTour/{}'.format(classid))
+    else:
+        poi_in_Tour = AArtTourTour.objects.filter(tour=classid)
+        context = {
+            'tour': Tour.objects.get(classid=classid),
+            'poi': poi_in_Tour,
+            'art': Art.objects.order_by('name_it'),
+            'end': True if len(poi_in_Tour) < 15 else False
+        }
+        return render(request, 'newTourPoI.html', context)
+
 def filterItemArt(request):
-    select = [None, True, True, True, True, True, True]
+    select = [None, True, True, True, True, True, True, True, True]
     if request.method == 'POST':
 
         category = ArtCategory.objects.none()
         category_t = AArtCategoryArtCategory.objects.none()
+        state = DArtEStato.objects.none()
         art = Art.objects.none()
         cat = 0
 
@@ -390,9 +547,29 @@ def filterItemArt(request):
         else:
             select[6] = False
 
-        for c in category_t:
-            art |= Art.objects.filter(name_it=c.points).order_by('name_it')
+        if 'attivo' in request.POST:
+            cat += 1
+            select[7] = True
+            state |= DArtEStato.objects.filter(code='01')
+        else:
+            select[7] = False
 
+        if 'eliminato' in request.POST:
+            cat += 1
+            select[8] = True
+            state |= DArtEStato.objects.filter(code='02')
+        else:
+            select[8] = False
+
+
+        for c in category_t:
+            new_art = Art.objects.filter(name_it=c.points).order_by('name_it')
+            if select[8] and select[7]:
+                    art |= new_art
+            elif select[8]:
+                art |= new_art.filter(state='02')
+            elif select[7]:
+                art |= new_art.filter(state='01')
         context = {
             'art': art,
             'category_t': category_t,

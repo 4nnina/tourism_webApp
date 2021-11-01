@@ -2,19 +2,20 @@ from django.forms import ModelForm, TextInput
 from django.utils.translation import ugettext_lazy as _
 from .models import *
 
+class MyForm(ModelForm):
+    OPTIONS = ()
+
 class ArtForm(ModelForm):
-    #def __init__(self, *args, **kwargs):
-    #    self.fields['tickets'].error_messages = {
-    #        'max_length': 'Too long'}
 
     class Meta:
         model = Art
         fields = ['name_it', 'descr_it', 'image_url', 'notes', 'open_time',
-                  'tickets', 'rss', 'saving_vc', 'vc', 'vc_id']
+                  'tickets', 'saving_vc', 'vc', 'vc_id']
         labels = {
             'name_it': _('Name'),
             'descr_it': _('Description'),
             'image_url': _('Image Url'),
+            'vc': _('Verona Card')
         }
         help_texts = {
 

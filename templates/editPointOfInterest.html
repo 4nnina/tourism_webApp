@@ -123,9 +123,83 @@
               <div>
                   <div class="row">
                       <div class="col-9">
+                      {{ form.media }}
                       <table style="border-collapse:separate; border-spacing:10px;">
-                        {{ form.media }}
-                        {{ form.as_table }}
+                          <tr>
+                              <td><label class="required" for="id_classid"><b>  Name:</b></label></td>
+                              <td>{{ form.name_it }}</td>
+                          </tr>
+
+                          <tr>
+                              <td><label class="required" for="id_classid"><b>  Description:</b></label></td>
+                              <td>{{ form.descr_it }}</td>
+                          </tr>
+
+                          <tr>
+                              <td><label class="required" for="id_classid"><b>  Image URL:</b></label></td>
+                              <td>{{ form.image_url }}</td>
+                          </tr>
+
+                          <tr>
+                              <td><label class="required" for="id_classid"><b>  Open time:</b></label></td>
+                              <td>{{ form.open_time }}</td>
+                          </tr>
+
+                          <tr>
+                              <td><label class="required" for="id_classid"><b>  Tickets:</b></label></td>
+                              <td>{{ form.tickets }}</td>
+                          </tr>
+
+                          <tr>
+                              <td><label class="required" for="id_classid"><b>  Verona Card:</b></label></td>
+                              <td>
+                                  <div class="related-widget-wrapper">
+                                      {% for vc in de_vc %}
+                                          {% if vc.code == form.vc %}
+                                            <option value="{{ vc.code }}">{{vc.name}}</option>
+                                          {% endif %}
+                                      {% endfor %}
+                                      <select name="vc" required="" id="vc">
+                                          {% for vc in de_vc %}
+                                            <option value="{{ vc.code }}">{{vc.name}}</option>
+                                          {% endfor %}
+                                      </select>
+                                  </div>
+                              </td>
+                          </tr>
+
+                          <tr>
+                              <td><label class="required" for="id_classid"><b>  Saving VC:</b></label></td>
+                              <td>{{ form.saving_vc }}</td>
+                          </tr>
+
+                          {% if user.is_superuser %}
+                          <tr>
+                              <td><label class="required" for="id_classid"><b>  Verona Card id:</b></label></td>
+                              <td>{{ form.vc_id }}</td>
+                          </tr>
+                          {% endif %}
+
+                            <!--div class="row">
+                      <div class="col-9">
+                          <table style="border-collapse:separate; border-spacing:10px;">
+                            {{ form.media }}
+
+                              {{ form.name_it }}
+                              {{ form.descr_it }}
+                            {{ form.as_table }}
+                          </table>
+
+                          <div class="row justify-content-center">
+                          <div class="col-1">
+                              <label class="required" for="id_classid"><b>  Name:</b></label>
+                          </div>
+                          <div class="col">
+                              {{ form.name_it}}
+                          </div>
+                      </div>
+
+                  </div-->
                       </table>
                           </div>
                       <div class="col">

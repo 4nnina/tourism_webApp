@@ -118,24 +118,37 @@
     <section class="edit-details">
         <div class="container">
             <table style="border-collapse:separate; border-spacing:10px;">
+            <form method="post">
+                    {% csrf_token %}
                 {% for p in poi %}
                     <tr>
                         <td><label><b>Point of interest number {{ p.num }}:</b></label></td>
                         <td>
-                            <!--select name="id1" required="" id="id1">
+                            <select name="poi" required="" id="{{ p.num }}">
                                 <option value="{{ p.point_of_interest.classid}}">{{ p.point_of_interest.name_it }}</option>
                                 {% for a in art %}
                                     <option value="{{ a.classid }}">{{ a.name_it }}</option>
                                 {% endfor %}
-                            </select-->
-                        <a href="/Art/{{ p.point_of_interest.classid }}" style="color: #37517e;">{{ p.point_of_interest }}</a>
+                            </select>
+                        </td>
+                        <td>
+                            {% if p.num != 1 %}
+                            <input type="submit" value="&#8679" name="_up{{ p.num }}" style="  top: 0px; right: 0px; left: 10px; bottom: 0px; border:0px; display: inline-block; padding: 0px 10px 0px 10px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: black; background: gainsboro;">
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if p.num != len %}
+                            <input type="submit" value="&#8681" name="_down{{ p.num }}" style="  top: 0px; right: 0px; left: 10px; bottom: 0px; border:0px; display: inline-block; padding: 0px 10px 0px 10px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: black; background: gainsboro;">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <input type="submit" value="Delete" name="_delete{{ p.num }}" style="  top: 0px; right: 0px; left: 10px; bottom: 0px; border:0px; display: inline-block; padding: 0px 10px 0px 10px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #C2302E;">
                         </td>
                     </tr>
                 {% endfor %}
 
                     {% if end %}
-                    <form method="post">
-                    {% csrf_token %}
+
                     <tr>
                         <td><label class="required" for="poi"><b>  Add point of interest:</b></label></td>
                         <td>
@@ -147,8 +160,8 @@
                                 </select>
                             </div>
                         </td>
-
-                        <td><input type="submit" value="Add" name="_add" style="  top: 0px; right: 0px; left: 0px; bottom: 0px; border:0px; display: inline-block; padding: 5px 15px 6px 15px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;"></td>
+                        <td></td><td></td>
+                        <td><input type="submit" value="Add" name="_add" style="  top: 0px; right: 0px; left: 0px; bottom: 0px; border:0px; display: inline-block; padding: 5px 20px 6px 20px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;"></td>
                     </tr>
                     <tr>
                         <td><input type="submit" value="Save" name="_save" style="  top: 0px; right: 0px; left: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;"></td>

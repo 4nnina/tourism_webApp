@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.db import transaction
 
 from .models import *
 from .forms import ArtForm, TourForm
@@ -351,20 +352,67 @@ def editTourPoi(request,classid):
 
             return redirect('/edit/tour/{}/points'.format(classid))
 
-        if '_save' in request.POST:
-            #for poi in range(1, number_poi+1):
+        for d in range(1,number_poi+1):
+            if '_delete{}'.format(d) in request.POST:
+                with transaction.atomic():
+                    obj = AArtTourTour.objects.get(num=d, tour=classid)
+                    obj.delete()
 
-            #    menu = Art.objects.get(classid=request.POST['id{}'.format(poi)])
-            #    obj = AArtTourTour.objects.filter(num=poi)
-            #    if obj.point_of_interest != menu:
-            #        obj.update(point_of_interest=menu)
-            return redirect('/Tour/{}'.format(classid))
+                    for num in range(d+1, number_poi+1):
+                        AArtTourTour.objects.filter(num=num, tour=classid).update(num=num-1)
+
+                return redirect('/edit/tour/{}/points'.format(classid))
+
+            if '_up{}'.format(d) in request.POST:
+                first = d - 1
+                second = d
+                with transaction.atomic():
+                    obj1 = AArtTourTour.objects.get(num=first, tour=classid)
+                    obj2 = AArtTourTour.objects.get(num=second, tour=classid)
+                    AArtTourTour.objects.filter(point_of_interest=obj1.point_of_interest,tour=classid).update(num=second)
+                    AArtTourTour.objects.filter(point_of_interest=obj2.point_of_interest,tour=classid).update(num=first)
+
+                return redirect('/edit/tour/{}/points'.format(classid))
+
+            if '_down{}'.format(d) in request.POST:
+                first = d
+                second = d + 1
+                with transaction.atomic():
+                    obj1 = AArtTourTour.objects.get(num=first, tour=classid)
+                    obj2 = AArtTourTour.objects.get(num=second, tour=classid)
+                    AArtTourTour.objects.filter(point_of_interest=obj1.point_of_interest, tour=classid).update(
+                        num=second)
+                    AArtTourTour.objects.filter(point_of_interest=obj2.point_of_interest, tour=classid).update(
+                        num=first)
+
+            return redirect('/edit/tour/{}/points'.format(classid))
+
+        if '_save' in request.POST:
+            num = 0
+            for poi in dict(request.POST)['poi']:
+                num += 1
+                obj = AArtTourTour.objects.get(num=num, tour=classid)
+                if obj.point_of_interest.classid != poi:
+                    with transaction.atomic():
+
+                        obj.delete()
+                        art_tour = AArtTourTour(point_of_interest=Art.objects.get(classid=poi),
+                                                tour=Tour.objects.get(classid=classid),num=num)
+                        try:
+                            art_tour.save()
+                        except:
+                            print("Due chiavi uguali, non fatto nulla")
+                            return redirect('/edit/tour/{}/points'.format(classid))
+
+            return redirect('/edit/tour/{}/points'.format(classid))
+            #return redirect('/Tour/{}'.format(classid))
     else:
-        poi_in_Tour = AArtTourTour.objects.filter(tour=classid)
+        poi_in_Tour = AArtTourTour.objects.filter(tour=classid).order_by('num')
         context = {
             'tour': Tour.objects.get(classid=classid),
             'poi': poi_in_Tour,
             'art': Art.objects.order_by('name_it'),
+            'len': len(poi_in_Tour),
             'end': True if len(poi_in_Tour) < 15 else False
         }
         return render(request, 'editTourPoI.html', context)

@@ -150,12 +150,17 @@
 
                     <div class="row">
                       <div class="col-9">
-                      <table style="border-collapse:separate; border-spacing:10px;">
-                        {{ form.media }}
-                        {{ form.as_table }}
-                      </table>
+                           <div class="col-9">
+                              <table style="border-collapse:separate; border-spacing:10px;">
+                                {{ form.media }}
+                                {{ form.as_table }}
+                              </table>
                           </div>
-
+                             </div>
+                      <div class="col">
+                          <hr style="height:250pt; visibility:hidden;" />
+                          <img src="{{ tour.image_url }}" width="300" height="auto" >
+                      </div>
                   </div>
 
                 </fieldset>

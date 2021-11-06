@@ -129,18 +129,10 @@
                               <label class="required" for="id_classid"><b>  Category:</b></label>
                           </div>
                           <div class="col">
-                              <input type="checkbox" name="Chiese" id="Chiese">
-                              <label for="cat"> Chiese </label><br>
-                              <input type="checkbox" name="Monumenti" id="Monumenti">
-                              <label for="cat"> Monumenti </label><br>
-                              <input type="checkbox" name="Teatri" id="Teatri">
-                              <label for="cat"> Teatri o anfiteatri </label><br>
-                              <input type="checkbox" name="Musei" id="Musei">
-                              <label for="cat"> Musei e Centri Espositivi </label><br>
-                              <input type="checkbox" name="Palazzi" id="Palazzi">
-                              <label for="cat"> Palazzi, torri e castelli </label><br>
-                              <input type="checkbox" name="Archeologici" id="Archeologici">
-                              <label for="cat"> Siti archeologici </label>
+                              {% for cat in category.all %}
+                              <input type="checkbox" name="categoria_{{ cat.classid }}">
+                              <label for="{{ cat.classid }}"> {{ cat.name_it }} </label><br>
+                              {% endfor %}
                           </div>
                       </div><hr width="70%">
 

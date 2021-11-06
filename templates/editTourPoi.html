@@ -1,4 +1,5 @@
 {% load static %}
+{% include 'ErrorePoiInTour.html' %}
 
 <!DOCTYPE html>
 
@@ -106,7 +107,7 @@
 
         <ol>
           <li><a href="">Home</a></li>
-          <li><a href="">New Tour</a></li>
+          <li><a href="">Edit</a></li>
           <li>{{ tour.name_it }}</li>
         </ol>
         <h2>{{ tour.name_it }}</h2>
@@ -114,6 +115,13 @@
       </div>
     </section><!-- End Breadcrumbs -->
 
+    {% for message in messages %}
+    <div id="content">
+        <div class="alert alert-danger" id="msg" role="alert">
+                {{ message }}
+        </div>
+    </div>
+    {% endfor %}
 
     <section class="edit-details">
         <div class="container">

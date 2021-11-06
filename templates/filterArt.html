@@ -113,30 +113,12 @@
                   <h4>Category: </h4>
                   <div class="row justify-content-md-center">
                       <div class="col-md-auto"></div>
-                      <div class="col-md-auto">
-                          <input type="checkbox" name="Chiese" id="Chiese" {% if select.1 %} checked {% endif %}>
-                          <label for="Chiese"> Chiese </label>
-                      </div>
-                      <div class="col-md-auto">
-                          <input type="checkbox" name="Monumenti" id="Monumenti" {% if select.2 %} checked {% endif %}>
-                          <label for="Monumenti"> Monumenti </label>
-                      </div>
-                      <div class="col-md-auto">
-                          <input type="checkbox" name="Teatri" id="Teatri" {% if select.3 %} checked {% endif %}>
-                          <label for="Teatri"> Teatri o anfiteatri </label>
-                      </div>
-                      <div class="col-md-auto">
-                          <input type="checkbox" name="Musei" id="Musei" {% if select.4 %} checked {% endif %}>
-                          <label for="Musei"> Musei e Centri Espositivi </label>
-                      </div>
-                      <div class="col-md-auto">
-                          <input type="checkbox" name="Palazzi" id="Palazzi" {% if select.5 %} checked {% endif %}>
-                          <label for="Palazzi"> Palazzi, torri e castelli </label>
-                      </div>
-                      <div class="col-md-auto">
-                          <input type="checkbox" name="Archeologici" id="Archeologici" {% if select.6 %} checked {% endif %}>
-                          <label for="Archeologici"> Siti archeologici </label>
-                      </div>
+                      {% for cat in category_db %}
+                          <div class="col-md-auto">
+                              <input type="checkbox" name="categoria_{{ cat.classid }}" {% if select|check:cat.classid %} checked {% endif %}>
+                              <label for="{{ cat.classid }}"> {{ cat.name_it }} </label>
+                          </div>
+                      {% endfor %}
                   </div>
 
                   <br>

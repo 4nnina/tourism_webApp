@@ -13,7 +13,6 @@ urlpatterns = [
     path('editTour',views.editTour, name="editTour"),
     path('edit/newArt', views.newArt, name="newArt"),
     path('edit/newTour', views.newTour, name="newTour"),
-    path('edit/newTour/<str:classid>', views.newTourPoI, name="newTourPoI"),
     path('edit/<str:classid_lang>', views.editPoI, name="editPoI"),
     path('edit/tour/<str:classid_lang>', views.editOneTour, name="editOneTour"),
     path('edit/tour/<str:classid>/points', views.editTourPoi, name="editTourPoi"),

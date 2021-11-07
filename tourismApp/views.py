@@ -447,23 +447,25 @@ def editTourPoi(request,classid):
 
         if '_save' in request.POST:
             num = 0
-            for poi in dict(request.POST)['poi']:
-                num += 1
-                obj = AArtTourTour.objects.get(num=num, tour=classid)
-                if obj.point_of_interest.classid != poi:
-                    with transaction.atomic():
-                        newPoi = Art.objects.get(classid=poi).name_it
-                        obj.delete()
-                        art_tour = AArtTourTour(point_of_interest=Art.objects.get(classid=poi),
-                                                tour=Tour.objects.get(classid=classid),num=num)
+            try:
+                for poi in dict(request.POST)['poi']:
+                    num += 1
+                    obj = AArtTourTour.objects.get(num=num, tour=classid)
+                    if obj.point_of_interest.classid != poi:
+                        with transaction.atomic():
+                            newPoi = Art.objects.get(classid=poi).name_it
+                            obj.delete()
+                            art_tour = AArtTourTour(point_of_interest=Art.objects.get(classid=poi),
+                                                    tour=Tour.objects.get(classid=classid),num=num)
 
-                        try:
-                            art_tour.save()
-                        except:
-                            print("Due chiavi uguali, non fatto nulla")
-                            messages.info(request, '"{}" was assigned to two different points of interest!'.format(newPoi))
-                            return redirect('/edit/tour/{}/points'.format(classid))
-
+                            try:
+                                art_tour.save()
+                            except:
+                                print("Due chiavi uguali, non fatto nulla")
+                                messages.info(request, '"{}" was assigned to two different points of interest!'.format(newPoi))
+                                return redirect('/edit/tour/{}/points'.format(classid))
+            except KeyError:
+                pass
             return redirect('/Tour/{}'.format(classid))
     else:
         #poi_in_Tour = AArtTourTour.objects.filter(tour=classid).order_by('num')

@@ -48,6 +48,7 @@
   <!-- Template Main CSS File -->
   <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> <!-- per lo script-->
 
 <meta name="robots" content="NONE,NOARCHIVE">
 </head>
@@ -150,51 +151,51 @@
 
                       <table style="border-collapse:separate; border-spacing:10px;">
                           <tr>
-                              <td><label class="required" for="id_classid"><b>  Name:</b></label></td>
+                              <td><label class="required"><b>  Name:</b></label></td>
                               <td>{{ form.name_it }}</td>
                           </tr>
 
                           <tr>
-                              <td><label class="required" for="id_classid"><b>  Description:</b></label></td>
+                              <td><label class="required"><b>  Description:</b></label></td>
                               <td>{{ form.descr_it }}</td>
                           </tr>
 
                           <tr>
-                              <td><label class="required" for="id_classid"><b>  Image URL:</b></label></td>
+                              <td><label class="required"><b>  Image URL:</b></label></td>
                               <td>{{ form.image_url }}</td>
                           </tr>
 
                           <tr>
-                              <td><label class="required" for="id_classid"><b>  Open time:</b></label></td>
+                              <td><label class="required"><b>  Open time:</b></label></td>
                               <td>{{ form.open_time }}</td>
                           </tr>
 
                           <tr>
-                              <td><label class="required" for="id_classid"><b>  Tickets:</b></label></td>
+                              <td><label class="required"><b>  Tickets:</b></label></td>
                               <td>{{ form.tickets }}</td>
                           </tr>
 
                           <tr>
-                              <td><label class="required" for="id_classid"><b>  Verona Card:</b></label></td>
+                              <td><label class="required"><b>  Verona Card:</b></label></td>
                               <td>
                                   <div class="related-widget-wrapper">
-                                      <select name="vc" required="" id="vc" onchange="savinVC()">
+                                      <select name="vc" required="" id="vc">
                                           {% for vc in de_vc %}
-                                            <option value="{{ vc.code }}">{{vc.name}}</option>
+                                            <option value="{{ vc.code }}">{{ vc.name }}</option>
                                           {% endfor %}
                                       </select>
                                   </div>
                               </td>
                           </tr>
 
-                          <tr>
-                              <td><label class="required" for="id_classid"><b>  Saving VC:</b></label></td>
+                          <tr id="saving_vc_" style="display: none">
+                              <td><label><b>  Saving VC:</b></label></td>
                               <td>{{ form.s_vc_perc }}</td>
                           </tr>
 
                           {% if user.is_superuser %}
                           <tr>
-                              <td><label class="required" for="id_classid"><b>  Verona Card id:</b></label></td>
+                              <td><label class="required"><b>  Verona Card id:</b></label></td>
                               <td>{{ form.vc_id }}</td>
                           </tr>
                           {% endif %}
@@ -261,15 +262,19 @@
   <!-- Template Main JS File -->
   <script src="/static/assets/js/main.js"></script>
 
-  <script>
-      function savinVC() {
-        var x = document.getElementById("vc").value;
-        document.getElementById("03").innerHTML = "You selected: " + x;
-        if (x === "other") {
 
+<script>
+    $('#vc').on('change', function() {
+        var selected = $(this).val();
+
+        if (selected === "01") {
+            $('#saving_vc_').show();
         }
-      }
-  </script>
+        else{
+            $('#saving_vc_').hide();
+        }
+    });
+</script>
 
 
 </div>

@@ -7,7 +7,7 @@ class MyForm(ModelForm):
     OPTIONS = ()
 
 class ArtForm(ModelForm):
-    s_vc_perc = forms.FloatField(min_value=0, max_value=100, widget= forms.NumberInput
+    s_vc_perc = forms.FloatField(min_value=0, max_value=100, required=False, widget=forms.NumberInput
                            (attrs={'placeholder': 'Discount percentage'}))
 
     class Meta:

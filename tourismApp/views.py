@@ -300,7 +300,6 @@ def editPoI2(request, classid_lang):
                 de_lang = DELang.objects.order_by('name')
                 found = False
                 for l in de_lang:
-                    print(l)
                     if found and l.code != 'en':
                         return redirect('/edit/translation/{}+{}'.format(classid, l.code))
                     if l.code == lang:
@@ -504,9 +503,14 @@ def newArt(request):
             art.tickets = form.cleaned_data['tickets']
             #art.rss = form.cleaned_data['rss']
             #art.saving_vc = form.cleaned_data['saving_vc']
-            art.saving_vc = form.cleaned_data['s_vc_perc'] / 100 if form.cleaned_data['s_vc_perc'] != 0 else 0.0
             art.vc = request.POST['vc']
             art.vc_id = form.cleaned_data['vc_id']
+
+            saving_vc = form.cleaned_data['s_vc_perc']
+            if saving_vc is None or saving_vc == 0:
+                art.saving_vc = 0.0
+            else :
+                art.saving_vc = saving_vc / 100
 
             art.save()
 

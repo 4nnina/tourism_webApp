@@ -179,7 +179,8 @@ def editPoI1(request, classid):
             open_time = form.cleaned_data['open_time']
             tickets = form.cleaned_data['tickets']
             #rss = form.cleaned_data['rss']
-            saving_vc = form.cleaned_data['saving_vc']
+            #saving_vc = form.cleaned_data['saving_vc']
+            saving_vc = form.cleaned_data['s_vc_perc'] / 100 if form.cleaned_data['s_vc_perc'] != 0 else 0.0
             vc = form.cleaned_data['vc']
             vc_id = form.cleaned_data['vc_id']
 
@@ -194,7 +195,7 @@ def editPoI1(request, classid):
                     Art.objects.filter(classid=classid).update(tickets=tickets)
                 #if rss != 'None' and art.rss != rss:
                     #Art.objects.filter(classid=classid).update(rss=rss)
-                if saving_vc != 'None' and art.saving_vc != saving_vc:
+                if art.saving_vc != saving_vc:
                     Art.objects.filter(classid=classid).update(saving_vc=saving_vc)
                 if vc != 'None' and art.vc != vc:
                     Art.objects.filter(classid=classid).update(vc=vc)
@@ -224,7 +225,7 @@ def editPoI1(request, classid):
         'select': select,
         'de_vc': DEVc.objects.order_by('code').reverse(),
         'form' : ArtForm(initial={'image_url': art.image_url, 'notes': art.notes, 'open_time': art.open_time, 'tickets': art.tickets,
-                                'rss': art.rss, 'saving_vc': art.saving_vc, 'vc': art.vc, 'vc_id': art.vc_id})
+                                'rss': art.rss, 's_vc_perc': art.saving_vc*100, 'vc': art.vc, 'vc_id': art.vc_id})
         #'state':DArtEStato.objects
     }
     return render(request,'editPointOfInterest.html', context)
@@ -296,10 +297,11 @@ def editPoI2(request, classid_lang):
             if '_continue' in request.POST:
                 if lang=='it':
                     return redirect('/edit/translation/{}+{}'.format(classid, 'en'))
-                de_lang = DELang.objects.order_by('code')
+                de_lang = DELang.objects.order_by('name')
                 found = False
                 for l in de_lang:
-                    if found:
+                    print(l)
+                    if found and l.code != 'en':
                         return redirect('/edit/translation/{}+{}'.format(classid, l.code))
                     if l.code == lang:
                         found = True
@@ -383,7 +385,10 @@ def editOneTour(request, classid_lang):
         #if length != 'None' and tour.length != length:
         #    Tour.objects.filter(classid=classid).update(length=length)
 
-        return redirect('/edit/tour/{}/points'.format(classid,lang))
+        if '_editPOI' in request.POST:
+            return redirect('/edit/tour/{}/points'.format(classid,lang))
+        if '_save' in request.POST:
+            return redirect('/Tour/{}+{}'.format(classid,lang))
 
     context = {
         'lang' : lang,
@@ -498,7 +503,8 @@ def newArt(request):
             art.open_time = form.cleaned_data['open_time']
             art.tickets = form.cleaned_data['tickets']
             #art.rss = form.cleaned_data['rss']
-            art.saving_vc = form.cleaned_data['saving_vc']
+            #art.saving_vc = form.cleaned_data['saving_vc']
+            art.saving_vc = form.cleaned_data['s_vc_perc'] / 100 if form.cleaned_data['s_vc_perc'] != 0 else 0.0
             art.vc = request.POST['vc']
             art.vc_id = form.cleaned_data['vc_id']
 
@@ -510,7 +516,7 @@ def newArt(request):
                 category_t = AArtCategoryArtCategory(category=cat, points=art)
                 category_t.save()
 
-        return redirect('/edit/{}'.format(id))
+        return redirect('/edit/translation/{}+{}'.format(id,'en'))
 
     context = {
         #'lang': Lang.objects.get(active=True),
@@ -535,15 +541,16 @@ def newTour(request):
         form = TourForm(request.POST)
 
         if form.is_valid():
+            with transaction.atomic():
+                tour.descr_it = form.cleaned_data['descr_it']
+                tour.image_url = form.cleaned_data['image_url']
+                tour.name_it = form.cleaned_data['name_it']
+                tour.type = DTourETipoit.objects.get(name=form.cleaned_data['type'])
+                #tour.kml_path = form.cleaned_data['kml_path']
+                tour.duration = form.cleaned_data['duration']
+                #tour.length = form.cleaned_data['length']
 
-            tour.descr_it = form.cleaned_data['descr_it']
-            tour.image_url = form.cleaned_data['image_url']
-            tour.name_it = form.cleaned_data['name_it']
-            tour.type = DTourETipoit.objects.get(name=form.cleaned_data['type'])
-            tour.kml_path = form.cleaned_data['kml_path']
-            tour.duration = form.cleaned_data['duration']
-            tour.length = form.cleaned_data['length']
-            tour.save()
+                tour.save()
 
         return redirect('/edit/tour/{}/points'.format(id))
 

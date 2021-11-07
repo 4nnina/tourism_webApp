@@ -178,7 +178,7 @@
                               <td><label class="required" for="id_classid"><b>  Verona Card:</b></label></td>
                               <td>
                                   <div class="related-widget-wrapper">
-                                      <select name="vc" required="" id="vc">
+                                      <select name="vc" required="" id="vc" onchange="savinVC()">
                                           {% for vc in de_vc %}
                                             <option value="{{ vc.code }}">{{vc.name}}</option>
                                           {% endfor %}
@@ -189,7 +189,7 @@
 
                           <tr>
                               <td><label class="required" for="id_classid"><b>  Saving VC:</b></label></td>
-                              <td>{{ form.saving_vc }}</td>
+                              <td>{{ form.s_vc_perc }}</td>
                           </tr>
 
                           {% if user.is_superuser %}
@@ -260,6 +260,16 @@
 
   <!-- Template Main JS File -->
   <script src="/static/assets/js/main.js"></script>
+
+  <script>
+      function savinVC() {
+        var x = document.getElementById("vc").value;
+        document.getElementById("03").innerHTML = "You selected: " + x;
+        if (x === "other") {
+
+        }
+      }
+  </script>
 
 
 </div>

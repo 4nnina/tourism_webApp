@@ -1,4 +1,5 @@
 {% load static %}
+{% load templateTags %}
 
 <!DOCTYPE html>
 
@@ -79,11 +80,11 @@
           {% if user.is_authenticated %}
               <li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="20" ></span> <i class="bi bi-chevron-down"></i></a>
                 <ul>
-                    <li><a href="/edit/{{ art.classid }}" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
-                    <li><a href="/edit/{{ art.classid }}+en" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
-                    <li><a href="/edit/{{ art.classid }}+es" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
-                    <li><a href="/edit/{{ art.classid }}+fr" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
-                    <li><a href="/edit/{{ art.classid }}+de" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
+                    <li><a href="/edit/translation/{{ art.classid }}" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
+                    <li><a href="/edit/translation/{{ art.classid }}+en" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
+                    <li><a href="/edit/translation/{{ art.classid }}+es" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
+                    <li><a href="/edit/translation/{{ art.classid }}+fr" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
+                    <li><a href="/edit/translation/{{ art.classid }}+de" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
                 </ul>
               </li>
               <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
@@ -105,11 +106,19 @@
       <div class="container">
 
         <ol>
-          <li><a href="/">Home</a></li>
-          <li><a href="/editArt">Edit</a></li>
-          <li>Details</li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/editArt">Edit</a></li>
+            <li>Details</li>
+            <li><img src="{% static '/assets/img/flags/{}.jpg'|format:lang %}" alt="it" height="20" style="padding-left: 10px;"></li>
         </ol>
-        <h2>{{ art.name_it }}</h2>
+        <ol>
+            <div class="col-1">
+                 <i class="bi-pencil-square" style="font-size: 30px;color: #37517e"></i>
+            </div>
+            <div class="col">
+                <h2>  {{ art.name_it }}</h2>
+            </div>
+        </ol>
 
       </div>
     </section><!-- End Breadcrumbs -->
@@ -127,12 +136,22 @@
                           <table style="border-collapse:separate; border-spacing:10px;">
                               <tr>
                                   <td><label class="required" for="id_classid"><b>  Name:</b></label></td>
-                                  <td>{{ form.name_it }}</td>
+                                  <td>{{ form.name_it }} <a data-bs-popper="label_info" data-popper-placement="right" title="Traduzione del nome del punto di interesse nella lingua selezionata"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
                               </tr>
 
                               <tr>
                                   <td><label class="required" for="id_classid"><b>  Description:</b></label></td>
                                   <td>{{ form.descr_it }}</td>
+                              </tr>
+
+                              <tr>
+                                  <td><label class="required"><b>  Open time:</b></label></td>
+                                  <td>{{ form.open_time }}</td>
+                              </tr>
+
+                              <tr>
+                                  <td><label class="required"><b>  Tickets:</b></label></td>
+                                  <td>{{ form.tickets }}</td>
                               </tr>
 
                           </table>

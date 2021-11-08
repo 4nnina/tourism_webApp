@@ -85,6 +85,8 @@ def itemPoI(request,classid_lang):
     if lang == 'it':
         descr_trad = art.descr_it
         name_trad = art.name_it
+        tickets_trad = art.tickets
+        open_time_trad = art.open_time
     else:
         lang_table = DELang.objects.get(code=lang)
         try:
@@ -97,12 +99,22 @@ def itemPoI(request,classid_lang):
         except:
             name_trad = art.name_it
 
+        try:
+            trad = ArtTradT.objects.get(classref=art.classid, lang=lang_table.code)
+            tickets_trad = trad.tickets_trad
+            open_time_trad = trad.open_time_trad
+        except:
+            tickets_trad = '<b style="color:red;">Non ancora tradotto in {}</b>'.format(lang_table.name)
+            open_time_trad = '<b style="color:red;">Non ancora tradotto in {}</b>'.format(lang_table.name)
+
     context = {
         'art': art,
         'category': category,
         'lang' : lang,
         'descr_trad' : descr_trad,
         'name_trad' : name_trad,
+        'tickets_trad': tickets_trad,
+        'open_time_trad': open_time_trad,
     }
 
     return render(request,'art-details.html', context)
@@ -176,10 +188,6 @@ def editPoI1(request, classid):
         if form.is_valid():
             image_url = form.cleaned_data['image_url']
             notes = form.cleaned_data['notes']
-            open_time = form.cleaned_data['open_time']
-            tickets = form.cleaned_data['tickets']
-            #rss = form.cleaned_data['rss']
-            #saving_vc = form.cleaned_data['saving_vc']
             saving_vc = form.cleaned_data['s_vc_perc'] / 100 if form.cleaned_data['s_vc_perc'] != 0 else 0.0
             vc = form.cleaned_data['vc']
             vc_id = form.cleaned_data['vc_id']
@@ -189,12 +197,6 @@ def editPoI1(request, classid):
                     Art.objects.filter(classid=classid).update(image_url=image_url)
                 if notes != 'None' and art.notes != notes:
                     Art.objects.filter(classid=classid).update(notes=notes)
-                if open_time != 'None' and art.open_time != open_time:
-                    Art.objects.filter(classid=classid).update(open_time=open_time)
-                if tickets != 'None' and art.tickets != tickets:
-                    Art.objects.filter(classid=classid).update(tickets=tickets)
-                #if rss != 'None' and art.rss != rss:
-                    #Art.objects.filter(classid=classid).update(rss=rss)
                 if art.saving_vc != saving_vc:
                     Art.objects.filter(classid=classid).update(saving_vc=saving_vc)
                 if vc != 'None' and art.vc != vc:
@@ -224,8 +226,8 @@ def editPoI1(request, classid):
         'category': category,
         'select': select,
         'de_vc': DEVc.objects.order_by('code').reverse(),
-        'form' : ArtForm(initial={'image_url': art.image_url, 'notes': art.notes, 'open_time': art.open_time, 'tickets': art.tickets,
-                                'rss': art.rss, 's_vc_perc': art.saving_vc*100, 'vc': art.vc, 'vc_id': art.vc_id})
+        'form' : ArtForm_data(initial={'image_url': art.image_url, 'notes': art.notes,
+                                       's_vc_perc': art.saving_vc*100, 'vc': art.vc, 'vc_id': art.vc_id})
         #'state':DArtEStato.objects
     }
     return render(request,'editPointOfInterest.html', context)
@@ -242,14 +244,18 @@ def editPoI2(request, classid_lang):
     if lang == 'it':
         descr = art.descr_it
         name = art.name_it
+        tickets = art.tickets
+        open_time = art.open_time
+        #notes = art.notes
         translated = True
     else:
+        translated = False
         try:
             descr_obj = ArtDescrTradT.objects.get(classref=art.classid, descr_trad_lang=de_lang)
             descr = descr_obj.descr_trad_value
-            translated = True
+            descr_t = True
         except:
-            translated = False
+            descr_t = False
             descr_obj = ArtDescrTradT()
             descr_obj.classref = art
             descr_obj.descr_trad_lang = de_lang
@@ -260,7 +266,9 @@ def editPoI2(request, classid_lang):
         try:
             name_obj = ArtNameTradT.objects.get(classref=art.classid, name_trad_lang=de_lang)
             name = name_obj.name_trad_value
+            name_t = True
         except:
+            name_t = False
             name_obj = ArtNameTradT()
             name_obj.classref = art
             name_obj.name_trad_lang = de_lang
@@ -268,29 +276,65 @@ def editPoI2(request, classid_lang):
             name = name_obj.name_trad_value
             #name_obj.save()
 
+        try:
+            trad_obj = ArtTradT.objects.get(classref=art.classid, lang=de_lang.code)
+            tickets = trad_obj.tickets_trad
+            open_time = trad_obj.open_time_trad
+            #notes = trad_obj.notes_trad
+            trad_t = True
+        except:
+            trad_t = False
+            trad_obj = ArtTradT()
+            trad_obj.classref = art
+            trad_obj.lang = de_lang.code
+            trad_obj.tickets_trad = ""
+            tickets = trad_obj.tickets_trad
+            trad_obj.open_time_trad = ""
+            open_time = trad_obj.open_time_trad
+            #notes = None
+
     if request.method == 'POST':
 
-        form = ArtForm_Name_Descr(request.POST)
+        form = ArtForm_Trad(request.POST)
 
         if form.is_valid():
             descr = form.cleaned_data['descr_it']
             name = form.cleaned_data['name_it']
+            tickets = form.cleaned_data['tickets']
+            open_time = form.cleaned_data['open_time']
+            #notes = form.cleaned_data['notes']
 
         with transaction.atomic():
             if not translated:
-                name_obj.save()
-                descr_obj.save()
+                if not name_t:
+                    name_obj.save()
+                if not descr_t:
+                    descr_obj.save()
+                if not trad_t:
+                 trad_obj.save()
 
             if lang == 'it':
                 if art.name_it != name:
                     Art.objects.filter(classid=classid).update(name_it=name)
                 if art.descr_it != descr:
                     Art.objects.filter(classid=classid).update(descr_it=descr)
+                #if art.notes != notes:
+                #    Art.objects.filter(classid=classid).update(notes=notes)
+                if art.open_time != open_time:
+                    Art.objects.filter(classid=classid).update(open_time=open_time)
+                if art.tickets != tickets:
+                    Art.objects.filter(classid=classid).update(tickets=tickets)
             else:
                 if name_obj.name_trad_value != name:
                     ArtNameTradT.objects.filter(classref=classid, name_trad_lang=de_lang).update(name_trad_value=name)
                 if descr_obj.descr_trad_value != descr:
                     ArtDescrTradT.objects.filter(classref=classid, descr_trad_lang=de_lang).update(descr_trad_value=descr)
+                #if trad_obj.notes_trad != notes:
+                #    ArtTradT.objects.filter(classref=classid).update(notes_trad=notes)
+                if trad_obj.open_time_trad != open_time:
+                    ArtTradT.objects.filter(classref=classid).update(open_time_trad=open_time)
+                if trad_obj.tickets_trad != tickets:
+                    ArtTradT.objects.filter(classref=classid).update(tickets_trad=tickets)
 
             if '_save' in request.POST:
                 return redirect('/Art/{}+{}'.format(classid,lang))
@@ -298,9 +342,12 @@ def editPoI2(request, classid_lang):
                 if lang=='it':
                     return redirect('/edit/translation/{}+{}'.format(classid, 'en'))
                 de_lang = DELang.objects.order_by('name')
-                found = False
+                if lang == 'en':
+                    found = True
+                else:
+                    found = False
                 for l in de_lang:
-                    if found and l.code != 'en':
+                    if l.code != 'en' and found:
                         return redirect('/edit/translation/{}+{}'.format(classid, l.code))
                     if l.code == lang:
                         found = True
@@ -312,7 +359,7 @@ def editPoI2(request, classid_lang):
         'descr' : descr,
         'name' : name,
         'de_vc': DEVc.objects.order_by('code').reverse(),
-        'form' : ArtForm(initial={'name_it': name, 'descr_it': descr,})
+        'form' : ArtForm_Trad(initial={'name_it': name, 'descr_it': descr, 'open_time': open_time, 'tickets': tickets,})
         #'state':DArtEStato.objects
     }
 

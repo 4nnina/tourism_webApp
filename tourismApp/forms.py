@@ -28,11 +28,10 @@ class ArtForm(ModelForm):
             #'tickets': {'max_length': _('Too long'),}
         }
 
-class ArtForm_Name_Descr(ModelForm):
-
+class ArtForm_Trad(ModelForm):
     class Meta:
         model = Art
-        fields = ['name_it', 'descr_it',]
+        fields = ['name_it', 'descr_it', 'open_time', 'tickets',]
         labels = {
             'name_it': _('Name'),
             'descr_it': _('Description'),

@@ -12,3 +12,7 @@ def check(select, id):
         return True
     else:
         return False
+
+@register.filter
+def format(str, var):
+    return str.format(var)

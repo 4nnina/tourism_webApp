@@ -48,8 +48,6 @@
   <!-- Template Main CSS File -->
   <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> <!-- per lo script-->
-
 <meta name="robots" content="NONE,NOARCHIVE">
 </head>
 
@@ -152,7 +150,8 @@
                       <table style="border-collapse:separate; border-spacing:10px;">
                           <tr>
                               <td><label class="required"><b>  Name:</b></label></td>
-                              <td>{{ form.name_it }}</td>
+                              <td>{{ form.name_it }} <a data-bs-popper="label_info" data-popper-placement="right" title="Nome del punto di interesse"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+
                           </tr>
 
                           <tr>
@@ -162,7 +161,7 @@
 
                           <tr>
                               <td><label class="required"><b>  Image URL:</b></label></td>
-                              <td>{{ form.image_url }}</td>
+                              <td>{{ form.image_url }} <a data-bs-popper="label_info" data-popper-placement="right" title="Url dell'immagine del punto di interesse"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
                           </tr>
 
                           <tr>
@@ -184,42 +183,23 @@
                                             <option value="{{ vc.code }}">{{ vc.name }}</option>
                                           {% endfor %}
                                       </select>
+                                      <a data-bs-popper="label_info" data-popper-placement="right" title="Prezzo con Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a>
                                   </div>
                               </td>
                           </tr>
 
                           <tr id="saving_vc_" style="display: none">
                               <td><label><b>  Saving VC:</b></label></td>
-                              <td>{{ form.s_vc_perc }}</td>
+                              <td>{{ form.s_vc_perc }} <a data-bs-popper="label_info" data-popper-placement="right" title="Percentuale di sconto del biglietto se in possesso della Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
                           </tr>
 
                           {% if user.is_superuser %}
                           <tr>
                               <td><label class="required"><b>  Verona Card id:</b></label></td>
-                              <td>{{ form.vc_id }}</td>
+                              <td>{{ form.vc_id }} <a data-bs-popper="label_info" data-popper-placement="right" title="Iddentificativo del punto di interesse per la Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
                           </tr>
                           {% endif %}
 
-                            <!--div class="row">
-                      <div class="col-9">
-                          <table style="border-collapse:separate; border-spacing:10px;">
-                            {{ form.media }}
-
-                              {{ form.name_it }}
-                              {{ form.descr_it }}
-                            {{ form.as_table }}
-                          </table>
-
-                          <div class="row justify-content-center">
-                          <div class="col-1">
-                              <label class="required" for="id_classid"><b>  Name:</b></label>
-                          </div>
-                          <div class="col">
-                              {{ form.name_it}}
-                          </div>
-                      </div>
-
-                  </div-->
                       </table>
                 </fieldset>
 
@@ -263,18 +243,25 @@
   <script src="/static/assets/js/main.js"></script>
 
 
-<script>
-    $('#vc').on('change', function() {
-        var selected = $(this).val();
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> <!-- per lo script-->
 
-        if (selected === "01") {
-            $('#saving_vc_').show();
-        }
-        else{
-            $('#saving_vc_').hide();
-        }
-    });
-</script>
+  <script>
+        $('#vc').on('change', function() {
+            var selected = $(this).val();
+
+            if (selected === "01") {
+                $('#saving_vc_').show();
+            }
+            else{
+                $('#saving_vc_').hide();
+            }
+        });
+  </script>
+  <script>
+        $(document).ready(function(){
+            $('[data-toggle="label_info"]').tooltip();
+        });
+  </script>
 
 
 </div>

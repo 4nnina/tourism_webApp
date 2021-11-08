@@ -1,4 +1,5 @@
 {% load static %}
+{% load templateTags %}
 
 <!DOCTYPE html>
 
@@ -105,11 +106,19 @@
       <div class="container">
 
         <ol>
-          <li><a href="/">Home</a></li>
-          <li><a href="/editTour">Edit</a></li>
-          <li>Details</li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/editTour">Edit</a></li>
+            <li>Details</li>
+            <li><img src="{% static '/assets/img/flags/{}.jpg'|format:lang %}" alt="it" height="20" style="padding-left: 10px;"></li>
         </ol>
-        <h2>{{ tour.name_it }}</h2>
+        <ol>
+            <div class="col-1">
+                 <i class="bi-pencil-square" style="font-size: 30px;color: #37517e"></i>
+            </div>
+            <div class="col">
+                <h2>  {{ tour.name_it }}</h2>
+            </div>
+        </ol>
 
       </div>
     </section><!-- End Breadcrumbs -->
@@ -122,38 +131,37 @@
             <!--input type="hidden" name="csrfmiddlewaretoken" value="XbuaKn8smwbSckX1ilWmsa5oD3aze9Y7kbyuC9ievEvHUAnekUZohVZTQTt46vAl"-->
               <div>
                 <fieldset>
-                      <!--div class="row justify-content-center">
-                          <div class="col-1">
-                              <label class="required" for="id_classid"><b>  Type:</b></label>
-                          </div>
-                          <div class="col">
-                              <input type="checkbox" name="tempo" id="tempo">
-                              <label for="tempo"> A tempo </label><br>
-                              <input type="checkbox" name="tema" id="tema">
-                              <label for="tema"> A Tema </label><br>
-                              <input type="checkbox" name="storico" id="storico" >
-                              <label for="storico"> Storico </label>
-                          </div>
-                      </div><hr width="70%"-->
-
-                      <!--div class="row justify-content-center">
-                          {% for message in messages %}
-                            <p style="color: red">{{ message }}</p>
-                          {% endfor %}
-                          <div class="col-2">
-                              <label class="required" for="id_classid">Classid:</label>
-                          </div>
-                          <div class="col">
-                              <input type="text" name="classid" value="" class="vTextField" maxlength="70" required="" id="id_classid" style="background-color: #f0f0f0">
-                          </div>
-                      </div><hr width="50%"-->
-
                     <div class="row">
                       <div class="col-9">
                            <div class="col-9">
                               <table style="border-collapse:separate; border-spacing:10px;">
                                 {{ form.media }}
-                                {{ form.as_table }}
+
+
+                          <tr>
+                              <td><label><b>  Name:</b></label></td>
+                              <td>{{ form.name_it }} <a data-bs-popper="label_info" data-popper-placement="right" title="Traduzione del nome del tour nella lingua selezionata"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                          </tr>
+
+                          <tr>
+                              <td><label><b>  Type:</b></label></td>
+                              <td>{{ form.type }} <a data-bs-popper="label_info" data-popper-placement="right" title="Tipologia del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                          </tr>
+
+                          <tr>
+                              <td><label><b>  Description:</b></label></td>
+                              <td>{{ form.descr_it }} <a data-bs-popper="label_info" data-popper-placement="right" title="Nome del tour in {{ de_lang.name }}"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                          </tr>
+
+                          <tr>
+                              <td><label><b>  Image Url:</b></label></td>
+                              <td>{{ form.image_url }} <a data-bs-popper="label_info" data-popper-placement="right" title="Url dell'immagine del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                          </tr>
+
+                          <tr>
+                              <td><label><b>  Duration:</b></label></td>
+                              <td>{{ form.duration }} <a data-bs-popper="label_info" data-popper-placement="right" title="Durata in ore del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                          </tr>
                               </table>
                           </div>
                              </div>

@@ -152,10 +152,34 @@
                     <div class="row">
                       <div class="col-9">
                       <table style="border-collapse:separate; border-spacing:10px;">
-                        {{ form.media }}
-                        {{ form.as_table }}
+                          {{ form.media }}
+
+                          <tr>
+                              <td><label><b>  Name:</b></label></td>
+                              <td>{{ form.name_it }} <a data-bs-popper="label_info" data-popper-placement="right" title="Nome del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                          </tr>
+
+                          <tr>
+                              <td><label><b>  Type:</b></label></td>
+                              <td>{{ form.type }} <a data-bs-popper="label_info" data-popper-placement="right" title="Tipologia del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                          </tr>
+
+                          <tr>
+                              <td><label><b>  Description:</b></label></td>
+                              <td>{{ form.descr_it }}</td>
+                          </tr>
+
+                          <tr>
+                              <td><label><b>  Image Url:</b></label></td>
+                              <td>{{ form.image_url }} <a data-bs-popper="label_info" data-popper-placement="right" title="Url dell'immagine del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                          </tr>
+
+                          <tr>
+                              <td><label><b>  Duration:</b></label></td>
+                              <td>{{ form.duration }} <a data-bs-popper="label_info" data-popper-placement="right" title="Durata in ore del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                          </tr>
                       </table>
-                          </div>
+                    </div>
 
                   </div>
 
@@ -200,6 +224,13 @@
 
   <!-- Template Main JS File -->
   <script src="/static/assets/js/main.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> <!-- per lo script-->
+  <script>
+        $(document).ready(function(){
+            $('[data-toggle="label_info"]').tooltip();
+        });
+  </script>
 
 
 </div>

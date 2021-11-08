@@ -128,8 +128,8 @@ class ArtTradT(models.Model):
     classref = models.ForeignKey(Art, models.DO_NOTHING, db_column='classref', blank=True, null=True)
     lang = models.CharField(max_length=80, blank=True, null=True)
     notes_trad = models.CharField(max_length=16384, blank=True, null=True)
-    open_time_trad = models.CharField(max_length=16384, blank=True, null=True)
-    tickets_trad = models.CharField(max_length=16384, blank=True, null=True)
+    open_time_trad = RichTextField(max_length=16384, blank=True, null=True)
+    tickets_trad = RichTextField(max_length=16384, blank=True, null=True)
 
     def __str__(self):
         return '{}, {}'.format(self.classref, self.lang)

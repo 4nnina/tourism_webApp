@@ -1,5 +1,5 @@
 {% load static %}
-{% load make_break %}
+{% load templateTags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -104,9 +104,9 @@
              <br>
               <ul>
                 <li><strong>Category</strong>: {% for c in category %}  {{ c }}; {% endfor %}</li>
-                <li><strong>Open time</strong>: <div style="padding: 10px">{{ art.open_time|safe}}</div></li>
+                <li><strong>Open time</strong>: <div style="padding: 10px">{{ open_time_trad|safe}}</div></li>
                 <!--li><strong>State</strong>: {{ art.state}}</li-->
-                  <li><strong>Tikets</strong>: <div style="padding: 10px">{{ art.tickets|safe}}</div></li>
+                  <li><strong>Tikets</strong>: <div style="padding: 10px">{{ tickets_trad|safe}}</div></li>
               </ul>
             </div>
             <div class="portfolio-description">

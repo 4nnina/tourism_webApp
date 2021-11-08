@@ -1,5 +1,5 @@
 {% load static %}
-{% load make_break %}
+{% load templateTags %}
 
 <!DOCTYPE html>
 
@@ -106,11 +106,18 @@
       <div class="container">
 
         <ol>
-          <li><a href="/">Home</a></li>
-          <li><a href="/editArt">Edit</a></li>
-          <li>Details</li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/editArt">Edit</a></li>
+            <li>Details</li>
         </ol>
-        <h2>{{ art.name_it }}</h2>
+        <ol>
+            <div class="col-1">
+                 <i class="bi-pencil-square" style="font-size: 30px;color: #37517e"></i>
+            </div>
+            <div class="col">
+                <h2>  {{ art.name_it }}</h2>
+            </div>
+        </ol>
 
       </div>
     </section><!-- End Breadcrumbs -->
@@ -137,29 +144,9 @@
                       <div class="col-9">
                       {{ form.media }}
                       <table style="border-collapse:separate; border-spacing:10px;">
-                          <!--tr>
-                              <td><label class="required" for="id_classid"><b>  Name:</b></label></td>
-                              <td>{{ form.name_it }}</td>
-                          </tr>
-
-                          <tr>
-                              <td><label class="required" for="id_classid"><b>  Description:</b></label></td>
-                              <td>{{ form.descr_it }}</td>
-                          </tr-->
-
                           <tr>
                               <td><label class="required" for="id_classid"><b>  Image URL:</b></label></td>
-                              <td>{{ form.image_url }}</td>
-                          </tr>
-
-                          <tr>
-                              <td><label class="required" for="id_classid"><b>  Open time:</b></label></td>
-                              <td>{{ form.open_time }}</td>
-                          </tr>
-
-                          <tr>
-                              <td><label class="required" for="id_classid"><b>  Tickets:</b></label></td>
-                              <td>{{ form.tickets }}</td>
+                              <td>{{ form.image_url }} <a data-bs-popper="label_info" data-popper-placement="right" title="Url dell'immagine del punto di interesse"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
                           </tr>
 
                           <tr>
@@ -176,19 +163,20 @@
                                             <option value="{{ vc.code }}">{{vc.name}}</option>
                                           {% endfor %}
                                       </select>
+                                      <a data-bs-popper="label_info" data-popper-placement="right" title="Prezzo con Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a>
                                   </div>
                               </td>
                           </tr>
 
                           <tr>
                               <td><label class="required" for="id_classid"><b>  Saving VC:</b></label></td>
-                              <td>{{ form.s_vc_perc }}</td>
+                              <td>{{ form.s_vc_perc }} <a data-bs-popper="label_info" data-popper-placement="right" title="Percentuale di sconto del biglietto se in possesso della Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
                           </tr>
 
                           {% if user.is_superuser %}
                           <tr>
                               <td><label class="required" for="id_classid"><b>  Verona Card id:</b></label></td>
-                              <td>{{ form.vc_id }}</td>
+                              <td>{{ form.vc_id }} <a data-bs-popper="label_info" data-popper-placement="right" title="Iddentificativo del punto di interesse per la Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
                           </tr>
                           {% endif %}
 
@@ -215,7 +203,6 @@
                       </table>
                           </div>
                       <div class="col">
-                          <hr style="height:250pt; visibility:hidden;" />
                           <img src="{{ art.image_url }}" width="300" height="auto" >
                       </div>
                   </div>

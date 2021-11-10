@@ -5,38 +5,37 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Tourism App</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+    <title>Tourism App</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
 
-  <!-- Favicons -->
-  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
-  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+    <!-- Favicons -->
+    <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
-  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
 
-  <!-- Template Main CSS File -->
-  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
-
+    <!-- Template Main CSS File -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 </head>
 
 <body>
 
-<!-- ======= Header ======= -->
-  <header id="header" class="fixed-top header-inner-pages">
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top header-inner-pages">
     <div class="container d-flex align-items-center">
 
       <h1 class="logo me-auto"><a href="/">TourismApp</a></h1>
@@ -73,85 +72,74 @@
     </div>
   </header><!-- End Header -->
 
+    <br><br><br>
 
-<br><br><br>
     <main id="main">
+        {% if user.is_authenticated %}
+            <section id="services" class="services section-bg">
+                <div class="container" data-aos="fade-up">
+                    <br>
+                    <div class="row justify-content-center">
+                        <div onclick="location.href='editArt';" class="col-xl-3 col-md-6  align-items-md-stretch" data-aos="zoom-in" data-aos-delay="100">
+                            <div class="icon-box justify-content-center">
+                                <div class="icon"><i class="bx bxs-landmark"></i></div>
+                                <h4>Art</h4>
+                            </div>
+                        </div>
 
-      {% if user.is_authenticated %}
-      <section id="services" class="services section-bg">
-          <div class="container" data-aos="fade-up">
-              <br>
-              <div class="row justify-content-center">
-
-                  <div onclick="location.href='editArt';" class="col-xl-3 col-md-6  align-items-md-stretch" data-aos="zoom-in" data-aos-delay="100">
-                      <div class="icon-box justify-content-center">
-                          <div class="icon"><i class="bx bxs-landmark"></i></div>
-                          <h4>Art</h4>
-                      </div>
-                  </div>
-
-                  <div onclick="location.href='editTour';" style="color: #47b2e4;" class="col-xl-3 col-md-6 align-items-md-stretch" data-aos="zoom-in" data-aos-delay="300">
-                      <div class="icon-box">
-                          <div class="icon"><i class="bx bx-map-alt"></i></div>
-                          <h4>Tour</h4>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </section>
-
-      <br>
-
-      <br>
-             <!-- ======= Item Section ======= -->
-      <section id="item" class="item section-bg">
-          <div class="container" data-aos="fade-up">
-
-              <div class="row">
-
-          <div class="col-lg-6" onclick="location.href='/edit/newTour';" style="cursor: pointer;">
-            <div class="member d-flex align-items-start" >
-                <div class="icon">
-                <i class="bi-card-image" style="font-size: 80px; color: #37517e;"></i></div>
-
-              <!--img src="{{a.image_url}}" class="img-fluid" width="100" height="100" alt=""-->
-              <div class="member-info" style="overflow: hidden">
-                <h4>Add New Tour</h4>
-                <span>Tipologia: ---------</span>
-
-                <!--<p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {{ a.descr_it }} </p>-->
-                <p>Description ...</p>
-
-              </div>
-            </div>
-          </div>
-
-              {% for t in tour.all %}
-              <div class="col-lg-6" onclick="location.href='/Tour/{{ t.classid }}';" style="cursor: pointer;">
-                <div class="member d-flex align-items-start" >
-
-                  <img src="{{t.image_url}}" class="img-fluid" width="100" height="100" alt="">
-                  <div class="member-info" style="overflow: hidden">
-                    <h4>{{ t.name_it }}</h4>
-                    <span>
-                        Tipologia: {{ t.type }}
-                    </span>
-
-                    <!--<p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {{ t.descr_it }} </p>-->
-                    <p>{{ t.descr_it | make_break | safe |truncatewords:30}} </p>
-                    <div class="button" style="float: right;">
-                      <a href="/edit/tour/{{ t.classid }}"><b>Modifica</b></a>
+                        <div onclick="location.href='editTour';" style="color: #47b2e4;" class="col-xl-3 col-md-6 align-items-md-stretch" data-aos="zoom-in" data-aos-delay="300">
+                            <div class="icon-box">
+                                <div class="icon"><i class="bx bx-map-alt"></i></div>
+                                <h4>Tour</h4>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-              {% endfor %}
+            </section>
 
-            </div>
-          </div>
-      </section><!-- End Item Section -->
-      {% endif %}
+            <br><br>
 
+            <!-- ======= Item Section ======= -->
+            <section id="item" class="item section-bg">
+                <div class="container" data-aos="fade-up">
+                    <div class="row">
+                        <div class="col-lg-6" onclick="location.href='/edit/newTour';" style="cursor: pointer;">
+                            <div class="member d-flex align-items-start" >
+                                <div class="icon">
+                                    <i class="bi-card-image" style="font-size: 80px; color: #37517e;"></i>
+                                </div>
+                                <!--img src="{{a.image_url}}" class="img-fluid" width="100" height="100" alt=""-->
+                                <div class="member-info" style="overflow: hidden">
+                                    <h4>Add New Tour</h4>
+                                    <span>Tipologia: ---------</span>
+                                    <!--<p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {{ a.descr_it }} </p>-->
+                                    <p>Description ...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% for t in tour.all %}
+                            <div class="col-lg-6" onclick="location.href='/Tour/{{ t.classid }}';" style="cursor: pointer;">
+                                <div class="member d-flex align-items-start" >
+                                    <img src="{{t.image_url}}" class="img-fluid" width="100" height="100" alt="">
+                                    <div class="member-info" style="overflow: hidden">
+                                        <h4>{{ t.name_it }}</h4>
+                                        <span>
+                                            Tipologia: {{ t.type }}
+                                        </span>
+                                        <!--<p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {{ t.descr_it }} </p>-->
+                                        <p>{{ t.descr_it | make_break | safe |truncatewords:30}} </p>
+                                        <div class="button" style="float: right;">
+                                            <a href="/edit/tour/{{ t.classid }}"><b>Modifica</b></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section><!-- End Item Section -->
+        {% endif %}
     </main>
 
     <div id="preloader"></div>

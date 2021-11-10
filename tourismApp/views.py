@@ -11,57 +11,8 @@ from django.db import transaction
 
 from .models import *
 from .forms import *
+
 # Create your views here.
-
-def pForm(request):
-    context ={
-        'form' : ArtForm(),
-    }
-    return render(request,'pForm.html', context)
-
-def register(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        password2 = request.POST['password2']
-
-        if password == password2:
-            if User.objects.filter(email=email).exists():
-                messages.info(request, 'Email already used')
-                return redirect('register')
-            elif User.objects.filter(username=username).exists():
-                messages.info(request, 'Username already used')
-                return redirect('register')
-            else:
-                user = User.objects.create_user(username=username, email=email, password=password)
-                user.save();
-                return redirect('logIn')
-        else:
-            messages.info(request, 'Password not the same')
-            return redirect('register')
-    else:
-        return render(request, 'register.html')
-
-def logIn(request):
-    if request.method =='POST':
-        username = request.POST['username']
-        password = request.POST['password']
-
-        user = auth.authenticate(username=username, password=password)
-
-        if user is not None:
-            auth.login(request, user)
-            return redirect('/')
-        else:
-            messages.info(request, 'Credential invalid')
-            return redirect('logIn')
-    else:
-        return render(request, 'login.html')
-
-def logOut(request):
-    auth.logout(request)
-    return redirect('/')
 
 def index(request):
     context = {
@@ -525,93 +476,6 @@ def editTourPoi(request,classid):
         }
         return render(request, 'editTourPoI.html', context)
 
-def newArt(request):
-    category = ArtCategory.objects.order_by('classid')
-
-    if request.method == 'POST':
-        #classid = request.POST['classid']
-
-        while True:
-            try:
-                id = "".join(random.choices(string.digits, k=5))
-                Art.objects.get(classid=id)
-            except:
-                art = Art(classid=id)
-                break
-        print("codice: ", id)
-        form = ArtForm(request.POST)
-
-
-        if form.is_valid():
-            art.descr_it = form.cleaned_data['descr_it']
-            art.image_url = form.cleaned_data['image_url']
-            art.name_it = form.cleaned_data['name_it']
-            art.state = DArtEStato.objects.get(name='attivo')
-            art.notes = form.cleaned_data['notes']
-            art.open_time = form.cleaned_data['open_time']
-            art.tickets = form.cleaned_data['tickets']
-            #art.rss = form.cleaned_data['rss']
-            #art.saving_vc = form.cleaned_data['saving_vc']
-            art.vc = request.POST['vc']
-            art.vc_id = form.cleaned_data['vc_id']
-
-            saving_vc = form.cleaned_data['s_vc_perc']
-            if saving_vc is None or saving_vc == 0:
-                art.saving_vc = 0.0
-            else :
-                art.saving_vc = saving_vc / 100
-
-            art.save()
-
-        for c in range(1,len(category)+1):
-            if 'categoria_{}'.format(c) in request.POST:
-                cat = ArtCategory.objects.get(classid=str(c))
-                category_t = AArtCategoryArtCategory(category=cat, points=art)
-                category_t.save()
-
-        return redirect('/edit/translation/{}+{}'.format(id,'en'))
-
-    context = {
-        #'lang': Lang.objects.get(active=True),
-        'form': ArtForm(),
-        'category': category,
-        'de_vc': DEVc.objects.order_by('code').reverse(),
-    }
-    return render(request, 'newArt.html',context)
-
-def newTour(request):
-    if request.method == 'POST':
-        #classid = request.POST['classid']
-
-        while True:
-            try:
-                id = "".join(random.choices(string.digits, k=5))
-                Tour.objects.get(classid=id)
-            except:
-                tour = Tour(classid=id)
-                break
-
-        form = TourForm(request.POST)
-
-        if form.is_valid():
-            with transaction.atomic():
-                tour.descr_it = form.cleaned_data['descr_it']
-                tour.image_url = form.cleaned_data['image_url']
-                tour.name_it = form.cleaned_data['name_it']
-                tour.type = DTourETipoit.objects.get(name=form.cleaned_data['type'])
-                #tour.kml_path = form.cleaned_data['kml_path']
-                tour.duration = form.cleaned_data['duration']
-                #tour.length = form.cleaned_data['length']
-
-                tour.save()
-
-        return redirect('/edit/tour/{}/points'.format(id))
-
-    context = {
-        'form' : TourForm()
-    }
-    return render(request, 'newTour.html', context)
-
 def filterItemArt(request):
     category_db = ArtCategory.objects.order_by('classid')
     select = [None, True, True, True, True, True, True, True, True]
@@ -709,4 +573,135 @@ def filterItemTour(request):
 
     return render(request, 'filterTour.html', context)
 
+def newArt(request):
+    category = ArtCategory.objects.order_by('classid')
+
+    if request.method == 'POST':
+        #classid = request.POST['classid']
+
+        while True:
+            try:
+                id = "".join(random.choices(string.digits, k=5))
+                Art.objects.get(classid=id)
+            except:
+                art = Art(classid=id)
+                break
+        print("codice: ", id)
+        form = ArtForm(request.POST)
+
+
+        if form.is_valid():
+            art.descr_it = form.cleaned_data['descr_it']
+            art.image_url = form.cleaned_data['image_url']
+            art.name_it = form.cleaned_data['name_it']
+            art.state = DArtEStato.objects.get(name='attivo')
+            art.notes = form.cleaned_data['notes']
+            art.open_time = form.cleaned_data['open_time']
+            art.tickets = form.cleaned_data['tickets']
+            #art.rss = form.cleaned_data['rss']
+            #art.saving_vc = form.cleaned_data['saving_vc']
+            art.vc = request.POST['vc']
+            art.vc_id = form.cleaned_data['vc_id']
+
+            saving_vc = form.cleaned_data['s_vc_perc']
+            if saving_vc is None or saving_vc == 0:
+                art.saving_vc = 0.0
+            else :
+                art.saving_vc = saving_vc / 100
+
+            art.save()
+
+        for c in range(1,len(category)+1):
+            if 'categoria_{}'.format(c) in request.POST:
+                cat = ArtCategory.objects.get(classid=str(c))
+                category_t = AArtCategoryArtCategory(category=cat, points=art)
+                category_t.save()
+
+        return redirect('/edit/translation/{}+{}'.format(id,'en'))
+
+    context = {
+        #'lang': Lang.objects.get(active=True),
+        'form': ArtForm(),
+        'category': category,
+        'de_vc': DEVc.objects.order_by('code').reverse(),
+    }
+    return render(request, 'newArt.html',context)
+
+def newTour(request):
+    if request.method == 'POST':
+        #classid = request.POST['classid']
+
+        while True:
+            try:
+                id = "".join(random.choices(string.digits, k=5))
+                Tour.objects.get(classid=id)
+            except:
+                tour = Tour(classid=id)
+                break
+
+        form = TourForm(request.POST)
+
+        if form.is_valid():
+            with transaction.atomic():
+                tour.descr_it = form.cleaned_data['descr_it']
+                tour.image_url = form.cleaned_data['image_url']
+                tour.name_it = form.cleaned_data['name_it']
+                tour.type = DTourETipoit.objects.get(name=form.cleaned_data['type'])
+                #tour.kml_path = form.cleaned_data['kml_path']
+                tour.duration = form.cleaned_data['duration']
+                #tour.length = form.cleaned_data['length']
+
+                tour.save()
+
+        return redirect('/edit/tour/{}/points'.format(id))
+
+    context = {
+        'form' : TourForm()
+    }
+    return render(request, 'newTour.html', context)
+
+
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        password2 = request.POST['password2']
+
+        if password == password2:
+            if User.objects.filter(email=email).exists():
+                messages.info(request, 'Email already used')
+                return redirect('register')
+            elif User.objects.filter(username=username).exists():
+                messages.info(request, 'Username already used')
+                return redirect('register')
+            else:
+                user = User.objects.create_user(username=username, email=email, password=password)
+                user.save();
+                return redirect('logIn')
+        else:
+            messages.info(request, 'Password not the same')
+            return redirect('register')
+    else:
+        return render(request, 'register.html')
+
+def logIn(request):
+    if request.method =='POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = auth.authenticate(username=username, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            return redirect('/')
+        else:
+            messages.info(request, 'Credential invalid')
+            return redirect('logIn')
+    else:
+        return render(request, 'login.html')
+
+def logOut(request):
+    auth.logout(request)
+    return redirect('/')
 

@@ -19,7 +19,4 @@ urlpatterns = [
     path('edit/tour/<str:classid>/points', views.editTourPoi, name="editTourPoi"),
     path('Art/<str:classid_lang>', views.itemPoI, name='itemPoI'),
     path('Tour/<str:classid_lang>', views.itemTour, name='itemTour'),
-
-    #path('example/homepage', views.homepage, name="homepage"),
-    #path('example/', views.example, name='example'),
 ]

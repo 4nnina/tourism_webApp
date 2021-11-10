@@ -1,4 +1,5 @@
 {% load static %}
+{% load templateTags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,21 +34,20 @@
 </head>
 
 <body>
-
     <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top ">
+    <header id="header" class="fixed-top header-inner-pages">
         <div class="container d-flex align-items-center">
             <h1 class="logo me-auto"><a href="/">TourismApp</a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link scrollto active" href="/">Home</a></li>
+                    <li><a class="nav-link scrollto" href="/">Home</a></li>
                     {% if user.is_superuser %}
-                        <li><a class="nav-link scrollto" href="editArt">Edit</a></li>
-                        <li><a class="nav-link scrollto" href="admin/">Control panel</a></li>
+                        <li><a class="nav-link scrollto" href="/editArt">Edit</a></li>
+                        <li><a class="nav-link scrollto" href="/admin/">Control panel</a></li>
                     {% elif user.is_staff %}
-                        <li><a class="nav-link scrollto" href="editArt">Edit</a></li>
+                        <li><a class="nav-link scrollto" href="/editArt">Edit</a></li>
                     {% endif %}
                     {% if user.is_authenticated %}
                         <!--li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="10" ></span> <i class="bi bi-chevron-down"></i></a>
@@ -69,46 +69,12 @@
         </div>
     </header><!-- End Header -->
 
+    <br><br><br>
+
     <main id="main">
-        <section class="home">
-          <div class="container">
-              <div class="row justify-content-center">
-                  <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+        {% block content %}
 
-                      {% if user.is_authenticated %}
-                        <h1>Welcome, {{ user.username }}</h1>
-                      {% else %}
-                        <h1>Welcome</h1>
-                      {% endif %}
-                  </div>
-              </div>
-          </div>
-        </section>
-
-        {% if user.is_authenticated %}
-            <section id="services" class="services section-bg">
-                <div class="container" data-aos="fade-up">
-                    <br>
-                    <div class="row justify-content-center">
-                        <div onclick="location.href='Art';" class="col-xl-3 col-md-6  align-items-md-stretch" data-aos="zoom-in">
-                            <div class="icon-box justify-content-center">
-                                <div class="icon"><i class="bx bxs-landmark"></i></div>
-                                <h4>Art</h4>
-                            </div>
-                        </div>
-
-                        <div onclick="location.href='Tour';" class="col-xl-3 col-md-6 align-items-md-stretch" data-aos="zoom-in">
-                            <div class="icon-box">
-                                <div class="icon"><i class="bx bx-map-alt"></i></div>
-                                <h4>Tour</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <br>
-        {% endif %}
+        {% endblock %}
     </main>
 
     <div id="preloader"></div>
@@ -126,7 +92,5 @@
     <!-- Template Main JS File -->
     <script src="{% static 'assets/js/main.js' %}"></script>
 
-
 </body>
-
 </html>

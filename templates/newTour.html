@@ -5,235 +5,157 @@
 <html lang="en-us" dir="ltr">
 <head>
     <title>New Tour</title>
-    <!--<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/nav_sidebar.css">
-    <script src="/static/admin/js/nav_sidebar.js" defer=""></script>
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
 
-    <script src="/admin/jsi18n/"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/ol3/4.6.5/ol.css" type="text/css" media="all" rel="stylesheet">
-
-    <link href="/static/gis/css/ol3.css" type="text/css" media="all" rel="stylesheet">
-
-    <script src="/static/admin/js/vendor/jquery/jquery.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/4.6.5/ol.js"></script>
-    <script src="/static/admin/js/jquery.init.js"></script>
-    <script src="/static/gis/js/OLMapWidget.js"></script>
-    <script src="/static/admin/js/core.js"></script>
-    <script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
-    <script src="/static/admin/js/actions.js"></script>
-    <script src="/static/admin/js/urlify.js"></script>
-    <script src="/static/admin/js/prepopulate.js"></script>
-    <script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
-
-
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">-->
     <!-- Favicons -->
-  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
-  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+    <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
-  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
 
-  <!-- Template Main CSS File -->
-  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 
 
-<meta name="robots" content="NONE,NOARCHIVE">
+    <meta name="robots" content="NONE,NOARCHIVE">
 </head>
 
-
 <body class=" app-tourismApp model-art change-form" data-admin-utc-offset="7200">
-
-<!-- Container -->
-<div id="container">
-
-
-      <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top header-inner-pages">
-    <div class="container d-flex align-items-center">
-
-      <h1 class="logo me-auto"><a href="/">TourismApp</a></h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-
-      <nav id="navbar" class="navbar">
-        <ul>
-          <li><a class="nav-link scrollto" href="/">Home</a></li>
-          {% if user.is_superuser %}
-              <li><a class="nav-link scrollto active" href="/editTour">Edit</a></li>
-              <li><a class="nav-link scrollto" href="/admin/">Control panel</a></li>
-          {% elif user.is_staff %}
-              <li><a class="nav-link scrollto active" href="/editTour">Edit</a></li>
-          {% endif %}
-          {% if user.is_authenticated %}
-              <!--li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="10" ></span> <i class="bi bi-chevron-down"></i></a>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top header-inner-pages">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo me-auto"><a href="/">TourismApp</a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+            <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a onclick="language('it')" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
-                    <li><a onclick="language('en')" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
-                    <li><a onclick="language('es')" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
-                    <li><a onclick="language('fr')" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
-                    <li><a onclick="language('de')" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
+                    <li><a class="nav-link scrollto" href="/">Home</a></li>
+                    {% if user.is_superuser %}
+                        <li><a class="nav-link scrollto active" href="/editTour">Edit</a></li>
+                        <li><a class="nav-link scrollto" href="/admin/">Control panel</a></li>
+                    {% elif user.is_staff %}
+                         <li><a class="nav-link scrollto active" href="/editTour">Edit</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        <!--li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="10" ></span> <i class="bi bi-chevron-down"></i></a>
+                           <ul>
+                                <li><a onclick="language('it')" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
+                                <li><a onclick="language('en')" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
+                                <li><a onclick="language('es')" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
+                                <li><a onclick="language('fr')" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
+                                <li><a onclick="language('de')" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
+                            </ul>
+                         </li-->
+                        <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
+                    {% else %}
+                        <li><a class="getstarted scrollto" href="logIn">Log In</a></li>
+                    {% endif %}
                 </ul>
-              </li-->
-              <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
-          {% else %}
-              <li><a class="getstarted scrollto" href="logIn">Log In</a></li>
-          {% endif %}
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+        </div>
+    </header><!-- End Header -->
 
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+    <main id="main">
+        <!-- ======= Breadcrumbs ======= -->
+        <section id="breadcrumbs" class="breadcrumbs">
+            <div class="container">
+                <ol>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/editTour">Edit</a></li>
+                    <li>New Tour</li>
+                </ol>
+            <h2>{{ art.name_it }}</h2>
+            </div>
+        </section><!-- End Breadcrumbs -->
 
-    </div>
-  </header><!-- End Header -->
+        <section class="edit-details">
+            <div class="container">
+                <form method="post" class="">
+                    {% csrf_token %}
 
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-9">
+                                <table style="border-collapse:separate; border-spacing:10px;">
+                                    {{ form.media }}
+                                    <tr>
+                                        <td><label><b>  Name:</b></label></td>
+                                        <td>{{ form.name_it }} <a data-bs-popper="label_info" data-popper-placement="right" title="Nome del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                                    </tr>
 
-<main id="main">
+                                    <tr>
+                                        <td><label><b>  Type:</b></label></td>
+                                        <td>{{ form.type }} <a data-bs-popper="label_info" data-popper-placement="right" title="Tipologia del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                                    </tr>
 
-    <!-- ======= Breadcrumbs ======= -->
-    <section id="breadcrumbs" class="breadcrumbs">
-      <div class="container">
+                                    <tr>
+                                        <td><label><b>  Description:</b></label></td>
+                                        <td>{{ form.descr_it }}</td>
+                                    </tr>
 
-        <ol>
-          <li><a href="/">Home</a></li>
-          <li><a href="/editTour">Edit</a></li>
-          <li>New Tour</li>
-        </ol>
-        <h2>{{ art.name_it }}</h2>
+                                    <tr>
+                                        <td><label><b>  Image Url:</b></label></td>
+                                        <td>{{ form.image_url }} <a data-bs-popper="label_info" data-popper-placement="right" title="Url dell'immagine del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                                    </tr>
 
-      </div>
-    </section><!-- End Breadcrumbs -->
-
-
-    <section class="edit-details">
-        <div class="container">
-            <form method="post" class="">
-            {% csrf_token %}
-            <!--input type="hidden" name="csrfmiddlewaretoken" value="XbuaKn8smwbSckX1ilWmsa5oD3aze9Y7kbyuC9ievEvHUAnekUZohVZTQTt46vAl"-->
-            <div>
-                <fieldset>
-                      <!--div class="row justify-content-center">
-                          <div class="col-1">
-                              <label class="required" for="id_classid"><b>  Type:</b></label>
-                          </div>
-                          <div class="col">
-                              <input type="checkbox" name="tempo" id="tempo">
-                              <label for="tempo"> A tempo </label><br>
-                              <input type="checkbox" name="tema" id="tema">
-                              <label for="tema"> A Tema </label><br>
-                              <input type="checkbox" name="storico" id="storico" >
-                              <label for="storico"> Storico </label>
-                          </div>
-                      </div><hr width="70%"-->
-
-                      <!--div class="row justify-content-center">
-                          {% for message in messages %}
-                            <p style="color: red">{{ message }}</p>
-                          {% endfor %}
-                          <div class="col-2">
-                              <label class="required" for="id_classid">Classid:</label>
-                          </div>
-                          <div class="col">
-                              <input type="text" name="classid" value="" class="vTextField" maxlength="70" required="" id="id_classid" style="background-color: #f0f0f0">
-                          </div>
-                      </div><hr width="50%"-->
+                                    <tr>
+                                        <td><label><b>  Duration:</b></label></td>
+                                        <td>{{ form.duration }} <a data-bs-popper="label_info" data-popper-placement="right" title="Durata in ore del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </fieldset>
 
                     <div class="row">
-                      <div class="col-9">
-                      <table style="border-collapse:separate; border-spacing:10px;">
-                          {{ form.media }}
-
-                          <tr>
-                              <td><label><b>  Name:</b></label></td>
-                              <td>{{ form.name_it }} <a data-bs-popper="label_info" data-popper-placement="right" title="Nome del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
-                          </tr>
-
-                          <tr>
-                              <td><label><b>  Type:</b></label></td>
-                              <td>{{ form.type }} <a data-bs-popper="label_info" data-popper-placement="right" title="Tipologia del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
-                          </tr>
-
-                          <tr>
-                              <td><label><b>  Description:</b></label></td>
-                              <td>{{ form.descr_it }}</td>
-                          </tr>
-
-                          <tr>
-                              <td><label><b>  Image Url:</b></label></td>
-                              <td>{{ form.image_url }} <a data-bs-popper="label_info" data-popper-placement="right" title="Url dell'immagine del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
-                          </tr>
-
-                          <tr>
-                              <td><label><b>  Duration:</b></label></td>
-                              <td>{{ form.duration }} <a data-bs-popper="label_info" data-popper-placement="right" title="Durata in ore del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
-                          </tr>
-                      </table>
+                        <div class="col-5"></div>
+                        <div class="col">
+                            <input type="submit" value="Save and Continue" class="default" name="_save" style="  top: 0px; right: 0px; left: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;">
+                        </div>
+                        <!--<input type="submit" value="Save and add another" name="_addanother">
+                        <input type="submit" value="Save and continue editing" name="_continue">-->
                     </div>
+                    <script id="django-admin-form-add-constants" src="/static/admin/js/change_form.js" async=""></script>
+                    <script id="django-admin-prepopulated-fields-constants" src="/static/admin/js/prepopulate_init.js" data-prepopulated-fields="[]"></script>
 
-                  </div>
+                </form>
+                <br class="clear">
+            </div>
+        </section>
+    </main><!-- End #main -->
 
-                </fieldset>
+    <div id="preloader"></div>
 
-                <div class="row">
-                    <div class="col-5">
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-                    </div>
-                    <div class="col">
-                      <input type="submit" value="Save and Continue" class="default" name="_save" style="  top: 0px; right: 0px; left: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;">
-                    </div>
-                    <!--<input type="submit" value="Save and add another" name="_addanother">
-                    <input type="submit" value="Save and continue editing" name="_continue">-->
-                </div>
+    <!-- Vendor JS Files -->
+    <script src="/static/assets/vendor/aos/aos.js"></script>
+    <script src="/static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/static/assets/vendor/php-email-form/validate.js"></script>
+    <script src="/static/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/static/assets/vendor/waypoints/noframework.waypoints.js"></script>
 
-                <script id="django-admin-form-add-constants" src="/static/admin/js/change_form.js" async=""></script>
+    <!-- Template Main JS File -->
+    <script src="/static/assets/js/main.js"></script>
 
-                <script id="django-admin-prepopulated-fields-constants" src="/static/admin/js/prepopulate_init.js" data-prepopulated-fields="[]"></script>
-              </div>
-
-            </form>
-
-            <br class="clear">
-
-        </div>
-    </section>
-</main><!-- End #main -->
-
-  <div id="preloader"></div>
-
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Vendor JS Files -->
-  <script src="/static/assets/vendor/aos/aos.js"></script>
-  <script src="/static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="/static/assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="/static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="/static/assets/vendor/php-email-form/validate.js"></script>
-  <script src="/static/assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="/static/assets/vendor/waypoints/noframework.waypoints.js"></script>
-
-  <!-- Template Main JS File -->
-  <script src="/static/assets/js/main.js"></script>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> <!-- per lo script-->
-  <script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> <!-- per lo script-->
+    <script>
         $(document).ready(function(){
             $('[data-toggle="label_info"]').tooltip();
         });
-  </script>
+    </script>
 
-
-</div>
 </body>
-
 </html>

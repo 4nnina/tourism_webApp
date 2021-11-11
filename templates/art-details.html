@@ -31,6 +31,15 @@
     <!-- Template Main CSS File -->
     <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
 </head>
 
 <body data-aos-easing="ease-in-out" data-aos-duration="1000" data-aos-delay="0">
@@ -93,6 +102,7 @@
                             <br>
                             <ul>
                                 <li><strong>Category</strong>: {% for c in category %}  {{ c }}; {% endfor %}</li>
+                                <!--li><strong>Location</strong>: {{ latitude }}, {{ longitude }}</li-->
                                 <li><strong>Open time</strong>: <div style="padding: 10px">{{ open_time_trad|safe}}</div></li>
                                 <!--li><strong>State</strong>: {{ art.state}}</li-->
                                 <li><strong>Tikets</strong>: <div style="padding: 10px">{{ tickets_trad|safe}}</div></li>
@@ -109,11 +119,13 @@
 
                     <div class="col-lg-4 align-items-center">
                         <img src="{{ art.image_url }}" width="400" height="auto" >
+                        <br><br>
+                        <div id="map" style="width: 400px; height: 400px;"></div>
                     </div>
                 </div>
             </div>
-        </section><!-- End Portfolio Details Section -->
 
+        </section><!-- End Portfolio Details Section -->
     </main><!-- End #main -->
 
     <div id="preloader"></div>
@@ -131,5 +143,16 @@
 
     <!-- Template Main JS File -->
     <script src="/static/assets/js/main.js"></script>
+
+    <script>
+        var mymap = L.map('map', {layers: []}).setView([45.44, 10.999], 14);
+
+        L.marker([{{latitude}}, {{longitude}}]).addTo(mymap);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        }).addTo(mymap);
+    </script>
+
 </body>
 </html>

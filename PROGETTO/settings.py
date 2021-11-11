@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'ckeditor',
-    'django.contrib.sites'
+    'django.contrib.sites',
+    #'leaflet',
 ]
 
 MIDDLEWARE = [
@@ -176,6 +177,16 @@ CKEDITOR_CONFIGS = {
         #'height': 300,
         'width': 750,
     },
+}
+
+LEAFLET_CONFIG = {
+    # conf here
+    #'SPATIAL_EXTENT': (10.0, 44.0, 10.5, 46),
+    #'DEFAULT_CENTER': (45.44, 10.999),
+    #'DEFAULT_ZOOM': 14,
+    #'MIN_ZOOM': 3,
+    #'MAX_ZOOM': 18,
+    #'DEFAULT_PRECISION': 6,
 }
 
 #GDAL_LIBRARY_PATH = r'C:\OSGeo4W64\bin\gdalplugins'

@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.db import transaction
+from django.contrib.gis.geos import Point
 
 from .models import *
 from .forms import *
@@ -137,9 +138,32 @@ def editPoI1(request, classid):
 
     art = Art.objects.get(classid=classid)
 
+    try:
+        location = Location.objects.get(event=classid, num='1')
+        longitude, latitude = location.geom
+        address = location.address
+        new_location = False
+    except:
+        new_location = True
+        while True:
+            try:
+                id = "".join(random.choices(string.digits, k=5))
+                Location.objects.get(classid=id)
+            except:
+                location = Location(classid=id, address=None, event=classid, num='1', geom=None)
+                latitude = ""
+                longitude = ""
+                address = ""
+                break
+
+
     if request.method == 'POST':
 
         form = ArtForm_data(request.POST)
+
+        if '_delete' in request.POST:
+            Art.objects.filter(classid=classid).update(state='02')
+            return redirect('editArt')
 
         if form.is_valid():
             image_url = form.cleaned_data['image_url']
@@ -147,6 +171,9 @@ def editPoI1(request, classid):
             saving_vc = form.cleaned_data['s_vc_perc'] / 100 if form.cleaned_data['s_vc_perc'] != 0 else 0.0
             vc = form.cleaned_data['vc']
             vc_id = form.cleaned_data['vc_id']
+            address = request.POST['address']
+            latitude = request.POST['lat']
+            longitude = request.POST['long']
 
             with transaction.atomic():
                 if image_url != 'None' and art.image_url != image_url:
@@ -159,6 +186,17 @@ def editPoI1(request, classid):
                     Art.objects.filter(classid=classid).update(vc=vc)
                 if vc_id != 'None' and art.vc_id != vc_id:
                     Art.objects.filter(classid=classid).update(vc_id=vc_id)
+                if new_location:
+                    location.address = address
+                    location.geom = Point(float(longitude), float(latitude))
+                    location.save()
+                else:
+                    if address != location.address:
+                        Location.objects.filter(event=classid, num='1').update(address=address)
+                    if (longitude,latitude) != location.geom:
+                        Location.objects.filter(event=classid, num='1').update(geom=Point(float(longitude),
+                                                                                          float(latitude)))
+
 
                 for c in range(1, len(category) + 1):
                     if 'categoria_{}'.format(c) in request.POST:
@@ -171,9 +209,6 @@ def editPoI1(request, classid):
                         if select[c]:
                             AArtCategoryArtCategory.objects.get(points=art, category=ArtCategory.objects.get(classid=str(c))).delete()
 
-            if '_delete' in request.POST:
-                Art.objects.filter(classid=classid).update(state='02')
-                return redirect('editArt')
 
         return redirect('/edit/translation/{}'.format(classid))
 
@@ -183,7 +218,10 @@ def editPoI1(request, classid):
         'select': select,
         'de_vc': DEVc.objects.order_by('code').reverse(),
         'form' : ArtForm_data(initial={'image_url': art.image_url, 'notes': art.notes,
-                                       's_vc_perc': art.saving_vc*100, 'vc': art.vc, 'vc_id': art.vc_id})
+                                       's_vc_perc': art.saving_vc*100, 'vc': art.vc, 'vc_id': art.vc_id}),
+        'address': address,
+        'latitude': latitude,
+        'longitude': longitude,
         #'state':DArtEStato.objects
     }
     return render(request,'editPointOfInterest.html', context)
@@ -584,45 +622,59 @@ def newArt(request):
     if request.method == 'POST':
         #classid = request.POST['classid']
 
-        while True:
-            try:
-                id = "".join(random.choices(string.digits, k=5))
-                Art.objects.get(classid=id)
-            except:
-                art = Art(classid=id)
-                break
-        print("codice: ", id)
-        form = ArtForm(request.POST)
+        with transaction.atomic():
+            while True:
+                try:
+                    id = "".join(random.choices(string.digits, k=5))
+                    Art.objects.get(classid=id)
+                except:
+                    art = Art(classid=id)
+                    break
+            print("codice: ", id)
+            form = ArtForm(request.POST)
 
+            while True:
+                try:
+                    id = "".join(random.choices(string.digits, k=5))
+                    Location.objects.get(classid=id)
+                except:
+                    location = Location(classid=id, address=None, event=art.classid, num='1', geom=None)
+                    break
 
-        if form.is_valid():
-            art.descr_it = form.cleaned_data['descr_it']
-            art.image_url = form.cleaned_data['image_url']
-            art.name_it = form.cleaned_data['name_it']
-            art.state = DArtEStato.objects.get(name='attivo')
-            art.notes = form.cleaned_data['notes']
-            art.open_time = form.cleaned_data['open_time']
-            art.tickets = form.cleaned_data['tickets']
-            #art.rss = form.cleaned_data['rss']
-            #art.saving_vc = form.cleaned_data['saving_vc']
-            art.vc = request.POST['vc']
-            art.vc_id = form.cleaned_data['vc_id']
+            if form.is_valid():
+                art.descr_it = form.cleaned_data['descr_it']
+                art.image_url = form.cleaned_data['image_url']
+                art.name_it = form.cleaned_data['name_it']
+                art.state = DArtEStato.objects.get(name='attivo')
+                art.notes = form.cleaned_data['notes']
+                art.open_time = form.cleaned_data['open_time']
+                art.tickets = form.cleaned_data['tickets']
+                #art.rss = form.cleaned_data['rss']
+                #art.saving_vc = form.cleaned_data['saving_vc']
+                art.vc = request.POST['vc']
+                art.vc_id = form.cleaned_data['vc_id']
 
-            saving_vc = form.cleaned_data['s_vc_perc']
-            if saving_vc is None or saving_vc == 0:
-                art.saving_vc = 0.0
-            else :
-                art.saving_vc = saving_vc / 100
+                saving_vc = form.cleaned_data['s_vc_perc']
+                if saving_vc is None or saving_vc == 0:
+                    art.saving_vc = 0.0
+                else :
+                    art.saving_vc = saving_vc / 100
 
-            art.save()
+                art.save()
 
-        for c in range(1,len(category)+1):
-            if 'categoria_{}'.format(c) in request.POST:
-                cat = ArtCategory.objects.get(classid=str(c))
-                category_t = AArtCategoryArtCategory(category=cat, points=art)
-                category_t.save()
+                location.address = request.POST['address']
+                latitude = request.POST['lat']
+                longitude = request.POST['long']
+                location.geom = Point(float(longitude), float(latitude))
+                location.save()
 
-        return redirect('/edit/translation/{}+{}'.format(id,'en'))
+            for c in range(1,len(category)+1):
+                if 'categoria_{}'.format(c) in request.POST:
+                    cat = ArtCategory.objects.get(classid=str(c))
+                    category_t = AArtCategoryArtCategory(category=cat, points=art)
+                    category_t.save()
+
+        return redirect('/edit/translation/{}+{}'.format(art.classid,'en'))
 
     context = {
         #'lang': Lang.objects.get(active=True),

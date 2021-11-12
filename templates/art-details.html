@@ -147,8 +147,9 @@
     <script>
         var mymap = L.map('map', {layers: []}).setView([45.44, 10.999], 14);
 
-        L.marker([{{latitude}}, {{longitude}}]).addTo(mymap);
-
+        var marker = L.marker([{{latitude}}, {{longitude}}]);
+        marker.bindTooltip("{{address}}<br/>({{latitude}}, {{longitude}})",)
+        marker.addTo(mymap);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         }).addTo(mymap);

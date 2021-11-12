@@ -59,9 +59,12 @@ def itemPoI(request,classid_lang):
             tickets_trad = '<b style="color:red;">Non ancora tradotto in {}</b>'.format(lang_table.name)
             open_time_trad = '<b style="color:red;">Non ancora tradotto in {}</b>'.format(lang_table.name)
     try:
-        longitude, latitude = Location.objects.get(event=art.classid, num='1').geom
+        location = Location.objects.get(event=art.classid, num='1')
+        longitude, latitude = location.geom
+        address = location.address
     except:
-        longitude, latitude = None,None
+        longitude, latitude = None, None
+        address = None
     context = {
         'art': art,
         'category': category,
@@ -72,6 +75,7 @@ def itemPoI(request,classid_lang):
         'open_time_trad': open_time_trad,
         'latitude': latitude,
         'longitude': longitude,
+        'address': address,
     }
 
     return render(request,'art-details.html', context)

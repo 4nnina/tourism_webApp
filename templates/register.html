@@ -50,31 +50,64 @@
 
     <main id="main">
 
-    <section class="login">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <h3>Create new account</h3>
-                    {% for message in messages %}
-                    <h4>{{ message }}</h4>
-                    {% endfor %}
-
-                    <form method="POST" action="register">
-                        {% csrf_token %}
-                        <p>Username:</p>
-                        <input type="text" name="username" /><br><br>
-                        <p>Email:</p>
-                        <input type="email" name="email" /><br><br>
-                        <p>Password:</p>
-                        <input type="password" name="password" /><br><br>
-                        <p>Repeat password:</p>
-                        <input type="password" name="password2" /><br><br>
-                        <input type="submit" value="Save"/>
-                    </form>
+        <section class="login">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <h3>Create new account</h3>
+                        {% for message in messages %}
+                        <h4>{{ message }}</h4>
+                        {% endfor %}
+                        <br>
+                        <form method="POST" action="register">
+                            {% csrf_token %}
+                            <table style="border-collapse:separate; border-spacing:10px;">
+                                <tr>
+                                    <td><p><b>Username:</b></p></td>
+                                    <td><input type="text" name="username" /></td>
+                                </tr>
+                                <tr>
+                                    <td><p><b>Email:</b></p></td>
+                                    <td><input type="email" name="email" /></td>
+                                </tr>
+                                <tr>
+                                    <td><p><b>Password:</b></p></td>
+                                    <td><input type="password" name="password" /></td>
+                                </tr>
+                                <tr>
+                                    <td><p><b>Repeat password:</b></p></td>
+                                    <td><input type="password" name="password2" /></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><input type="submit" value="Save" style="  top: 0px; right: 0px; left: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;"/></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- ======= Footer ======= -->
+        <footer id="footer">
+            <div class="footer-newsletter">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="{% static 'assets/img/logo.png' %}" style="filter: invert(100%)" height="60px"/>
+                                </div>
+                                <div class="col">
+                                    <img src="{% static 'assets/img/logo_uni.jpg' %}" height="60px"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer><!-- End Footer -->
 
     </main><!-- End #main -->
 

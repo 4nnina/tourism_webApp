@@ -165,7 +165,7 @@
     <script src="/static/assets/js/main.js"></script>
 
     <script>
-        var mymap = L.map('map', {layers: []}).setView([45.44, 10.999], 14);
+        var mymap = L.map('map', {layers: []}).setView([{{latitude}}, {{longitude}}], 14);
 
         var marker = L.marker([{{latitude}}, {{longitude}}]);
         marker.bindTooltip("{{address}}<br/>({{latitude}}, {{longitude}})",)

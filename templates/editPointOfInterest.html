@@ -26,6 +26,15 @@
     <!-- Template Main CSS File -->
     <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
     <meta name="robots" content="NONE,NOARCHIVE">
 </head>
 
@@ -92,108 +101,110 @@
                 <form method="post">
                     {% csrf_token %}
                     <!--input type="hidden" name="csrfmiddlewaretoken" value="XbuaKn8smwbSckX1ilWmsa5oD3aze9Y7kbyuC9ievEvHUAnekUZohVZTQTt46vAl"-->
-                    <div>
-                        <div class="row justify-content-center">
-                            <div class="col-2">
-                                <label class="required" for="id_classid"><b>  Category:</b></label>
-                            </div>
-                            <div class="col">
-                                {% for cat in category.all %}
-                                    <input type="checkbox" name="categoria_{{ cat.classid }}" {% if select|check:cat.classid %} checked {% endif %}>
-                                    <label for="{{ cat.classid }}"> {{ cat.name_it }} </label><br>
-                                {% endfor %}
-                            </div>
-                        </div><hr width="70%">
 
-                        <div class="row">
-                            <div class="col-9">
-                                {{ form.media }}
-                                <table style="border-collapse:separate; border-spacing:10px;">
+                    <div class="row justify-content-center">
+                        <div class="col-2">
+                            <label class="required" for="id_classid"><b>  Category:</b></label>
+                        </div>
+                        <div class="col">
+                            {% for cat in category.all %}
+                                <input type="checkbox" name="categoria_{{ cat.classid }}" {% if select|check:cat.classid %} checked {% endif %}>
+                                <label for="{{ cat.classid }}"> {{ cat.name_it }} </label><br>
+                            {% endfor %}
+                        </div>
+                    </div><hr width="70%">
+
+                    <div class="row">
+                        <div class="col-9">
+                            {{ form.media }}
+                            <table style="border-collapse:separate; border-spacing:10px;">
+                                <tr>
+                                    <td><label class="required" for="id_classid"><b>  Image URL:</b></label></td>
+                                    <td>{{ form.image_url }} <a data-bs-popper="label_info" data-popper-placement="right" title="Url dell'immagine del punto di interesse"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                                </tr>
+
+                                <tr>
+                                    <td><label class="required" for="id_classid"><b>  Verona Card:</b></label></td>
+                                    <td>
+                                        <div class="related-widget-wrapper">
+                                            {% for vc in de_vc %}
+                                              {% if vc.code == form.vc %}
+                                                <option value="{{ vc.code }}">{{vc.name}}</option>
+                                              {% endif %}
+                                            {% endfor %}
+                                            <select name="vc" required="" id="vc">
+                                              {% for vc in de_vc %}
+                                                <option value="{{ vc.code }}">{{vc.name}}</option>
+                                              {% endfor %}
+                                            </select>
+                                            <a data-bs-popper="label_info" data-popper-placement="right" title="Prezzo con Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><label class="required" for="id_classid"><b>  Saving VC:</b></label></td>
+                                    <td>{{ form.s_vc_perc }} <a data-bs-popper="label_info" data-popper-placement="right" title="Percentuale di sconto del biglietto se in possesso della Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
+                                </tr>
+
+                                {% if user.is_superuser %}
                                     <tr>
-                                        <td><label class="required" for="id_classid"><b>  Image URL:</b></label></td>
-                                        <td>{{ form.image_url }} <a data-bs-popper="label_info" data-popper-placement="right" title="Url dell'immagine del punto di interesse"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>
+                                        <td><label class="required" for="id_classid"><b>  Verona Card id:</b></label></td>
+                                        <td>{{ form.vc_id }} <a data-bs-popper="label_info" data-popper-placement="right" title="Iddentificativo del punto di interesse per la Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
                                     </tr>
+                                {% endif %}
 
-                                    <tr>
-                                        <td><label class="required" for="id_classid"><b>  Verona Card:</b></label></td>
-                                        <td>
-                                            <div class="related-widget-wrapper">
-                                                {% for vc in de_vc %}
-                                                  {% if vc.code == form.vc %}
-                                                    <option value="{{ vc.code }}">{{vc.name}}</option>
-                                                  {% endif %}
-                                                {% endfor %}
-                                                <select name="vc" required="" id="vc">
-                                                  {% for vc in de_vc %}
-                                                    <option value="{{ vc.code }}">{{vc.name}}</option>
-                                                  {% endfor %}
-                                                </select>
-                                                <a data-bs-popper="label_info" data-popper-placement="right" title="Prezzo con Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td><label class="required" for="id_classid"><b>  Saving VC:</b></label></td>
-                                        <td>{{ form.s_vc_perc }} <a data-bs-popper="label_info" data-popper-placement="right" title="Percentuale di sconto del biglietto se in possesso della Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
-                                    </tr>
-
-                                    {% if user.is_superuser %}
-                                        <tr>
-                                            <td><label class="required" for="id_classid"><b>  Verona Card id:</b></label></td>
-                                            <td>{{ form.vc_id }} <a data-bs-popper="label_info" data-popper-placement="right" title="Iddentificativo del punto di interesse per la Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
-                                        </tr>
-                                    {% endif %}
-
-                                </table>
-                            </div>
-
-                            <div class="col">
-                                <img src="{{ art.image_url }}" width="300" height="auto" >
-                            </div>
-                        </div><hr width="70%">
-
-                        <div class="row">
-                            <div class="col-9">
-                                <table style="border-collapse:separate; border-spacing:10px;">
-                                     <tr>
-                                        <td><label><b> Address:</b></label></td>
-                                        <td>
-                                            <input type="text" name="address" value="{{ address }}" placeholder="Indirizzo"/>
-                                            <a data-bs-popper="label_info" data-popper-placement="right" title="Indirizzo del punto di interesse"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td><label><b> Latitude:</b></label></td>
-                                        <td><input type="text" name="lat" value="{{ latitude }}" placeholder="Latitudine"/></td>
-                                        <td><label><b> Longitude:</b></label></td>
-                                        <td><input type="text" name="long" value="{{ longitude }}" placeholder="Longitudine"/></td>
-                                    </tr>
-                                </table>
-                            </div>
+                            </table>
                         </div>
 
+                        <div class="col">
+                            <img src="{{ art.image_url }}" width="300" height="auto" >
+                        </div>
+                    </div><hr width="70%">
 
-                        <div class="row">
-                            <div class="col-5">
-                                <!--p class="deletelink-box" style="letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: white; background: #C2302E;">
-                                    <a href="/admin/tourismApp/art/79/delete/" class="deletelink">Delete</a>
-                                </p-->
-                                <input type="submit" value="Delete" class="default" name="_delete" style="  top: 0px; right: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #C2302E;">
-                            </div>
+                    <div class="row">
+                        <div class="col-9">
+                            <table style="border-collapse:separate; border-spacing:10px;">
+                                 <tr>
+                                    <td><label><b> Address:</b></label></td>
+                                    <td>
+                                        <input type="text" name="address" value="{{ address }}" placeholder="Indirizzo"/>
+                                        <a data-bs-popper="label_info" data-popper-placement="right" title="Indirizzo del punto di interesse"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
 
-                            <div class="col">
-                                <input type="submit" value="Continue editing" class="default" name="_save" style="top: 0px; right: 0px; left: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;">
-                            </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><label><b> Latitude:</b></label></td>
+                                    <td><input type="text" name="lat" value="{{ latitude }}" placeholder="Latitudine"/></td>
+                                    <td><label><b> Longitude:</b></label></td>
+                                    <td><input type="text" name="long" value="{{ longitude }}" placeholder="Longitudine"/></td>
+                                </tr>
+                            </table>
+                            <br/><br/><br/>
+                            <div class="row">
+                                <div class="col-5">
+                                    <!--p class="deletelink-box" style="letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: white; background: #C2302E;">
+                                        <a href="/admin/tourismApp/art/79/delete/" class="deletelink">Delete</a>
+                                    </p-->
+                                    <input type="submit" value="Delete" class="default" name="_delete" style="  top: 0px; right: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #C2302E;">
+                                </div>
+
+                                <div class="col">
+                                    <input type="submit" value="Continue editing" class="default" name="_save" style="top: 0px; right: 0px; left: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;">
+                                </div>
                             <!--<input type="submit" value="Save and add another" name="_addanother">
                             <input type="submit" value="Save and continue editing" name="_continue">-->
+                            </div>
                         </div>
 
-                        <script id="django-admin-form-add-constants" src="/static/admin/js/change_form.js" async=""></script>
-                        <script id="django-admin-prepopulated-fields-constants" src="/static/admin/js/prepopulate_init.js" data-prepopulated-fields="[]"></script>
+                        <div class="col">
+                            <div id="map" style="width: 250px; height: 250px;"></div>
+                        </div>
                     </div>
+
+                    <script id="django-admin-form-add-constants" src="/static/admin/js/change_form.js" async=""></script>
+                    <script id="django-admin-prepopulated-fields-constants" src="/static/admin/js/prepopulate_init.js" data-prepopulated-fields="[]"></script>
                 </form>
 
                 <br class="clear">
@@ -236,6 +247,17 @@
 
     <!-- Template Main JS File -->
     <script src="/static/assets/js/main.js"></script>
+
+    <script>
+        var mymap = L.map('map', {layers: []}).setView([{{latitude}}, {{longitude}}], 13);
+
+        var marker = L.marker([{{latitude}}, {{longitude}}]);
+        marker.bindTooltip("{{address}}<br/>({{latitude}}, {{longitude}})",)
+        marker.addTo(mymap);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        }).addTo(mymap);
+    </script>
 
 </body>
 </html>

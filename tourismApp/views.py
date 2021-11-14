@@ -330,9 +330,9 @@ def editPoI2(request, classid_lang):
                 #if trad_obj.notes_trad != notes:
                 #    ArtTradT.objects.filter(classref=classid).update(notes_trad=notes)
                 if trad_obj.open_time_trad != open_time:
-                    ArtTradT.objects.filter(classref=classid).update(open_time_trad=open_time)
+                    ArtTradT.objects.filter(classref=classid, lang=de_lang.code).update(open_time_trad=open_time)
                 if trad_obj.tickets_trad != tickets:
-                    ArtTradT.objects.filter(classref=classid).update(tickets_trad=tickets)
+                    ArtTradT.objects.filter(classref=classid, lang=de_lang.code).update(tickets_trad=tickets)
 
             if '_save' in request.POST:
                 return redirect('/Art/{}+{}'.format(classid,lang))

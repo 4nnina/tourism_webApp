@@ -58,9 +58,9 @@
                         </li-->
                     {% endif %}
                     {% if user.is_authenticated %}
-                        <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
+                        <li><a class="getstarted scrollto" href="{% url 'logOut'%}">Log Out</a></li>
                     {% else %}
-                        <li><a class="getstarted scrollto" href="logIn">Log In</a></li>
+                        <li><a class="getstarted scrollto" href="{% url 'logIn'%}">Log In</a></li>
                     {% endif %}
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>

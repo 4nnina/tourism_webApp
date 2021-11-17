@@ -58,9 +58,10 @@
                                 <li><a href="/Tour/{{ tour.classid }}+de" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
                             </ul>
                         </li>
-                        <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
+
+                        <li><a class="getstarted scrollto" href="{% url 'logOut'%}">Log Out</a></li>
                     {% else %}
-                        <li><a class="getstarted scrollto" href="logIn">Log In</a></li>
+                        <li><a class="getstarted scrollto" href="{% url 'logIn'%}">Log In</a></li>
                     {% endif %}
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
@@ -87,17 +88,23 @@
             <div class="container">
                 <div class="row gy-4">
                     <div class="col-lg-8">
-                        <div class="portfolio-info">
+                        <!--div class="portfolio-info"-->
                             <br>
-                            <ul>
-                                <li><strong>Type</strong>: {{ tour.type}}</li>
-                                <li><strong>Duration</strong>: {{ tour.duration}} h</li>
+                            <table style="border-collapse:separate; border-spacing:10px;">
+                                <tr  style="vertical-align:top">
+                                    <td><strong>Type</strong>: </td>
+                                    <td>{{ tour.type}}</td>
+                                </tr>
+                                <tr  style="vertical-align:top">
+                                    <td><strong>Duration</strong>: </td>
+                                    <td>{{ tour.duration}} h</td>
+                                </tr>
                                 <!--li><strong>Length</strong>: {{ tour.length}}</li-->
-                            </ul>
-                        </div>
+                            </table>
+                        <!--/div-->
 
                         <div class="portfolio-description">
-                            <h3>Description:</h3>
+                            <h4>Description:</h4>
                             <p>{{ descr_trad | make_break | safe}}</p>
                         </div>
                     </div>

@@ -69,9 +69,9 @@
                             </ul>
                         </li>
 
-                        <li><a class="getstarted scrollto" href="logOut">Log Out</a></li>
+                        <li><a class="getstarted scrollto" href="{% url 'logOut'%}">Log Out</a></li>
                     {% else %}
-                      <li><a class="getstarted scrollto" href="logIn">Log In</a></li>
+                      <li><a class="getstarted scrollto" href="{% url 'logIn'%}">Log In</a></li>
                     {% endif %}
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
@@ -98,19 +98,28 @@
             <div class="container">
                 <div class="row gy-4">
                     <div class="col-lg-8">
-                        <div class="portfolio-info">
+                        <!--div class="portfolio-info"-->
                             <br>
-                            <ul>
-                                <li><strong>Category</strong>: {% for c in category %}  {{ c }}; {% endfor %}</li>
+                            <table style="border-collapse:separate; border-spacing:10px;">
+                                <tr style="vertical-align:top">
+                                    <td><strong>Category</strong>: </td>
+                                    <td>{% for c in category %}  {{ c }}; {% endfor %}</td>
+                                </tr>
                                 <!--li><strong>Location</strong>: {{ latitude }}, {{ longitude }}</li-->
-                                <li><strong>Open time</strong>: <div style="padding: 10px">{{ open_time_trad|safe}}</div></li>
+                                <tr style="vertical-align:top">
+                                    <td><strong>Open time</strong>: </td>
+                                    <td><div style="padding: 10px">{{ open_time_trad|safe}}</div></td>
+                                </tr>
                                 <!--li><strong>State</strong>: {{ art.state}}</li-->
-                                <li><strong>Tikets</strong>: <div style="padding: 10px">{{ tickets_trad|safe}}</div></li>
-                            </ul>
-                        </div>
+                                <tr style="vertical-align:top">
+                                    <td><strong>Tickets</strong>: </td>
+                                    <td><div style="padding: 10px">{{ tickets_trad|safe}}</div></td>
+                                </tr>
+                            </table>
+                        <!--/div-->
 
                         <div class="portfolio-description">
-                            <h3>Description:</h3>
+                            <h4>Description:</h4>
                             <p>
                                 {{ descr_trad | make_break | safe}}
                             </p>

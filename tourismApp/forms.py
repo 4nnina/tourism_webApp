@@ -82,3 +82,17 @@ class TourForm(ModelForm):
             'image_url': forms.TextInput(attrs={'placeholder': "Url dell'immagine"}),
             'duration': forms.TextInput(attrs={'placeholder': 'Durata in ore'}),
         }
+
+class LocationForm(forms.Form):
+    latitude = forms.FloatField( min_value=-90, max_value=90)
+    longitude = forms.FloatField( min_value=-180, max_value=180)
+    address = forms.CharField()
+
+    class Meta:
+        fields = ['latitude','longitude','address']
+
+        widgets = {
+            'address': forms.TextInput(attrs={'placeholder': 'Indirizzo'}),
+            'latitude': forms.TextInput(attrs={'placeholder': 'Latitudine'}),
+            'longitude': forms.TextInput(attrs={'placeholder': 'Longitudine'}),
+        }

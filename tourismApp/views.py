@@ -644,6 +644,7 @@ def newArt(request):
                 except:
                     location = Location(classid=id, address=None, event=art.classid, num='1', geom=None)
                     break
+            locationForm = LocationForm(request.POST)
 
             if form.is_valid():
                 art.descr_it = form.cleaned_data['descr_it']
@@ -666,9 +667,10 @@ def newArt(request):
 
                 art.save()
 
-                location.address = request.POST['address']
-                latitude = request.POST['lat']
-                longitude = request.POST['long']
+                location.address = locationForm.cleaned_data['address']
+                latitude = locationForm.cleaned_data['lat']
+                longitude = locationForm.cleaned_data['long']
+                print(longitude, latitude)
                 location.geom = Point(float(longitude), float(latitude))
                 location.save()
 
@@ -683,6 +685,7 @@ def newArt(request):
     context = {
         #'lang': Lang.objects.get(active=True),
         'form': ArtForm(),
+        'locationForm': LocationForm(),
         'category': category,
         'de_vc': DEVc.objects.order_by('code').reverse(),
     }

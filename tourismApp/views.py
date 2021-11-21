@@ -164,20 +164,22 @@ def editPoI1(request, classid):
     if request.method == 'POST':
 
         form = ArtForm_data(request.POST)
+        locationForm = LocationForm(request.POST)
 
         if '_delete' in request.POST:
             Art.objects.filter(classid=classid).update(state='02')
             return redirect('editArt')
 
-        if form.is_valid():
+        if form.is_valid() and locationForm.is_valid():
             image_url = form.cleaned_data['image_url']
             notes = form.cleaned_data['notes']
             saving_vc = form.cleaned_data['s_vc_perc'] / 100 if form.cleaned_data['s_vc_perc'] != 0 else 0.0
             vc = form.cleaned_data['vc']
             vc_id = form.cleaned_data['vc_id']
-            address = request.POST['address']
-            latitude = request.POST['lat']
-            longitude = request.POST['long']
+            address = locationForm.cleaned_data['address']
+            latitude = locationForm.cleaned_data['latitude']
+            longitude = locationForm.cleaned_data['longitude']
+            print('provissima', address,latitude,longitude)
 
             with transaction.atomic():
                 if image_url != 'None' and art.image_url != image_url:
@@ -223,9 +225,7 @@ def editPoI1(request, classid):
         'de_vc': DEVc.objects.order_by('code').reverse(),
         'form' : ArtForm_data(initial={'image_url': art.image_url, 'notes': art.notes,
                                        's_vc_perc': art.saving_vc*100, 'vc': art.vc, 'vc_id': art.vc_id}),
-        'address': address,
-        'latitude': latitude,
-        'longitude': longitude,
+        'locationForm': LocationForm(initial={'address': address, 'latitude':latitude, 'longitude': longitude}),
         #'state':DArtEStato.objects
     }
     return render(request,'editPointOfInterest.html', context)
@@ -646,7 +646,7 @@ def newArt(request):
                     break
             locationForm = LocationForm(request.POST)
 
-            if form.is_valid():
+            if form.is_valid() and locationForm.is_valid():
                 art.descr_it = form.cleaned_data['descr_it']
                 art.image_url = form.cleaned_data['image_url']
                 art.name_it = form.cleaned_data['name_it']
@@ -667,9 +667,10 @@ def newArt(request):
 
                 art.save()
 
+                latitude = locationForm.cleaned_data['latitude']
+                longitude = locationForm.cleaned_data['longitude']
                 location.address = locationForm.cleaned_data['address']
-                latitude = locationForm.cleaned_data['lat']
-                longitude = locationForm.cleaned_data['long']
+
                 print(longitude, latitude)
                 location.geom = Point(float(longitude), float(latitude))
                 location.save()

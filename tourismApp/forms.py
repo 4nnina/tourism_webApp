@@ -32,7 +32,7 @@ class ArtForm(ModelForm):
 
         }
         error_messages = {
-            #'tickets': {'max_length': _('Too long'),}
+
         }
 
 class ArtForm_Trad(ModelForm):
@@ -84,15 +84,6 @@ class TourForm(ModelForm):
         }
 
 class LocationForm(forms.Form):
-    latitude = forms.FloatField( min_value=-90, max_value=90)
-    longitude = forms.FloatField( min_value=-180, max_value=180)
-    address = forms.CharField()
-
-    class Meta:
-        fields = ['latitude','longitude','address']
-
-        widgets = {
-            'address': forms.TextInput(attrs={'placeholder': 'Indirizzo'}),
-            'latitude': forms.TextInput(attrs={'placeholder': 'Latitudine'}),
-            'longitude': forms.TextInput(attrs={'placeholder': 'Longitudine'}),
-        }
+    latitude = forms.FloatField( min_value=-90, max_value=90, widget= forms.TextInput(attrs={'placeholder': 'Latitudine'}))
+    longitude = forms.FloatField( min_value=-180, max_value=180, widget= forms.TextInput(attrs={'placeholder': 'Longitudine'}))
+    address = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Indirizzo'}))

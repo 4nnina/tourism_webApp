@@ -168,7 +168,8 @@
                                  <tr>
                                     <td><label><b> Address:</b></label></td>
                                     <td>
-                                        <input type="text" name="address" value="{{ address }}" placeholder="Indirizzo"/>
+                                        {{ locationForm.address }}
+                                        <!--input type="text" name="address" value="{{ locationForm.address }}" placeholder="Indirizzo"/-->
                                         <a data-bs-popper="label_info" data-popper-placement="right" title="Indirizzo del punto di interesse"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
 
                                     </td>
@@ -176,9 +177,11 @@
 
                                 <tr>
                                     <td><label><b> Latitude:</b></label></td>
-                                    <td><input type="text" name="lat" value="{{ latitude }}" placeholder="Latitudine"/></td>
+                                    <td>{{ locationForm.latitude }}</td>
+                                    <!--td><input type="text" name="lat" value="{{ locationForm.latitude }}" placeholder="Latitudine"/></td-->
                                     <td><label><b> Longitude:</b></label></td>
-                                    <td><input type="text" name="long" value="{{ longitude }}" placeholder="Longitudine"/></td>
+                                    <td>{{ locationForm.longitude }}</td>
+                                    <!--td><input type="text" name="long" value="{{ locationForm.longitude }}" placeholder="Longitudine"/></td-->
                                 </tr>
                             </table>
                             <br/><br/><br/>
@@ -249,10 +252,10 @@
     <script src="/static/assets/js/main.js"></script>
 
     <script>
-        var mymap = L.map('map', {layers: []}).setView([{{latitude}}, {{longitude}}], 13);
+        var mymap = L.map('map', {layers: []}).setView([{{locationForm.latitude}}, {{locationForm.longitude}}], 13);
 
-        var marker = L.marker([{{latitude}}, {{longitude}}]);
-        marker.bindTooltip("{{address}}<br/>({{latitude}}, {{longitude}})",)
+        var marker = L.marker([{{locationForm.latitude}}, {{locationForm.longitude}}]);
+        marker.bindTooltip("{{locationForm.address}}<br/>({{locationForm.latitude}}, {{locationForm.longitude}})",)
         marker.addTo(mymap);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',

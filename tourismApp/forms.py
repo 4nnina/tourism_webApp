@@ -3,8 +3,6 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from .models import *
 
-class MyForm(ModelForm):
-    OPTIONS = ()
 
 class ArtForm(ModelForm):
     s_vc_perc = forms.FloatField(min_value=0, max_value=100, required=False, widget=forms.NumberInput

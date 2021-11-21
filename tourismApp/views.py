@@ -26,7 +26,13 @@ def itemPoI(request,classid_lang):
         classid, lang = classid_lang, 'it'
     else:
         classid, lang = classid_lang.split('+')
-    art = Art.objects.get(classid=classid)
+
+    try:
+        art = Art.objects.get(classid=classid)
+    except:
+        print('except itemPoi Art')
+        art = Art()
+
     cat = AArtCategoryArtCategory.objects.filter(points=art.classid)
     category = []
     for c in cat:
@@ -85,7 +91,12 @@ def itemTour(request,classid_lang):
         classid, lang = classid_lang, 'it'
     else:
         classid, lang = classid_lang.split('+')
-    tour = Tour.objects.get(classid=classid)
+
+    try:
+        tour = Tour.objects.get(classid=classid)
+    except:
+        print('except itemTour Tour')
+        tour = Tour()
 
     if lang == 'it':
         descr_trad = tour.descr_it

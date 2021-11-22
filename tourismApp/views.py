@@ -237,6 +237,9 @@ def editPoI1(request, classid):
         'form' : ArtForm_data(initial={'image_url': art.image_url, 'notes': art.notes,
                                        's_vc_perc': art.saving_vc*100, 'vc': art.vc, 'vc_id': art.vc_id}),
         'locationForm': LocationForm(initial={'address': address, 'latitude':latitude, 'longitude': longitude}),
+        'address': address,
+        'latitude': latitude,
+        'longitude': longitude,
         #'state':DArtEStato.objects
     }
     return render(request,'editPointOfInterest.html', context)

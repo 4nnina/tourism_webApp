@@ -251,11 +251,22 @@
     <!-- Template Main JS File -->
     <script src="/static/assets/js/main.js"></script>
 
-    <script>
+    <!--script>
         var mymap = L.map('map', {layers: []}).setView([{{locationForm.latitude}}, {{locationForm.longitude}}], 13);
 
         var marker = L.marker([{{locationForm.latitude}}, {{locationForm.longitude}}]);
         marker.bindTooltip("{{locationForm.address}}<br/>({{locationForm.latitude}}, {{locationForm.longitude}})",)
+        marker.addTo(mymap);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        }).addTo(mymap);
+    </script-->
+
+    <script>
+        var mymap = L.map('map', {layers: []}).setView([{{latitude}}, {{longitude}}], 13);
+
+        var marker = L.marker([{{latitude}}, {{longitude}}]);
+        marker.bindTooltip("{{address}}<br/>({{latitude}}, {{longitude}})",)
         marker.addTo(mymap);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',

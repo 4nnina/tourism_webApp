@@ -82,6 +82,6 @@ class TourForm(ModelForm):
         }
 
 class LocationForm(forms.Form):
-    latitude = forms.FloatField( min_value=-90, max_value=90, widget= forms.TextInput(attrs={'placeholder': 'Latitudine'}))
-    longitude = forms.FloatField( min_value=-180, max_value=180, widget= forms.TextInput(attrs={'placeholder': 'Longitudine'}))
+    latitude = forms.FloatField(min_value=-90, max_value=90, widget=forms.NumberInput(attrs={'placeholder': 'Latitudine'}))
+    longitude = forms.FloatField(min_value=-180, max_value=180, widget=forms.NumberInput(attrs={'placeholder': 'Longitudine'}))
     address = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Indirizzo'}))

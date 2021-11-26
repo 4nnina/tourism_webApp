@@ -1,10 +1,21 @@
 from django.contrib.gis.db import models
+from django.db import connection
 from django.db.models import Manager as GeoManager
 from tinymce.models import HTMLField
 from ckeditor.fields import RichTextField
 from djrichtextfield.widgets import RichTextWidget
 from django.db.models import CheckConstraint, Q, UniqueConstraint
 from django.forms import ModelForm
+
+def get_next_increment(column, table):
+    print(column,table)
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT nextval({}) FROM {}".format(column, table))
+        result = cursor.fetchone()
+        if result is None:
+            return 0
+        return result[0]
+
 
 class AArtCategoryArtCategory(models.Model):
     category = models.ForeignKey('ArtCategory', models.DO_NOTHING, db_column='category')
@@ -68,6 +79,22 @@ class Art(models.Model):
     class Meta:
         managed = False
         db_table = 'art'
+
+
+class ArtCapacity(models.Model):
+    classid = models.CharField(primary_key=True, max_length=70)
+    end_date = models.DateField(null=True, blank=True)
+    poi_cap = models.DecimalField(decimal_places=0,max_digits=15)
+    start_date = models.DateField()
+    poi = models.ForeignKey(Art, models.DO_NOTHING, db_column='poi', blank=True, null=True)
+
+    def __str__(self):
+        return '{}, {}'.format(self.start_date, self.poi)
+
+    class Meta:
+        managed = False
+        db_table = 'art_capacity'
+        unique_together = (('start_date','poi'),)
 
 
 class ArtCategory(models.Model):
@@ -137,6 +164,21 @@ class ArtTradT(models.Model):
     class Meta:
         managed = False
         db_table = 'art_trad_t'
+
+class ArtVisitingTime(models.Model):
+    classid = models.CharField(primary_key=True, max_length=70)
+    end_date = models.DateField(null=True, blank=True)
+    poi_visiting_time = models.DecimalField(decimal_places=0,max_digits=15)
+    start_date = models.DateField()
+    poi = models.ForeignKey(Art, models.DO_NOTHING, db_column='poi', blank=True, null=True)
+
+    def __str__(self):
+        return '{}, {}'.format(self.start_date, self.poi)
+
+    class Meta:
+        managed = False
+        db_table = 'art_visiting_time'
+        unique_together = (('start_date','poi'),)
 
 
 class BenefitVc(models.Model):
@@ -212,12 +254,12 @@ class Calendar(models.Model):
         unique_together = (('day', 'event'),)
 
 class Crowding(models.Model):
-    classid = models.CharField(primary_key=True, max_length=70)
+    classid = models.IntegerField(default=get_next_increment('classid','crowding'), unique=True, primary_key=True)
     data = models.DateField()
-    date_creat = models.CharField(max_length=19)
-    val_real = models.FloatField()
-    val_stim = models.FloatField()
-    val_stor = models.FloatField()
+    date_creat = models.DateField()
+    val_real = models.FloatField(blank=True)
+    val_stim = models.FloatField(blank=True)
+    val_stor = models.FloatField(blank=True)
     punto_di_interesse = models.ForeignKey('Art', models.DO_NOTHING, db_column='punto_di_interesse')
 
     def __str__(self):
@@ -414,12 +456,12 @@ class Location(models.Model):
         unique_together = (('num', 'event'),)
 
 class LogCrowd(models.Model):
-    classid = models.CharField(primary_key=True, max_length=70)
+    classid = models.IntegerField(default=get_next_increment('classid','log_crowd'), unique=True, primary_key=True)
     data = models.DateField()
     data_creat = models.CharField(max_length=19)
-    val_real = models.FloatField()
-    val_stim = models.FloatField()
-    val_stor = models.FloatField()
+    val_real = models.FloatField(blank=True)
+    val_stim = models.FloatField(blank=True)
+    val_stor = models.FloatField(blank=True)
     poi = models.ForeignKey(Art, models.DO_NOTHING, db_column='poi')
 
     def __str__(self):
@@ -431,7 +473,7 @@ class LogCrowd(models.Model):
         unique_together = (('data_creat', 'poi'),)
 
 class LogVc(models.Model):
-    classid = models.CharField(primary_key=True, max_length=70)
+    classid = models.IntegerField(default=get_next_increment('classid','log_vc'), unique=True, primary_key=True)
     attivazione = models.DateField()
     id_vc = models.CharField(max_length=40)
     istante = models.CharField(max_length=19)

@@ -7,16 +7,6 @@ from djrichtextfield.widgets import RichTextWidget
 from django.db.models import CheckConstraint, Q, UniqueConstraint
 from django.forms import ModelForm
 
-def get_next_increment(column, table):
-    print(column,table)
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT nextval({}) FROM {}".format(column, table))
-        result = cursor.fetchone()
-        if result is None:
-            return 0
-        return result[0]
-
-
 class AArtCategoryArtCategory(models.Model):
     category = models.ForeignKey('ArtCategory', models.DO_NOTHING, db_column='category')
     points = models.ForeignKey('Art', models.DO_NOTHING, db_column='points')
@@ -254,12 +244,12 @@ class Calendar(models.Model):
         unique_together = (('day', 'event'),)
 
 class Crowding(models.Model):
-    classid = models.IntegerField(default=get_next_increment('classid','crowding'), unique=True, primary_key=True)
-    data = models.DateField()
-    date_creat = models.DateField()
-    val_real = models.FloatField(blank=True)
-    val_stim = models.FloatField(blank=True)
-    val_stor = models.FloatField(blank=True)
+    classid = models.AutoField(primary_key=True)
+    data = models.DateTimeField()
+    date_creat = models.DateTimeField()
+    val_real = models.FloatField(null=True, blank=True)
+    val_stim = models.FloatField(null=True, blank=True)
+    val_stor = models.FloatField(null=True, blank=True)
     punto_di_interesse = models.ForeignKey('Art', models.DO_NOTHING, db_column='punto_di_interesse')
 
     def __str__(self):
@@ -456,12 +446,12 @@ class Location(models.Model):
         unique_together = (('num', 'event'),)
 
 class LogCrowd(models.Model):
-    classid = models.IntegerField(default=get_next_increment('classid','log_crowd'), unique=True, primary_key=True)
-    data = models.DateField()
-    data_creat = models.CharField(max_length=19)
-    val_real = models.FloatField(blank=True)
-    val_stim = models.FloatField(blank=True)
-    val_stor = models.FloatField(blank=True)
+    classid = models.AutoField(primary_key=True)
+    data = models.DateTimeField()
+    data_creat = models.DateTimeField()
+    val_real = models.FloatField(null=True, blank=True)
+    val_stim = models.FloatField(null=True, blank=True)
+    val_stor = models.FloatField(null=True, blank=True)
     poi = models.ForeignKey(Art, models.DO_NOTHING, db_column='poi')
 
     def __str__(self):
@@ -473,7 +463,7 @@ class LogCrowd(models.Model):
         unique_together = (('data_creat', 'poi'),)
 
 class LogVc(models.Model):
-    classid = models.IntegerField(default=get_next_increment('classid','log_vc'), unique=True, primary_key=True)
+    classid = models.AutoField(primary_key=True)
     attivazione = models.DateField()
     id_vc = models.CharField(max_length=40)
     istante = models.CharField(max_length=19)

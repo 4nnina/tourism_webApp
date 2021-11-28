@@ -151,7 +151,11 @@ def editPoI1(request, classid):
     for c in AArtCategoryArtCategory.objects.filter(points=classid):
         select[int(c.category.classid)] = True
 
-    art = Art.objects.get(classid=classid)
+    try:
+        art = Art.objects.get(classid=classid)
+    except:
+        print('except editPoI1 Art')
+        art = Art()
 
     try:
         location = Location.objects.get(event=classid, num='1')
@@ -190,7 +194,6 @@ def editPoI1(request, classid):
             address = locationForm.cleaned_data['address']
             latitude = locationForm.cleaned_data['latitude']
             longitude = locationForm.cleaned_data['longitude']
-            print('provissima', address,latitude,longitude)
 
             with transaction.atomic():
                 if image_url != 'None' and art.image_url != image_url:
@@ -315,6 +318,35 @@ def editPoI2(request, classid_lang):
             tickets = form.cleaned_data['tickets']
             open_time = form.cleaned_data['open_time']
             #notes = form.cleaned_data['notes']
+        else:
+            if 'open_time' in form.errors:
+                messages.info(request, 'Field Open time is too long!')
+                context = {
+                    'art': art,
+                    'lang': lang,
+                    'descr': descr,
+                    'name': name,
+                    'de_vc': DEVc.objects.order_by('code').reverse(),
+                    'form': ArtForm_Trad(
+                        initial={'name_it': name, 'descr_it': descr, 'open_time': open_time, 'tickets': tickets, })
+                    # 'state':DArtEStato.objects
+                }
+
+                return render(request, 'editPoiTranslate.html', context)
+            elif 'tickets' in form.errors:
+                messages.info(request, 'Field Tickets is too long!')
+                context = {
+                    'art': art,
+                    'lang': lang,
+                    'descr': descr,
+                    'name': name,
+                    'de_vc': DEVc.objects.order_by('code').reverse(),
+                    'form': ArtForm_Trad(
+                        initial={'name_it': name, 'descr_it': descr, 'open_time': open_time, 'tickets': tickets, })
+                    # 'state':DArtEStato.objects
+                }
+
+                return render(request, 'editPoiTranslate.html', context)
 
         with transaction.atomic():
             if not translated:
@@ -688,6 +720,27 @@ def newArt(request):
                 print(longitude, latitude)
                 location.geom = Point(float(longitude), float(latitude))
                 location.save()
+            else:
+                if 'open_time' in form.errors:
+                    messages.info(request, "Field 'Open time' is too long!")
+                    context = {
+                        # 'lang': Lang.objects.get(active=True),
+                        'form': ArtForm(),
+                        'locationForm': LocationForm(),
+                        'category': category,
+                        'de_vc': DEVc.objects.order_by('code').reverse(),
+                    }
+                    return render(request, 'newArt.html', context)
+                elif 'tickets' in form.errors:
+                    messages.info(request, "Field 'Tickets' is too long!")
+                    context = {
+                        # 'lang': Lang.objects.get(active=True),
+                        'form': ArtForm(),
+                        'locationForm': LocationForm(),
+                        'category': category,
+                        'de_vc': DEVc.objects.order_by('code').reverse(),
+                    }
+                    return render(request, 'newArt.html', context)
 
             for c in range(1,len(category)+1):
                 if 'categoria_{}'.format(c) in request.POST:
@@ -749,17 +802,17 @@ def register(request):
 
         if password == password2:
             if User.objects.filter(email=email).exists():
-                messages.info(request, 'Email already used')
+                messages.info(request, 'Email already used!')
                 return redirect('register')
             elif User.objects.filter(username=username).exists():
-                messages.info(request, 'Username already used')
+                messages.info(request, 'Username already exist!')
                 return redirect('register')
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.save();
                 return redirect('logIn')
         else:
-            messages.info(request, 'Password not the same')
+            messages.info(request, "Passwords don't match!")
             return redirect('register')
     else:
         return render(request, 'register.html')
@@ -775,7 +828,7 @@ def logIn(request):
             auth.login(request, user)
             return redirect('/')
         else:
-            messages.info(request, 'Credential invalid')
+            messages.info(request, 'Authentication failed!')
             return redirect('logIn')
     else:
         return render(request, 'login.html')

@@ -56,7 +56,11 @@
                     <div class="col-lg-6">
                         <br><br><br><br><br>
                         {% for message in messages %}
-                            <h4>{{ message }}</h4>
+                            <div id="content">
+                                <div class="alert alert-danger" id="msg" role="alert">
+                                    {{ message }}
+                                </div>
+                            </div>
                         {% endfor %}
                         <form method="POST" action="logIn">
                             {% csrf_token %}

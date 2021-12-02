@@ -127,30 +127,34 @@
                                     <td><label class="required" for="id_classid"><b>  Verona Card:</b></label></td>
                                     <td>
                                         <div class="related-widget-wrapper">
-                                            {% for vc in de_vc %}
-                                              {% if vc.code == form.vc %}
-                                                <option value="{{ vc.code }}">{{vc.name}}</option>
-                                              {% endif %}
-                                            {% endfor %}
+
                                             <select name="vc" required="" id="vc">
-                                              {% for vc in de_vc %}
-                                                <option value="{{ vc.code }}">{{vc.name}}</option>
-                                              {% endfor %}
+                                                {% for vc in de_vc %}
+                                                    {% if vc.code == art.vc %}
+                                                        <option value="{{ vc.code }}">{{vc.name}}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% for vc in de_vc %}
+                                                    {% if vc.code != art.vc %}
+                                                        <option value="{{ vc.code }}">{{vc.name}}</option>
+                                                    {% endif %}
+                                                {% endfor %}
                                             </select>
                                             <a data-bs-popper="label_info" data-popper-placement="right" title="Prezzo con Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a>
                                         </div>
                                     </td>
                                 </tr>
 
-                                <tr>
-                                    <td><label class="required" for="id_classid"><b>  Saving VC:</b></label></td>
-                                    <td>{{ form.s_vc_perc }} <a data-bs-popper="label_info" data-popper-placement="right" title="Percentuale di sconto del biglietto se in possesso della Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
+
+                                <tr id="saving_vc_" {% if art.vc == '00' or art.vc == '03' %} style="display: none" {% endif %}>
+                                    <td><label><b>  Saving VC:</b></label></td>
+                                    <td>{{ form.s_vc_perc }} <a data-bs-popper="label_info" data-popper-placement="right" title="Percentuale di sconto del biglietto se ridotto percentuale &#xA; Prezzo scontato se ridotto"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
                                 </tr>
 
                                 {% if user.is_superuser %}
                                     <tr>
-                                        <td><label class="required" for="id_classid"><b>  Verona Card id:</b></label></td>
-                                        <td>{{ form.vc_id }} <a data-bs-popper="label_info" data-popper-placement="right" title="Iddentificativo del punto di interesse per la Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
+                                        <td><label><b>  Verona Card id:</b></label></td>
+                                        <td>{{ form.vc_id }} <a data-bs-popper="label_info" data-popper-placement="right" title="Identificativo del punto di interesse per la Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
                                     </tr>
                                 {% endif %}
 
@@ -261,6 +265,7 @@
                     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         }).addTo(mymap);
     </script-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> <!-- per lo script-->
 
     <script>
         var mymap = L.map('map', {layers: []}).setView([{{latitude}}, {{longitude}}], 13);
@@ -271,6 +276,18 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         }).addTo(mymap);
+    </script>
+    <script>
+        $('#vc').on('change', function() {
+            var selected = $(this).val();
+
+            if (selected === "01" || selected === "02") {
+                $('#saving_vc_').show();
+            }
+            else{
+                $('#saving_vc_').hide();
+            }
+        });
     </script>
 
 </body>

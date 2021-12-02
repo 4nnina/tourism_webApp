@@ -188,7 +188,7 @@ def editPoI1(request, classid):
         if form.is_valid() and locationForm.is_valid():
             image_url = form.cleaned_data['image_url']
             notes = form.cleaned_data['notes']
-            saving_vc = form.cleaned_data['s_vc_perc'] / 100 if form.cleaned_data['s_vc_perc'] != 0 else 0.0
+            saving_vc = form.cleaned_data['s_vc_perc']
             vc = form.cleaned_data['vc']
             vc_id = form.cleaned_data['vc_id']
             address = locationForm.cleaned_data['address']
@@ -200,10 +200,19 @@ def editPoI1(request, classid):
                     Art.objects.filter(classid=classid).update(image_url=image_url)
                 if notes != 'None' and art.notes != notes:
                     Art.objects.filter(classid=classid).update(notes=notes)
-                if art.saving_vc != saving_vc:
-                    Art.objects.filter(classid=classid).update(saving_vc=saving_vc)
                 if vc != 'None' and art.vc != vc:
                     Art.objects.filter(classid=classid).update(vc=vc)
+                if art.saving_vc != saving_vc or art.vc != vc:
+                    if vc == '00':
+                        saving_vc = 1
+                    elif vc == '01':
+                        saving_vc = saving_vc
+                    elif vc == '02':
+                        saving_vc = saving_vc / 100
+                    else:
+                        saving_vc = 0
+                    Art.objects.filter(classid=classid).update(saving_vc=saving_vc)
+
                 if vc_id != 'None' and art.vc_id != vc_id:
                     Art.objects.filter(classid=classid).update(vc_id=vc_id)
                 if new_location:
@@ -232,13 +241,19 @@ def editPoI1(request, classid):
 
         return redirect('/edit/translation/{}'.format(classid))
 
+    if art.vc == '02':
+        print('vc', art.vc)
+        saving_vc = art.saving_vc*100
+    else:
+        saving_vc = art.saving_vc
+
     context = {
         'art' : art,
         'category': category,
         'select': select,
         'de_vc': DEVc.objects.order_by('code').reverse(),
         'form' : ArtForm_data(initial={'image_url': art.image_url, 'notes': art.notes,
-                                       's_vc_perc': art.saving_vc*100, 'vc': art.vc, 'vc_id': art.vc_id}),
+                                       's_vc_perc': saving_vc, 'vc': art.vc, 'vc_id': art.vc_id}),
         'locationForm': LocationForm(initial={'address': address, 'latitude':latitude, 'longitude': longitude}),
         'address': address,
         'latitude': latitude,
@@ -706,10 +721,19 @@ def newArt(request):
                 art.vc_id = form.cleaned_data['vc_id']
 
                 saving_vc = form.cleaned_data['s_vc_perc']
-                if saving_vc is None or saving_vc == 0:
-                    art.saving_vc = 0.0
-                else :
+                #if saving_vc is None or saving_vc == 0:
+                 #   art.saving_vc = 0.0
+                #else :
+                 #   art.saving_vc = saving_vc / 100
+
+                if art.vc == '00':
+                    art.saving_vc = 1
+                elif art.vc == '01':
+                    art.saving_vc = saving_vc
+                elif art.vc == '02':
                     art.saving_vc = saving_vc / 100
+                else:
+                    art.saving_vc = 0
 
                 art.save()
 

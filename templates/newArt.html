@@ -102,14 +102,6 @@
             </div>
         </section><!-- End Breadcrumbs -->
 
-        {% for message in messages %}
-            <div id="content">
-                <div class="alert alert-danger" id="msg" role="alert">
-                    {{ message }}
-                </div>
-            </div>
-        {% endfor %}
-
         <section class="edit-details">
             <div class="container">
                 <form method="post" class="">
@@ -174,13 +166,13 @@
 
                                 <tr id="saving_vc_" style="display: none">
                                   <td><label><b>  Saving VC:</b></label></td>
-                                  <td>{{ form.s_vc_perc }} <a data-bs-popper="label_info" data-popper-placement="right" title="Percentuale di sconto del biglietto se in possesso della Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
+                                  <td>{{ form.s_vc_perc }} <a data-bs-popper="label_info" data-popper-placement="right" title="Percentuale di sconto del biglietto se ridotto percentuale &#xA; Prezzo scontato se ridotto"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
                                 </tr>
 
                                 {% if user.is_superuser %}
                                     <tr>
                                       <td><label class="required"><b>  Verona Card id:</b></label></td>
-                                      <td>{{ form.vc_id }} <a data-bs-popper="label_info" data-popper-placement="right" title="Iddentificativo del punto di interesse per la Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
+                                      <td>{{ form.vc_id }} <a data-bs-popper="label_info" data-popper-placement="right" title="Identificativo del punto di interesse per la Verona Card"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td></td>
                                     </tr>
                                 {% endif %}
                             </table><hr width="70%">
@@ -269,7 +261,7 @@
         $('#vc').on('change', function() {
             var selected = $(this).val();
 
-            if (selected === "01") {
+            if (selected === "01" || selected === "02") {
                 $('#saving_vc_').show();
             }
             else{

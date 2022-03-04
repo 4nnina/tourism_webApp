@@ -75,7 +75,7 @@
                                 <div class="member-info" style="overflow: hidden">
                                     <h4>{{ t.name_it }}</h4>
                                     <span>
-                                        Tipologia: {{ t.type }}
+                                        Tipologia: {% if t.type != None  %}{{ t.type }}{% endif %}
                                     </span>
                                     <p>{{ t.descr_it | make_break | safe |truncatewords:30}} </p>
                                 </div>

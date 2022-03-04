@@ -464,7 +464,10 @@ def editOneTour(request, classid_lang):
 
         if form.is_valid():
             name = form.cleaned_data['name_it']
-            type = DTourETipoit.objects.get(name=form.cleaned_data['type'])
+            try:
+                type = DTourETipoit.objects.get(name=form.cleaned_data['type'])
+            except:
+                type = None
             descr = form.cleaned_data['descr_it']
             image_url = form.cleaned_data['image_url']
             duration = form.cleaned_data['duration']
@@ -481,7 +484,7 @@ def editOneTour(request, classid_lang):
             if descr_obj.descr_trad_value != descr:
                 TourDescrTradT.objects.filter(classref=classid, descr_trad_lang=de_lang).update(descr_trad_value=descr)
 
-        if tour.type != type:
+        if type is not None and tour.type != type:
             Tour.objects.filter(classid=classid).update(type=type)
         if image_url != 'None' and tour.image_url != image_url:
             Tour.objects.filter(classid=classid).update(image_url=image_url)
@@ -802,12 +805,19 @@ def newTour(request):
                 tour.descr_it = form.cleaned_data['descr_it']
                 tour.image_url = form.cleaned_data['image_url']
                 tour.name_it = form.cleaned_data['name_it']
-                tour.type = DTourETipoit.objects.get(name=form.cleaned_data['type'])
+                try:
+                    tour.type = DTourETipoit.objects.get(name=form.cleaned_data['type'])
+                except:
+                    pass
                 #tour.kml_path = form.cleaned_data['kml_path']
                 tour.duration = form.cleaned_data['duration']
                 #tour.length = form.cleaned_data['length']
 
                 tour.save()
+        else:
+            if 'descr_it' in  form.errors:
+                messages.info(request, "Field 'Description' is empty!")
+                return redirect('newTour')
 
         return redirect('/edit/tour/{}/points'.format(id))
 

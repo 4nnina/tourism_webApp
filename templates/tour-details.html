@@ -93,11 +93,11 @@
                             <table style="border-collapse:separate; border-spacing:10px;">
                                 <tr  style="vertical-align:top">
                                     <td><strong>Type</strong>: </td>
-                                    <td>{{ tour.type}}</td>
+                                    <td>{% if tour.type != None  %}{{ tour.type }}{% endif %}</td>
                                 </tr>
                                 <tr  style="vertical-align:top">
                                     <td><strong>Duration</strong>: </td>
-                                    <td>{{ tour.duration}} h</td>
+                                    <td>{% if tour.type != None  %}{{ tour.duration}} h{% endif %}</td>
                                 </tr>
                                 <!--li><strong>Length</strong>: {{ tour.length}}</li-->
                             </table>

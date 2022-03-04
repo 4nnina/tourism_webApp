@@ -1,4 +1,5 @@
 {% load static %}
+{% include 'ErrorePoiInTour.html' %}
 
 <!DOCTYPE html>
 
@@ -78,6 +79,14 @@
             </div>
         </section><!-- End Breadcrumbs -->
 
+        {% for message in messages %}
+        <div id="content">
+            <div class="alert alert-danger" id="msg" role="alert">
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+
         <section class="edit-details">
             <div class="container">
                 <form method="post" class="">
@@ -88,6 +97,7 @@
                             <div class="col-9">
                                 <table style="border-collapse:separate; border-spacing:10px;">
                                     {{ form.media }}
+                                    {{ form.non_field_errors}}
                                     <tr>
                                         <td><label><b>  Name:</b></label></td>
                                         <td>{{ form.name_it }} <a data-bs-popper="label_info" data-popper-placement="right" title="Nome del tour"><i class="bi-info-circle-fill" style="font-size: 17px;color: #37517e"></i></a></td>

@@ -29,7 +29,7 @@ L'applicazione web prevede l'accesso alle informazioni presenti nel database pre
 
 Sia per quanto riguarda i PoI che gli itinerari è possibile eseguire la visualizzazione con dei filtri. Per quanto riguarda i PoI è possibile filtrare in base allo stato e alla categoria; per gli itinerari, invece, è possibile filtrare in base al tipo. E\' inoltre possibile visualizzare nel dettaglio ogni PoI ed ogni itinerario.
 
-<img src="./img_readme/filter.jpg" alt="filter" height="220" />         <img src="./img_readme/art.jpg" alt="art" height="220" />
+<img src="./img_readme/filter.jpg" alt="filter" height="150" />         <img src="./img_readme/art.jpg" alt="art" height="150" />
 
 
 

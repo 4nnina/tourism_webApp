@@ -80,6 +80,7 @@
     </header><!-- End Header -->
 
 
+    {% if user.is_authenticated %}
     <main id="main">
         <!-- ======= Breadcrumbs ======= -->
         <section id="breadcrumbs" class="breadcrumbs">
@@ -156,6 +157,7 @@
             </div>
         </footer><!-- End Footer -->
     </main><!-- End #main -->
+    {% endif %}
 
     <div id="preloader"></div>
 

@@ -1,0 +1,197 @@
+{% load static %}
+{% include 'ErrorePoiInTour.html' %}
+
+<!DOCTYPE html>
+
+<html lang="en-us" dir="ltr">
+<head>
+    <title>New Tour | {{ tour.name_it}}</title>
+
+    <!-- Favicons -->
+    <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+    <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+
+<body class=" app-tourismApp model-art change-form" data-admin-utc-offset="7200">
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top header-inner-pages">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo me-auto"><a href="/">TourismApp</a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto" href="/">Home</a></li>
+                    {% if user.is_superuser %}
+                      <li><a class="nav-link scrollto active" href="/editTour">Edit</a></li>
+                      <li><a class="nav-link scrollto" href="/admin/">Control panel</a></li>
+                    {% elif user.is_staff %}
+                      <li><a class="nav-link scrollto active" href="/editTour">Edit</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                      <!--li class="dropdown"><a href="#"><span><img src="{% static '/assets/img/flags/'%}{{ lang }}.jpg" alt="it" height="20" ></span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            <li><a href="/edit/{{ art.classid }}" ><img src="{% static '/assets/img/flags/it.jpg' %}" alt="it" height="20" style="padding-left: 10px;">Italiano</a></li>
+                            <li><a href="/edit/{{ art.classid }}+en" ><img src="{% static '/assets/img/flags/en.jpg' %}" alt="en" height="20" style="padding-left: 10px;">English</a></li>
+                            <li><a href="/edit/{{ art.classid }}+es" ><img src="{% static '/assets/img/flags/es.jpg' %}" alt="es" height="20" style="padding-left: 10px;">Español</a></li>
+                            <li><a href="/edit/{{ art.classid }}+fr" ><img src="{% static '/assets/img/flags/fr.jpg' %}" alt="fr" height="20" style="padding-left: 10px;">Français</a></li>
+                            <li><a href="/edit/{{ art.classid }}+de" ><img src="{% static '/assets/img/flags/de.jpg' %}" alt="de" height="20" style="padding-left: 10px;">Deutsch</a></li>
+                        </ul>
+                      </li-->
+
+                      <li><a class="getstarted scrollto" href="{% url 'logOut'%}">Log Out</a></li>
+                    {% else %}
+                      <li><a class="getstarted scrollto" href="{% url 'logIn'%}">Log In</a></li>
+                    {% endif %}
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+        </div>
+    </header><!-- End Header -->
+
+    {% if user.is_superuser or user.is_staff%}
+    <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+        <section id="breadcrumbs" class="breadcrumbs">
+            <div class="container">
+                <ol>
+                  <li><a href="">Home</a></li>
+                  <li><a href="">Edit</a></li>
+                  <li>{{ tour.name_it }}</li>
+                </ol>
+                <ol>
+                    <div class="col-1">
+                         <i class="bi-pencil-square" style="font-size: 30px;color: #37517e"></i>
+                    </div>
+                    <div class="col">
+                        <h2>  {{ tour.name_it }}</h2>
+                    </div>
+                </ol>
+            </div>
+        </section><!-- End Breadcrumbs -->
+
+        {% for message in messages %}
+        <div id="content">
+            <div class="alert alert-danger" id="msg" role="alert">
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+
+        <section class="edit-details">
+            <div class="container">
+                <table style="border-collapse:separate; border-spacing:10px;">
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for p in poi %}
+                            <tr>
+                                <td><label><b>Point of interest number {{ p.num }}:</b></label></td>
+                                <td>
+                                    <select name="poi" required="" id="{{ p.num }}">
+                                        <option value="{{ p.point_of_interest.classid}}">{{ p.point_of_interest.name_it }}</option>
+                                        {% for a in art %}
+                                            <option value="{{ a.classid }}">{{ a.name_it }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    {% if p.num != 1 %}
+                                        <input type="submit" value="&#8679" name="_up{{ p.num }}" style="  top: 0px; right: 0px; left: 10px; bottom: 0px; border:0px; display: inline-block; padding: 0px 10px 0px 10px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: black; background: gainsboro;">
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if p.num != len %}
+                                        <input type="submit" value="&#8681" name="_down{{ p.num }}" style="  top: 0px; right: 0px; left: 10px; bottom: 0px; border:0px; display: inline-block; padding: 0px 10px 0px 10px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: black; background: gainsboro;">
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <input type="submit" value="Delete" name="_delete{{ p.num }}" style="  top: 0px; right: 0px; left: 10px; bottom: 0px; border:0px; display: inline-block; padding: 0px 10px 0px 10px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #C2302E;">
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        {% if end %}
+                            <tr>
+                                <td><label class="required" for="poi"><b>  Add point of interest:</b></label></td>
+                                <td>
+                                    <div class="related-widget-wrapper">
+                                        <select name="art" required="" id="art">
+                                            {% for a in art %}
+                                                <option value="{{ a.classid }}">{{ a.name_it }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="submit" value="Add" name="_add" style="  top: 0px; right: 0px; left: 0px; bottom: 0px; border:0px; display: inline-block; padding: 5px 20px 6px 20px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="submit" value="Save" name="_save" style="  top: 0px; right: 0px; left: 0px; bottom: 0px; border:0px; letter-spacing: 1px; display: inline-block; padding: 10px 28px 11px 28px; border-radius: 50px; transition: 0.5s; margin: 10px 0 0 0; color: #fff; background: #47b2e4;"></td>
+                            </tr>
+                        {% endif %}
+                    </form>
+                </table>
+
+                <br class="clear">
+            </div>
+        </section>
+
+        <!-- ======= Footer ======= -->
+        <footer id="footer">
+            <div class="footer-newsletter">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="{% static 'assets/img/logo.png' %}" style="filter: invert(100%)" height="60px"/>
+                                </div>
+                                <div class="col">
+                                    <img src="{% static 'assets/img/logo_uni.jpg' %}" height="60px"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer><!-- End Footer -->
+    </main><!-- End #main -->
+    {% endif %}
+
+    <div id="preloader"></div>
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="/static/assets/vendor/aos/aos.js"></script>
+    <script src="/static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/static/assets/vendor/php-email-form/validate.js"></script>
+    <script src="/static/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/static/assets/vendor/waypoints/noframework.waypoints.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="/static/assets/js/main.js"></script>
+
+</body>
+</html>
